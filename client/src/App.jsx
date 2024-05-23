@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import './App.css'
 import Home from "./pages/Home"
+import Navigates from "./pages/Navigates"
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
         <BrowserRouter >
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="/home/*" element={<Home />} />
+            <Route path="/home/*" element={<Navigates />} />
           </Routes>
         </BrowserRouter>
       {/* </UserContext.Provider> */}
