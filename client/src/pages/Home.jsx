@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import Gift from '../components/gift';
 
 function Home() {
   const [giftes, setGiftes] = useState();
@@ -17,7 +18,7 @@ function Home() {
         { 
           giftes.map((gift, index) => (
             <div key={index}>
-              {/* <Todo todo={todo} todos={todos} searchCriteria={searchCriteria} sortCriteria={sortCriteria} setTodos={setTodos} indexUpdateTask={indexUpdateTask} setIndexUpdateTask={setIndexUpdateTask} /> */}
+              {/* { <Gift />} */}
             </div>
           ))}
     </div>
