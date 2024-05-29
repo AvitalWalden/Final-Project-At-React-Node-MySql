@@ -1,9 +1,13 @@
 import React from 'react'
 
-function Gift() {
+
+function Gift({ gift }) {
   return (
-    <div>
-      
+    <div className="gift-card">
+      <img src={gift.image_url} alt={gift.name} />
+      {/* <h1>{gift.gift_id}</h1> */}
+      <h1>{gift.name}</h1>
+      <h1>{gift.price}</h1>
     </div>
   )
 }

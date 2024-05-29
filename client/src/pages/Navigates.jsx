@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import LogIn from './LogIn'
-import Home from './Home'
+import Gifts from './Gifts'
 
 function Navigates() {
   return (
@@ -12,11 +12,11 @@ function Navigates() {
         <Link to={`logout`} >Logout</Link>
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Gifts />} />
         
         <Route path="login" element={<LogIn />} />
-        <Route path="logout" element={<Home />} />
-        <Route path="logout" element={<Home />} />
+        <Route path="signUp" element={<signUp />} />
+        {/* <Route path="logout" element={} /> */}
       </Routes>
     </div>
   )

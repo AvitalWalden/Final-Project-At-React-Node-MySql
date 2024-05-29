@@ -1,0 +1,82 @@
+html {
+  --top-spacing: 500px;
+  scroll-padding-top: var(--top-spacing);
+}
+
+body {
+
+  margin: 0 !important;
+  font-family: 'Arial', 'sans-serif';
+  text-align: center;
+}
+
+.gift-container {
+  display: grid;
+  grid-gap: 35px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+  grid-auto-rows: 400px;
+  margin: 15% 5% 5% 5%;
+}
+/* .gift-container {
+  display: grid;
+  grid-gap: 35px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin: 15% 5% 5% 5%;
+} */
+
+.gift-card ,
+.gift-container>div {
+  display: flex;
+  align-items: end;
+  font-size: 2em;
+  color: #ffffff;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 2%;
+  box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
+}
+
+.gift-card img ,
+.gift-container>div>img {
+  width: 100%;
+  border-radius: 2%;
+  height: 60%;
+  object-fit: cover;
+  align-items: flex-end;
+  transition: all 0.5s linear;
+
+}
+
+img:hover,
+img:focus,
+img:active {
+  transform: scale(1.05);
+}
+.gift-card >p,
+.gift-container>div>p {
+  font-size: 45%;
+  margin: 2%;
+  color: black;
+  width: 95%;
+  align-items: flex-start;
+}
+
+.gift-card >h1,
+.grid-container>div>h1 {
+  font-size: 65%;
+  margin: 3%;
+  color: black;
+  width: 90%;
+
+}
+
+@media screen and (max-width: 600px) {
+  .gift-container {
+    width: 80%;
+    margin-top: 70%;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+}

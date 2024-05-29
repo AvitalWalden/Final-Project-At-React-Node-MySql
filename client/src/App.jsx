@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import './App.css'
-import Home from "./pages/Home"
 import Navigates from "./pages/Navigates"
 
 
@@ -10,8 +9,8 @@ function App() {
       {/* <UserContext.Provider> */}
         <BrowserRouter >
           <Routes>
-            <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="/home/*" element={<Navigates />} />
+            <Route path="/" element={<Navigate to="/Gifts" />} />
+            <Route path="/Gifts/*" element={<Navigates />} />
           </Routes>
         </BrowserRouter>
       {/* </UserContext.Provider> */}
