@@ -5,6 +5,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = 3000;
 
+
+const loginRoutes=require("./routes/loginRoutes")
+app.use("/logIn",loginRoutes);
 const giftsRoutes=require("./routes/giftRoute")
 app.use("/gifts",giftsRoutes);
 

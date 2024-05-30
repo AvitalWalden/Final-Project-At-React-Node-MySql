@@ -26,6 +26,7 @@ CREATE TABLE users (
     email VARCHAR(255),
     address_id INT,
     phone VARCHAR(255),
+    Bonus INT,
     role VARCHAR(255),
     FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 );
@@ -40,14 +41,16 @@ CREATE TABLE gifts (
     gift_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price VARCHAR(255) NOT NULL,
-    image_url VARCHAR(255) NOT NULL
+    image_url VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE donations (
     donation_id INT AUTO_INCREMENT PRIMARY KEY,
+    donate_id INT,
     user_id INT,
     gift_id INT,
     description VARCHAR(255),
+    FOREIGN KEY (donate_id) REFERENCES users(user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (gift_id) REFERENCES gifts(gift_id)
 );
@@ -117,7 +120,7 @@ INSERT INTO passwords (user_id, password) VALUES
 
 -- הוספת מתנות
 INSERT INTO gifts (name, price, image_url) VALUES 
-('Toy Car', '50', 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fpery.co.il%2Fwp-content%2Fuploads%2F2020%2F05%2FKia-Stonic-2020.png&tbnid=QSZNmO6EMoDRuM&vet=1&imgrefurl=https%3A%2F%2Fpery.co.il%2Fproduct%2F%25D7%25A8%25D7%259B%25D7%2591-%25D7%2591%25D7%2599%25D7%25A0%25D7%2595%25D7%25A0%25D7%2599-d-103%2F&docid=0dTM5E0BXtwP7M&w=600&h=600&source=sh%2Fx%2Fim%2Fm1%2F1&kgs=07cf014f94906bec&shem=abme%2Cssim%2Ctrie'),
+('Toy Car', '50', 'https://drive.google.com/file/d/1_qR5-ETfcCznoUcTcJaj0euVqmog5pEj/view?usp=sharing'),
 ('Doll', '60', 'http://example.com/doll.jpg'),
 ('Board Game', '80', 'http://example.com/boardgame.jpg'),
 ('Bicycle', '200', 'http://example.com/bicycle.jpg'),
@@ -179,3 +182,5 @@ INSERT INTO lottery (start_date, end_date) VALUES
 ('2025-01-01', '2025-01-31'),
 ('2025-02-01', '2025-02-28'),
 ('2025-03-01', '2025-03-31');
+
+select * from gifts;

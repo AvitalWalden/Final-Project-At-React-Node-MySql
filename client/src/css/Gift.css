@@ -14,7 +14,7 @@ body {
   display: grid;
   grid-gap: 35px;
   grid-template-columns: repeat(auto-fit, minmax(400px, auto));
-  grid-auto-rows: 400px;
+  grid-auto-rows: 500px;
   margin: 15% 5% 5% 5%;
 }
 /* .gift-container {
@@ -62,6 +62,7 @@ img:active {
   align-items: flex-start;
 }
 
+
 .gift-card >h1,
 .grid-container>div>h1 {
   font-size: 65%;
@@ -79,4 +80,29 @@ img:active {
     margin-right: auto;
 
   }
+}
+
+
+.btnAdd {
+  /* background-color: #99D9EA;
+  font-weight: bold;
+  border-style: groove;
+  border-color: #374042;
+  margin-bottom: 4px;
+  margin-left: 46%; */
+  background-color: #000000;
+
+  color: #ffffff;
+  border-color: #ffffff;
+  font-size: 65%;
+  margin: 3%;
+  width: 90%;
+}
+
+.btnAdd:hover {
+  font-weight: bold;
+  border-radius: 9px;
+  color: #ffffff;
+  border-color: #000000;
+  text-shadow: 0 2px 15px rgba(50, 65, 68, 0.7);
 }

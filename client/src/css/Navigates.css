@@ -1,0 +1,146 @@
+/* Navigates.css */
+
+/* General Styles */
+body {
+    font-family: 'Assistant', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+  
+  .nav-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .shopping-container {
+    position: relative;
+    margin-right: 0.5rem;
+  }
+  
+  .shopping-bag-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff0000;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 3px 6px;
+    border-radius: 50%;
+  }
+  
+  .nav-button {
+    background-color: #fff;
+    color: #333;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+  
+  .flag-icon {
+    height: 24px;
+    margin-right: 1rem;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 300px;
+  }
+  
+  .search-icon {
+    color: #333;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  
+  .search-input {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  /* Additional Styles for the Routes */
+  .gifts-container,
+  .login-container,
+  .signup-container {
+    padding: 2rem;
+  }
+  /* Additional Styles for the Routes */
+  .gifts-container,
+  .login-container,
+  .signup-container {
+    padding: 2rem;
+  }
+
+  
+.shopping-container {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .shopping-bag-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #000000;
+    color: #ffffff;
+    min-width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content p {
+    margin: 10px;
+  }
+  
+  .cart-details {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
