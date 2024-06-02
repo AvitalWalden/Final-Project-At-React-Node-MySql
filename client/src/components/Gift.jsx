@@ -1,5 +1,6 @@
 import React from 'react'
 import { MdDeleteForever } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 
 
 
@@ -29,7 +30,7 @@ function Gift({ gift,user, searchCriteria }) {
           {user && user.role === 'admin' && (
         <button className="btnDelete" /*onClick={handleDeleteGift}*/><MdDeleteForever /></button>
       )}
-      <button className="btnAdd" /*onClick={handleAddGift}*/>Add+</button>
+      <button className="btnAdd" /*onClick={handleAddGift}*/><IoMdAdd /></button>
         </div>
       }
     </>
