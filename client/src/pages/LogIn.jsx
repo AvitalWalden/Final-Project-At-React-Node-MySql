@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-// import { UserContext } from '../App';
+import { UserContext } from '../pages/UserContext';
 
 const logIn = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ const logIn = () => {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   function handleLogin() {
     let foundUser;
