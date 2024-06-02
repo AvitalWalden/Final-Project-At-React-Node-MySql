@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 function Navigates() {
-  return (
-    <div>
-      <nav>
-        <Link to="/login">LogIn</Link>
-        {/* <Link to="/signup">SignUp</Link> */}
-        <Link to="/logout">Logout</Link>
-      </nav>
-    </div>
-  );
+    const { user } = useContext(UserContext);
+
+    return (
+        <div>
+            <nav>
+                {!user && <Link to="/login">LogIn</Link>}
+                {user && <Link to="/logout">LogOut</Link>}
+            </nav>
+        </div>
+    );
 }
 
 export default Navigates;

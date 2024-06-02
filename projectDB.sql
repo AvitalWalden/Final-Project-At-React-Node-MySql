@@ -1,6 +1,7 @@
-USE projectDB;
 
 CREATE DATABASE IF NOT EXISTS projectDB;
+USE projectDB;
+
 
 -- Drop existing tables to avoid conflicts
 DROP TABLE IF EXISTS lotteries_tickets;
