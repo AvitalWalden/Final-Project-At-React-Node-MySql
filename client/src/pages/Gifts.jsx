@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Gift from '../components/Gift';
 import '../css/Gift.css';
+import { UserContext } from './UserContext';
 
 
 function Gifts() {
   const [giftes, setGiftes] = useState();
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     const url = `http://localhost:3000/gifts`;
@@ -19,7 +21,7 @@ function Gifts() {
       {giftes != null &&
         giftes.map((gift, index) => (
 
-          < Gift key={index} gift={gift} />
+          < Gift key={index} gift={gift} user={user} />
 
         ))}
     </div>
