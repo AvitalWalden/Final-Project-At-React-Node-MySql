@@ -184,4 +184,4 @@ INSERT INTO lottery (start_date, end_date) VALUES
 ('2025-02-01', '2025-02-28'),
 ('2025-03-01', '2025-03-31');
 
-select * from gifts;
+UPDATE passwords SET password = SHA2(password, 256) WHERE user_id > 0;
