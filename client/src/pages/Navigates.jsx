@@ -6,7 +6,7 @@ function Navigates() {
     <div>
       <nav>
         <Link to="/login">LogIn</Link>
-        <Link to="/signup">SignUp</Link>
+        {/* <Link to="/signup">SignUp</Link> */}
         <Link to="/logout">Logout</Link>
       </nav>
     </div>

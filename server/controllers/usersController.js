@@ -3,8 +3,11 @@ const bcrypt = require('bcrypt');
 
 async function createUser(username, password) {
     try {
+        console.log("ddddd");
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await model.createUser(username, hashedPassword);
+        console.log(user);
         return user;
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
@@ -55,10 +58,9 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone,Bonus,role) {
-    try {
-
-        return model.updateUser(id, name, username, email, city, street, zipcode, phone,Bonus,role);
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role) {
+    try {        
+        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role);
     } catch (err) {
         throw err;
     }

@@ -8,7 +8,6 @@ router.use(cors());
 
 router.post("/", async (req, res) => {
     try {
-        console.log(req.body);
         const userName = req.body.username;
         const password = req.body.password;
         let user = await logIn(userName, password);

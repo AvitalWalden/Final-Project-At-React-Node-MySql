@@ -21,8 +21,6 @@ const logIn = () => {
       username: username,
       password: password
     }
-    console.log(newUser.username);
-    console.log({ ...newUser });
 
     const url = 'http://localhost:3000/login';
     const requestOptions = {
@@ -59,7 +57,7 @@ const logIn = () => {
       <input type="userName" className='input' value={username} placeholder="userName" onChange={(e) => setUsername(e.target.value)} /><br />
       <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
       <button className="btnOkLogIn" onClick={handleLogin}>Connect</button><br />
-      <Link to="/register" className="link" >Don't have an account? Create account</Link>
+      <Link to="/signup" className="link" >Don't have an account? Create account</Link>
       {loginError && <p className='error' style={{ color: loginError == "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
     </div>
   );
