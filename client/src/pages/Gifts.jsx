@@ -5,6 +5,8 @@ import '../css/Gift.css';
 
 function Gifts() {
   const [giftes, setGiftes] = useState();
+  const [searchCriteria, setSearchCriteria] = useState('');
+
 
   useEffect(() => {
     const url = `http://localhost:3000/gifts`;
@@ -15,14 +17,15 @@ function Gifts() {
       })
   }, []);
   return (
-    <div className="gift-container">
-      {giftes != null &&
-        giftes.map((gift, index) => (
-
-          < Gift key={index} gift={gift} />
-
-        ))}
-    </div>
+    <>
+      <input className='inputItem' type="text" value={searchCriteria} placeholder="Search gift" onChange={(event) => setSearchCriteria(event.target.value)} />
+      <div className="gift-container">
+        {giftes != null &&
+          giftes.map((gift, index) => (
+            <Gift key={index} gift={gift} searchCriteria={searchCriteria}/>
+          ))}
+      </div>
+    </>
   )
 }
 

@@ -1,12 +1,12 @@
  const model = require('../models/giftsModel');
 
-// async function createComment(post_id, name, email, body) {
-//     try {
-//         return model.createComment(post_id, name, email, body);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function createGift( name, price, image_url) {
+    try {
+        return model.createGift(name, price, image_url);
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function getGifts() {
     try {
@@ -17,13 +17,13 @@ async function getGifts() {
 
 }
 
-// async function getComment(id) {
-//     try {
-//         return model.getComment(id);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function getGift(id) {
+    try {
+        return model.getGift(id);
+    } catch (err) {
+        throw err;
+    }
+}
 
 // async function deleteComment(id) {
 //     try {
@@ -39,4 +39,4 @@ async function getGifts() {
 //         throw err;
 //     }
 // }
- module.exports = { getGifts}
+ module.exports = { getGifts,createGift,getGift}

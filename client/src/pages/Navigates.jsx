@@ -10,6 +10,7 @@ function Navigates() {
             <nav>
                 {!user && <Link to="/login">LogIn</Link>}
                 {user && <Link to="/logout">LogOut</Link>}
+                {user && user.role == 'admin' && <Link to="/">order managent</Link>}
             </nav>
         </div>
     );

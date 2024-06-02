@@ -80,7 +80,7 @@ const UserDetails = () => {
                     
                     <select className='input' value={userDetails.role} onChange={(e) => handleChange('role', e.target.value)}>
                         <option value="">Select Role</option>
-                        <option value="admin">Admin</option>
+                        {/* <option value="admin">Admin</option> */}
                         <option value="donate">Donate</option>
                         <option value="user">User</option>
                     </select><br />

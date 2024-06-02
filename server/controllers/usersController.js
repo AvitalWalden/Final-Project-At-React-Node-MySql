@@ -20,10 +20,13 @@ async function createUser(username, password) {
 
 async function logIn(userName, password) {
     try {
-        console.log("ררר")
-
+        
         const user = await model.logIn(userName);
         if (user) {
+            console.log(password);
+            console.log(user.password);
+
+            
             const match = await bcrypt.compare(password, user.password);
             if (match) {
                 return user;
