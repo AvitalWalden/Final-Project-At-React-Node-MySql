@@ -1,7 +1,9 @@
 import React from 'react'
+import { MdDeleteForever } from "react-icons/md";
 
 
-function Gift({ gift, searchCriteria }) {
+
+function Gift({ gift,user, searchCriteria }) {
 
   const highlightSearchTerm = (title) => {
     const index = title.toLowerCase().indexOf(searchCriteria.toLowerCase());
@@ -24,11 +26,15 @@ function Gift({ gift, searchCriteria }) {
           <img src={gift.image_url} alt={gift.name} />
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}</h1>
-          <button className="btnAdd" /*onClick={handleAddGift}*/>Add+</button><br />
+          {user && user.role === 'admin' && (
+        <button className="btnDelete" /*onClick={handleDeleteGift}*/><MdDeleteForever /></button>
+      )}
+      <button className="btnAdd" /*onClick={handleAddGift}*/>Add+</button>
         </div>
       }
     </>
   )
+  
 }
 
 export default Gift
