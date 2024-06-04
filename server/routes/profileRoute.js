@@ -5,29 +5,25 @@ const Profile = () => {
   const { user } = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserDetails = async (userId) => {
-      const url = `http://localhost:3000/profile/${userId}`;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (user) {
       fetchUserDetails(user.user_id);
     }
   }, [user]);
+
+  const fetchUserDetails = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/profile/${userId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,23 +53,20 @@ const Profile = () => {
           role: userData.role,
         }),
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUserData(updatedUser);
+        setIsEditing(false);
+      } else {
+        console.error('Error updating user:', response.statusText);
       }
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
-      setIsEditing(false);
     } catch (error) {
       console.error('Error updating user:', error);
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (!userData) {
-    return <div>No user data found.</div>;
+    return <div>Loading...</div>;
   }
 
   return (
