@@ -29,7 +29,9 @@ function Navigates() {
                     </span>
                     {dropdownOpen && (
                         <div className="dropdown-content">
-                            <Link to="/orders">My Account</Link>
+                            <Link to="/profile">My Account</Link>
+
+
                             <Link to="/orders">Orders</Link>
                         </div>
                     )}

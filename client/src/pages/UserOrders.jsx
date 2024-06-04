@@ -29,9 +29,9 @@ const UserOrders = () => {
 
     fetchData();
   }, [user]);
-  
+
 useEffect(()=>{
-    isLoading(false)
+    setIsLoading(false);
 },[orders])
 
   return (

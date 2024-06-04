@@ -1,5 +1,7 @@
 const model = require('../models/usersModel');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+
 
 async function createUser(username, password) {
     try {
@@ -23,17 +25,12 @@ async function logIn(userName, password) {
         
         const user = await model.logIn(userName);
         if (user) {
-            console.log(password);
-            console.log(user.password);
-
-            
-            const match = await bcrypt.compare(password, user.password);
-            // if (match) {
-                return user;
-            // }
-            // else {
-            //     throw new Error('You are not exist in the system, please sign up');
-            // }
+            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+            if (user.password === hashedPassword) {
+                return user; 
+            } else {
+                throw new Error('You are not exist in the system, please sign up');
+            }
         }
         else {
             throw new Error('You are not exist in the system, please sign up');
