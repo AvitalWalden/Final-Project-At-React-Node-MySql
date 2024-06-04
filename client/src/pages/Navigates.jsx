@@ -30,8 +30,6 @@ function Navigates() {
                     {dropdownOpen && (
                         <div className="dropdown-content">
                             <Link to="/profile">My Account</Link>
-
-
                             <Link to="/orders">Orders</Link>
                         </div>
                     )}
