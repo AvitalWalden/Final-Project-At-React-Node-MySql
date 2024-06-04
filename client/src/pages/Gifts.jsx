@@ -5,7 +5,7 @@ import { UserContext } from './UserContext';
 
 
 function Gifts() {
-  const [giftes, setGiftes] = useState();
+  const [giftes, setGiftes] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
 
   const { user, setUser } = useContext(UserContext);
