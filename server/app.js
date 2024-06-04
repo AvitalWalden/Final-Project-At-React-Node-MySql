@@ -14,6 +14,8 @@ const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
 const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
+const ordersRoutes=require("./routes/ordersRoute")
+app.use("/orders",ordersRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

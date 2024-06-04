@@ -1,6 +1,6 @@
- const model = require('../models/giftsModel');
+const model = require('../models/giftsModel');
 
-async function createGift( name, price, image_url) {
+async function createGift(name, price, image_url) {
     try {
         return model.createGift(name, price, image_url);
     } catch (err) {
@@ -39,4 +39,4 @@ async function getGift(id) {
 //         throw err;
 //     }
 // }
- module.exports = { getGifts,createGift,getGift}
+module.exports = { getGifts, createGift, getGift }

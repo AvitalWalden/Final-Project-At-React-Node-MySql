@@ -6,6 +6,8 @@ import Gifts from "./pages/Gifts";  // Adjust the import path if necessary
 import SignUp from "./pages/SignUp";  // Adjust the import path if necessary
 import UserDetails from "./pages/UserDetails";
 import LogOut from "./pages/LogOut";
+import UserOrders from "./pages/UserOrders";
+
 
 import { UserProvider } from './pages/UserContext'; // Import UserProvider
 
@@ -22,6 +24,7 @@ function App() {
             <Route path="/logout" element={<LogOut />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/userDetails" element={<UserDetails />} />
+            <Route path="/orders" element={<UserOrders />} />
 
             {/* Add more routes as needed */}
           </Routes>
