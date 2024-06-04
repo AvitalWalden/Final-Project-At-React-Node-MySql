@@ -9,8 +9,11 @@ const { getOrder  } = require('../controllers/orderController');
 
 router.get("/:user_id", async (req, res) => {
     try {
-        console.log("hhhh");
+        console.log(req.params);
+
         const user_id = req.params.user_id;
+        console.log(user_id);
+
         const order = await getOrder(user_id);
         res.send(order);
     } catch (err) {

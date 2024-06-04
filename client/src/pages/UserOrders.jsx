@@ -1,42 +1,59 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from './UserContext';
+import '../css/Gift.css';
 
 const UserOrders = () => {
-    const { user } = useContext(UserContext);
-    const [orders, setOrders] = useState([]);
+  const { user } = useContext(UserContext);
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        if (user) {
-            const url = `http://localhost:3000/orders?user_id=${user.user_id}`;
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    setOrders(data);
-                })
-                .catch(error => {
-                    console.error('There was an error fetching the orders!', error);
-                });
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        const url = `http://localhost:3000/orders/${user.user_id}`;
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setOrders(data);
+          console.log(data);
+          console.log(orders);
+
+        } catch (error) {
+          console.error('There was an error fetching the orders!', error);
         }
-    }, [user]);
+      }
+    };
 
-    return (
-        <div>
-            <h1>Your Orders</h1>
-            {orders.length > 0 ? (
-                <ul>
-                    {orders.map(order => (
-                        <li key={order.order_id}>
-                            <p>Order Date: {order.order_date}</p>
-                            <p>Gift: {order.gift_name}</p>
-                            <p>Price: {order.price}</p>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No orders found.</p>
-            )}
-        </div>
-    );
+    fetchData();
+  }, [user]);
+  
+useEffect(()=>{
+    isLoading(false)
+},[orders])
+
+  return (
+    <div>
+      <h1>Your Orders</h1>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : orders.length > 0 ? (
+        <p>No orders found.</p>
+      ) : (
+        <ul>
+          {orders.map((order) => (
+            <div className="gift-card" key={order.order_id}>
+              <h1>Order Date: {order.order_date}</h1>
+              <h1>Gift: {order.name}</h1>
+              <h1>Price: {order.price}</h1>
+            </div>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 export default UserOrders;
