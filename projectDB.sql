@@ -121,16 +121,35 @@ INSERT INTO passwords (user_id, password) VALUES
 
 -- הוספת מתנות
 INSERT INTO gifts (name, price, image_url) VALUES 
-('Toy Car', '50', 'https://drive.google.com/file/d/1_qR5-ETfcCznoUcTcJaj0euVqmog5pEj/view?usp=sharing'),
-('Doll', '60', 'http://example.com/doll.jpg'),
-('Board Game', '80', 'http://example.com/boardgame.jpg'),
-('Bicycle', '200', 'http://example.com/bicycle.jpg'),
-('Book', '30', 'http://example.com/book.jpg'),
-('Puzzle', '40', 'http://example.com/puzzle.jpg'),
-('Lego Set', '100', 'http://example.com/lego.jpg'),
-('Action Figure', '70', 'http://example.com/actionfigure.jpg'),
-('Drone', '300', 'http://example.com/drone.jpg'),
-('Tablet', '500', 'http://example.com/tablet.jpg');
+('Toy Car', '50', '1'),
+('Doll', '60', '2'),
+('Board Game', '80', '3'),
+('Bicycle', '200', '4'),
+('Book', '30', '5'),
+('Puzzle', '40', '6'),
+('Lego Set', '100', '7'),
+('Action Figure', '70', '8'),
+('Drone', '300', '9'),
+('Tablet', '500', '10');
+('Toy Car', '50', '11'),
+('Doll', '60', '12'),
+('Board Game', '80', '13'),
+('Bicycle', '200', '14'),
+('Book', '30', '15'),
+('Puzzle', '40', '16'),
+('Lego Set', '100', '17'),
+('Action Figure', '70', '18'),
+('Drone', '300', '19'),
+('Tablet', '500', '20');
+('Toy Car', '50', '21'),
+('Doll', '60', '22'),
+('Board Game', '80', '23'),
+('Bicycle', '200', '24'),
+('Book', '30', '25'),
+('Puzzle', '40', '26'),
+('Lego Set', '100', '27'),
+('Action Figure', '70', '28'),
+('Drone', '300', '29'),
 
 -- הוספת תרומות
 INSERT INTO donations (user_id, gift_id, description) VALUES 

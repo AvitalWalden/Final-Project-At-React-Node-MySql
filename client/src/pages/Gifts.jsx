@@ -15,6 +15,7 @@ function Gifts() {
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setGiftes(data);
       })
   }, []);

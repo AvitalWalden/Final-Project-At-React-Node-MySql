@@ -3,7 +3,6 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 
 
-
 function Gift({ gift,user, searchCriteria }) {
 
   const highlightSearchTerm = (title) => {
@@ -36,6 +35,6 @@ function Gift({ gift,user, searchCriteria }) {
     </>
   )
   
-};
+}
 
 export default Gift

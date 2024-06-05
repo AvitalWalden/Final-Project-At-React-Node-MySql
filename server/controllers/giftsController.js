@@ -1,5 +1,6 @@
 const model = require('../models/giftsModel');
 
+
 async function createGift(name, price, image_url) {
     try {
         return model.createGift(name, price, image_url);
@@ -10,11 +11,17 @@ async function createGift(name, price, image_url) {
 
 async function getGifts() {
     try {
-        return model.getGifts();
+        const allGifts = await model.getGifts();
+        const giftsWithImages = allGifts.map(gift => {
+            return {
+                ...gift,
+                image_url: `.../server/images/${gift.image_url}`
+            };
+        });
+        return giftsWithImages;
     } catch (err) {
         throw err;
     }
-
 }
 
 async function getGift(id) {

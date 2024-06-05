@@ -15,7 +15,7 @@ app.use("/gifts",giftsRoutes);
 const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
 const ordersRoutes=require("./routes/ordersRoute")
