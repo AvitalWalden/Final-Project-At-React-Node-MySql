@@ -6,6 +6,8 @@ import { FaRegUser } from "react-icons/fa";
 import '../css/Navigates.css'; // Import the CSS file for styling
 import { LuChevronDown } from "react-icons/lu";
 import { LuChevronUp } from "react-icons/lu";
+import { FaCartShopping } from "react-icons/fa6";
+
 
 function Navigates() {
     const { user } = useContext(UserContext);
@@ -21,7 +23,8 @@ function Navigates() {
                 {!user && <Link to="/login">LogIn</Link>}
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
-                
+                <Link to="/cart_shopping"><FaCartShopping /></Link>
+
                 <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                     <span>
                         <FaRegUser />
@@ -34,7 +37,7 @@ function Navigates() {
                         </div>
                     )}
                 </div>
-                
+
                 {user && user.role === 'admin' && <Link to="/">Order Management</Link>}
             </nav>
         </div>

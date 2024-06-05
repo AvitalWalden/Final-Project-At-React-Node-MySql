@@ -78,7 +78,7 @@ const Profile = () => {
     <div>
       <h1>Your Profile</h1>
       {isEditing ? (
-        <form>
+        <div className='form'>
           <input type="text" className='input' value={userDetails.username} readOnly /><br />
           <input type="text" className='input' placeholder="name" value={userDetails.name} onChange={(e) => handleChange('name', e.target.value)} /><br />
           <input type="email" className='input' placeholder="email" value={userDetails.email} onChange={(e) => handleChange('email', e.target.value)} /><br />
@@ -86,27 +86,25 @@ const Profile = () => {
           <input type="text" className='input' placeholder="street" value={userDetails.street} onChange={(e) => handleChange('street', e.target.value)} /><br />
           <input type="text" className='input' placeholder="zipcode" value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} /><br />
           <input type="tel" className='input' placeholder="phone" value={userDetails.phone} onChange={(e) => handleChange('phone', e.target.value)} /><br />
-          <input type="number" className='input' placeholder="Bonus" value={userDetails.Bonus} onChange={(e) => handleChange('Bonus', e.target.value)} /><br />
+          <input type="text" className='input' placeholder="Bonus" value={userDetails.Bonus} onChange={(e) => handleChange('Bonus', e.target.value)} readOnly /><br />
           <input type="text" className='input' placeholder="role" value={userDetails.role} onChange={(e) => handleChange('role', e.target.value)} /><br />
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
           <button className="btnSaveDetails" onClick={handleFormSubmit}>Save</button><br />
 
-        </form>
+        </div>
       ) : (
-        <form>
-          <p>User ID: {userDetails.user_id}</p>
-          <p>Name: {userDetails.name}</p>
-          <p>Username: {userDetails.username}</p>
-          <p>Email: {userDetails.email}</p>
-          <p>City: {userDetails.city}</p>
-          <p>Street: {userDetails.street}</p>
-          <p>Zipcode: {userDetails.zipcode}</p>
-          <p>Phone: {userDetails.phone}</p>
-          <p>Bonus: {userDetails.Bonus}</p>
-          <p>Role: {userDetails.role}</p>
+        <div className='form'>
+          <p className='input'>User ID: {userDetails.user_id}</p>
+          <p className='input'>Name: {userDetails.name}</p>
+          <p className='input'>Username: {userDetails.username}</p>
+          <p className='input'>Email: {userDetails.email}</p>
+          <p className='input'>City: {userDetails.city}</p>
+          <p className='input'>Street: {userDetails.street}</p>
+          <p className='input'>Zipcode: {userDetails.zipcode}</p>
+          <p className='input'>Phone: {userDetails.phone}</p>
+          <p className='input'>Bonus: {userDetails.Bonus}</p>
+          <p className='input'>Role: {userDetails.role}</p>
           <button onClick={() => setIsEditing(true)}>Edit</button>
-        </form>
+        </div>
       )
       }
     </div >

@@ -36,6 +36,6 @@ function Gift({ gift,user, searchCriteria }) {
     </>
   )
   
-}
+};
 
 export default Gift

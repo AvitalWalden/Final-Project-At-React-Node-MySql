@@ -47,6 +47,7 @@ async function logIn(userName) {
         const sql = 'SELECT * FROM users natural join passwords where username=?';
         const result = await pool.query(sql, [userName]);
         return result[0][0];
+
     } catch (err) {
         console.log(err);
         throw err;
