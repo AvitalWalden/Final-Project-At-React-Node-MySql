@@ -94,17 +94,17 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 ('Ramat Gan', 'Ayalon', '22222');
 
 -- הוספת משתמשים
-INSERT INTO users (name, username, email, address_id, phone, role) VALUES 
-('John Doe', 'johndoe', 'john@example.com', 1, '050-1234567', 'user'),
-('Jane Smith', 'janesmith', 'jane@example.com', 2, '050-2345678', 'admin'),
-('David Cohen', 'davidcohen', 'david@example.com', 3, '050-3456789', 'user'),
-('Rachel Levi', 'rachellevi', 'rachel@example.com', 4, '050-4567890', 'user'),
-('Michael Rosen', 'michaelrosen', 'michael@example.com', 5, '050-5678901', 'user'),
-('Sarah Gold', 'sarahgold', 'sarah@example.com', 6, '050-6789012', 'admin'),
-('Daniel Katz', 'danielkatz', 'daniel@example.com', 7, '050-7890123', 'user'),
-('Esther Green', 'esthergreen', 'esther@example.com', 8, '050-8901234', 'user'),
-('Yossi Azulay', 'yossiazulay', 'yossi@example.com', 9, '050-9012345', 'user'),
-('Leah Bar', 'leahbar', 'leah@example.com', 10, '050-0123456', 'admin');
+INSERT INTO users (name, username, email, address_id, phone,Bonus, role) VALUES 
+('John Doe', 'johndoe', 'john@example.com', 1, '050-1234567',0, 'user'),
+('Jane Smith', 'janesmith', 'jane@example.com', 2, '050-2345678',0, 'admin'),
+('David Cohen', 'davidcohen', 'david@example.com', 3, '050-3456789',0, 'user'),
+('Rachel Levi', 'rachellevi', 'rachel@example.com', 4, '050-4567890',0, 'user'),
+('Michael Rosen', 'michaelrosen', 'michael@example.com', 5, '050-5678901',0, 'user'),
+('Sarah Gold', 'sarahgold', 'sarah@example.com', 6, '050-6789012',0,'admin'),
+('Daniel Katz', 'danielkatz', 'daniel@example.com', 7, '050-7890123',0, 'user'),
+('Esther Green', 'esthergreen', 'esther@example.com', 8, '050-8901234',0, 'user'),
+('Yossi Azulay', 'yossiazulay', 'yossi@example.com', 9, '050-9012345',0, 'user'),
+('Leah Bar', 'leahbar', 'leah@example.com', 10, '050-0123456',0, 'admin');
 
 -- הוספת סיסמאות
 INSERT INTO passwords (user_id, password) VALUES 

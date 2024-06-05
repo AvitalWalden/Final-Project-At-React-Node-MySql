@@ -147,7 +147,7 @@ nav {
   font-size: 0;
 }
 
-nav a {
+nav a , nav div{
   font-size: 22px;
   text-decoration: none;
   text-align: center;
