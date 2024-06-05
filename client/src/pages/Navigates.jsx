@@ -23,7 +23,7 @@ function Navigates() {
                 {!user && <Link to="/login">LogIn</Link>}
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
-                <Link to="/cart_shopping"><FaCartShopping /></Link>
+                <Link to="/orderManagement"><FaCartShopping /></Link>
 
                 <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                     <span>

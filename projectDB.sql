@@ -130,7 +130,7 @@ INSERT INTO gifts (name, price, image_url) VALUES
 ('Lego Set', '100', '7'),
 ('Action Figure', '70', '8'),
 ('Drone', '300', '9'),
-('Tablet', '500', '10');
+('Tablet', '500', '10'),
 ('Toy Car', '50', '11'),
 ('Doll', '60', '12'),
 ('Board Game', '80', '13'),
@@ -140,7 +140,7 @@ INSERT INTO gifts (name, price, image_url) VALUES
 ('Lego Set', '100', '17'),
 ('Action Figure', '70', '18'),
 ('Drone', '300', '19'),
-('Tablet', '500', '20');
+('Tablet', '500', '20'),
 ('Toy Car', '50', '21'),
 ('Doll', '60', '22'),
 ('Board Game', '80', '23'),
@@ -149,9 +149,8 @@ INSERT INTO gifts (name, price, image_url) VALUES
 ('Puzzle', '40', '26'),
 ('Lego Set', '100', '27'),
 ('Action Figure', '70', '28'),
-('Drone', '300', '29'),
+('Drone', '300', '29');
 
--- הוספת תרומות
 INSERT INTO donations (user_id, gift_id, description) VALUES 
 (1, 1, 'Donation for kids'),
 (2, 2, 'Charity donation'),

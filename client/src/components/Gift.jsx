@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
+import { OrderContext } from '../pages/OrderContext'; 
 
-
-function Gift({ gift,user, searchCriteria }) {
+function Gift({ gift, user, searchCriteria }) {
+  const { addOrder } = useContext(OrderContext);
 
   const highlightSearchTerm = (title) => {
     const index = title.toLowerCase().indexOf(searchCriteria.toLowerCase());
@@ -19,6 +20,10 @@ function Gift({ gift,user, searchCriteria }) {
     return title;
   };
 
+  const handleAddGift = () => {
+    addOrder(gift);
+  };
+
   return (
     <>
       {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
@@ -27,14 +32,13 @@ function Gift({ gift,user, searchCriteria }) {
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}</h1>
           {user && user.role === 'admin' && (
-        <button className="btnDelete" /*onClick={handleDeleteGift}*/><MdDeleteForever /></button>
-      )}
-      <button className="btnAdd" /*onClick={handleAddGift}*/><IoMdAdd /></button>
+            <button className="btnDelete" /*onClick={handleDeleteGift}*/><MdDeleteForever /></button>
+          )}
+          <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
         </div>
       }
     </>
-  )
-  
+  );
 }
 
-export default Gift
+export default Gift;
