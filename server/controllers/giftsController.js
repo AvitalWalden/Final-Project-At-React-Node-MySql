@@ -15,7 +15,7 @@ async function getGifts() {
         const giftsWithImages = allGifts.map(gift => {
             return {
                 ...gift,
-                image_url: `.../server/images/${gift.image_url}`
+                image_url: `${gift.image_url}.jpg`
             };
         });
         return giftsWithImages;
@@ -32,18 +32,13 @@ async function getGift(id) {
     }
 }
 
-// async function deleteComment(id) {
-//     try {
-//         return model.deleteComment(id);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-// async function updateComment(id, name, body) {
-//     try {
-//         return model.updateComment(id, name, body);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-module.exports = { getGifts, createGift, getGift }
+
+async function deleteGift(id) {
+    try {
+        return model.deleteGift(id);
+    } catch (err) {
+        throw err;
+    }
+}
+
+module.exports = { getGifts, createGift, getGift,deleteGift }

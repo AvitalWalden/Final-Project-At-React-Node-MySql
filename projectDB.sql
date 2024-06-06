@@ -45,6 +45,7 @@ CREATE TABLE gifts (
     image_url VARCHAR(500) NOT NULL
 );
 
+
 CREATE TABLE donations (
     donation_id INT AUTO_INCREMENT PRIMARY KEY,
     donate_id INT,
@@ -53,14 +54,17 @@ CREATE TABLE donations (
     description VARCHAR(255),
     FOREIGN KEY (donate_id) REFERENCES users(user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id)
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) 
+    ON DELETE CASCADE
 );
+
 
 CREATE TABLE lotteries_tickets (
     ticket_id INT AUTO_INCREMENT PRIMARY KEY,
     donation_id INT,
     winner_id INT,
-    FOREIGN KEY (donation_id) REFERENCES donations(donation_id),
+    FOREIGN KEY (donation_id) REFERENCES donations(donation_id)    
+    ON DELETE CASCADE,
     FOREIGN KEY (winner_id) REFERENCES users(user_id)
 );
 
@@ -71,6 +75,7 @@ CREATE TABLE orders (
     order_date DATE,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (gift_id) REFERENCES gifts(gift_id)
+	ON DELETE CASCADE
 );
 
 CREATE TABLE lottery (

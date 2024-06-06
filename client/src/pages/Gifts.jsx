@@ -5,7 +5,7 @@ import { UserContext } from './UserContext';
 
 
 function Gifts() {
-  const [giftes, setGiftes] = useState([]);
+  const [giftes, setGifts] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
 
   const { user, setUser } = useContext(UserContext);
@@ -16,7 +16,7 @@ function Gifts() {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        setGiftes(data);
+        setGifts(data);
       })
   }, []);
   return (
@@ -25,7 +25,7 @@ function Gifts() {
       <div className="gift-container">
         {giftes != null &&
           giftes.map((gift, index) => (
-            <Gift key={index} gift={gift} user={user} searchCriteria={searchCriteria}/>
+            <Gift key={index} gift={gift} user={user} searchCriteria={searchCriteria} setGifts={setGifts} giftes={giftes}/>
           ))}
       </div>
     </>
