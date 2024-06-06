@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from './UserContext';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { user } = useContext(UserContext);
@@ -72,6 +73,14 @@ const Profile = () => {
 
   if (!userDetails) {
     return <div>Loading...</div>;
+  }
+  if (!user) {
+    return(<> 
+        <p>Please log in to view your profile.</p>
+        <br></br>
+        <Link to='/login'>Log here</Link>
+    </>
+    )
   }
 
   return (

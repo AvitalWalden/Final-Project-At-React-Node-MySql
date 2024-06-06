@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import { FaGift } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
-import '../css/Navigates.css'; // Import the CSS file for styling
+import '../css/Navigates.css'; 
 import { LuChevronDown } from "react-icons/lu";
 import { LuChevronUp } from "react-icons/lu";
 import { FaCartShopping } from "react-icons/fa6";
