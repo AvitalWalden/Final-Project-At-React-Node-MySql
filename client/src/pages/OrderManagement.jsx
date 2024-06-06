@@ -12,16 +12,32 @@ const OrderManagement = () => {
       {orders.length === 0 ? (
         <p>No gifts added to the order.</p>
       ) : (
-        <ul>
-          {orders.map((order, index) => (
-            <div key={index} className="gift-card">
-              <h1>{order.name}</h1>
-              <h1>{order.price}</h1>
-              <img src={order.image_url} alt={order.name} />
-            </div>
-
-          ))}
-        </ul>
+        <table className="order-table">
+          <thead>
+            <tr>
+              <th>OrderGiftId</th>
+              <th>OrderGiftDate</th>
+              <th>Image</th>
+              <th>GiftId</th>
+              <th>TicketPrice</th>
+              <th>UserId</th>
+              <th>EmailUser</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => (
+              <tr key={index}>
+                <td>{order.orderGiftId}</td>
+                <td>{order.orderGiftDate}</td>
+                <td><img src={order.image_url} alt={order.name} className="order-image" /></td>
+                <td>{order.giftId}</td>
+                <td>{order.ticketPrice}</td>
+                <td>{order.userId}</td>
+                <td>{order.emailUser}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

@@ -35,5 +35,13 @@ async function createGift(name, price, image_url) {
   }
 }
 
-
-  module.exports = {getGifts,createGift,getGift}
+async function deleteGift(id) {
+  try {
+    const sql = `DELETE FROM gifts WHERE gift_id = ?`;
+    await pool.query(sql, [id]);
+  } catch (err) {
+    console.error('Error deleting gift:', err);
+    throw err;
+  }
+}
+  module.exports = {getGifts,createGift,getGift,deleteGift}
