@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { useState, useContext } from 'react';
+import { UserContext } from './UserContext';
+import UserDetailsPayment from './UserDetailsPayment';
+import PaymentDetailsForm from './PaymentDetailsForm';
+import '../css/Payment.css'; 
 
 const Payment = () => {
+  const { user } = useContext(UserContext);
+  const [step, setStep] = useState(1);
+
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
+  const handlePrevious = () => {
+    setStep(step - 1);
+  };
+
   return (
     <div>
-      NN
-    </div>
-  )
-}
+      <div className="step-indicator">
+        <span className={`dot ${step === 1 ? 'active' : ''}`}></span>
+        <span className={`dot ${step === 2 ? 'active' : ''}`}></span>
+      </div>
 
-export default Payment
+      {step === 1 && <UserDetailsPayment user={user} onNext={handleNext} />}
+      {step === 2 && <PaymentDetailsForm onPrevious={handlePrevious} />}
+    </div>
+  );
+};
+
+export default Payment;

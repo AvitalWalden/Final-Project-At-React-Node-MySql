@@ -1,0 +1,19 @@
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .dot {
+    height: 20px;
+    width: 20px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .dot.active {
+    background-color: green;
+  }
+  

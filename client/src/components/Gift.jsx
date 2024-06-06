@@ -33,6 +33,7 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
   };
 
   const handleAddGift = () => {
+    addOrder(gift)
   };
 
   return (
