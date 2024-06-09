@@ -2,18 +2,14 @@ CREATE DATABASE IF NOT EXISTS projectDB;
 USE projectDB;
 
 -- Drop existing tables to avoid conflicts
-DROP TABLE IF EXISTS order_gifts;
-DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS lotteries_tickets;
+DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS lottery;
 DROP TABLE IF EXISTS donations;
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS passwords;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS gifts;
-
-
-
 
 -- Create tables
 CREATE TABLE addresses (
@@ -61,11 +57,10 @@ CREATE TABLE donations (
 );
 
 CREATE TABLE orders (
-    lotteries_tickets_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     gift_id INT,
     order_date DATE,
-    quantity INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
@@ -76,11 +71,12 @@ CREATE TABLE lottery (
     end_date DATE
 );
 
-CREATE TABLE order_gifts (
+CREATE TABLE lotteries_tickets (
+    lotteries_tickets_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
+    quantity INT,
     gift_id INT,
-    PRIMARY KEY (order_id, gift_id),
-    FOREIGN KEY (order_id) REFERENCES orders(lotteries_tickets_id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
 
@@ -150,17 +146,17 @@ INSERT INTO donations (donate_id, user_id, gift_id, description) VALUES
 (10, 10, 10, 'Help for disaster victims');
 
 -- Insert orders
-INSERT INTO orders (user_id, gift_id, order_date, quantity) VALUES
-(1, 1, '2024-05-23', 1),
-(2, 2, '2024-05-24', 1),
-(3, 3, '2024-05-25', 1),
-(4, 4, '2024-05-26', 1),
-(5, 5, '2024-05-27', 1),
-(6, 6, '2024-05-28', 1),
-(7, 7, '2024-05-29', 1),
-(8, 8, '2024-05-30', 1),
-(9, 9, '2024-05-31', 1),
-(10, 10, '2024-06-01', 1);
+INSERT INTO orders (user_id, gift_id, order_date) VALUES
+(1, 1, '2024-05-23'),
+(2, 2, '2024-05-24'),
+(3, 3, '2024-05-25'),
+(4, 4, '2024-05-26'),
+(5, 5, '2024-05-27'),
+(6, 6, '2024-05-28'),
+(7, 7, '2024-05-29'),
+(8, 8, '2024-05-30'),
+(9, 9, '2024-05-31'),
+(10, 10, '2024-06-01');
 
 -- Insert lotteries
 INSERT INTO lottery (start_date, end_date) VALUES
@@ -175,18 +171,19 @@ INSERT INTO lottery (start_date, end_date) VALUES
 ('2025-02-01', '2025-02-28'),
 ('2025-03-01', '2025-03-31');
 
--- Insert order_gifts
-INSERT INTO order_gifts (order_id, gift_id) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10);
+-- Insert lotteries_tickets
+INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
+(1, 10, 1),
+(2, 20, 2),
+(3, 30, 3),
+(4, 40, 4),
+(5, 50, 5),
+(6, 60, 6),
+(7, 70, 7),
+(8, 80, 8),
+(9, 90, 9),
+(10, 100, 10);
 
 -- Hash the passwords
 UPDATE passwords SET password = SHA2(password, 256) WHERE user_id > 0;
+
