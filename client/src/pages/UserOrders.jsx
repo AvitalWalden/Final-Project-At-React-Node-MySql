@@ -8,7 +8,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user && user.user_id) {
-      const url = `http://localhost:3000/orders/${user.user_id}`
+      const url = `http://localhost:3000/orders/user_id/${user.user_id}`
       fetch(url)
         .then(res => res.json())
         .then(data => {

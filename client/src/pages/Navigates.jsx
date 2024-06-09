@@ -24,7 +24,10 @@ function Navigates() {
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
                 <Link to="/orderManagement"><FaCartShopping /></Link>
-
+                <Link to="/winners">Winners</Link>
+                {user && user.role === 'admin' && <Link to="/Lo">Lottery</Link>}
+                {user && user.role === 'admin' && <Link to="/">Edit Gifts</Link>}
+                {user && user.role === 'admin' && <Link to="/">Order Management</Link>}
                 <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                     <span>
                         <FaRegUser />
@@ -37,8 +40,6 @@ function Navigates() {
                         </div>
                     )}
                 </div>
-
-                {user && user.role === 'admin' && <Link to="/">Order Management</Link>}
             </nav>
         </div>
     );

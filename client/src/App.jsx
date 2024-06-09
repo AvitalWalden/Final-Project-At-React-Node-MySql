@@ -12,6 +12,10 @@ import Payment from "./pages/Payment";
 import OrderManagement from "./pages/OrderManagement";
 import { OrderProvider } from './pages/OrderContext'; 
 import { UserProvider } from './pages/UserContext'; 
+import CheckoutForm from "./pages/CheckoutForm";
+import Checkout from "./pages/Checkout";
+import Winners from "./pages/Winners";
+import Lotteries from "./pages/Lotteries";
 
 function App() {
   return (
@@ -30,7 +34,9 @@ function App() {
               <Route path="/orders" element={<UserOrders />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/orderManagement" element={<OrderManagement />} /> 
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/payment" element={<Checkout />} />
+              <Route path="/winners" element={<Winners />} />
+              <Route path="/Lottery" element={<Lotteries />} />
 
             </Routes>
           </BrowserRouter>

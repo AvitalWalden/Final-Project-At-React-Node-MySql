@@ -16,6 +16,8 @@ const giftsRoutes=require("./routes/giftRoute")
 app.use("/gifts",giftsRoutes);
 const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
+const winnerRoutes=require("./routes/usersRoutes")
+app.use("/signup",winnerRoutes);
 
 // app.use(verifyJWT);
 const usersRoutes=require("./routes/usersRoutes")
