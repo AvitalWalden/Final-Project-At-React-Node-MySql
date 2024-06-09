@@ -25,10 +25,21 @@ const UserDetailsPayment = ({ user, onNext }) => {
         <input type="text" name="name" value={details.name} onChange={handleChange} />
       </label>
       <label>
-        Email:
-        <input type="email" name="email" value={details.email} onChange={handleChange} />
+        Phone:
+        <input type="text" name="phone" value={details.phone} onChange={handleChange} />
       </label>
-      {/* Add more fields as necessary */}
+      <label>
+        City:
+        <input type="text" name="city" value={details.city} onChange={handleChange} />
+      </label>
+      <label>
+        Street:
+        <input type="text" name="street" value={details.street} onChange={handleChange} />
+      </label>
+      <label>
+        Zip Code::
+        <input type="text" name="zipcode" value={details.zipcode} onChange={handleChange} />
+      </label>
       <button type="submit">Next</button>
     </form>
   );
