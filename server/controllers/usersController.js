@@ -71,9 +71,9 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId) {
     try {
-        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role);
+        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId);
     } catch (err) {
         throw err;
     }

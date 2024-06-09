@@ -11,11 +11,25 @@ const UserDetailsPayment = ({ user, onNext }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Save details logic here
-    onNext();
+    try {
+      const response = await fetch(`http://localhost:3000/users/${details.user_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(details),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update user details');
+      }
+      onNext();
+    } catch (error) {
+      console.error('Error updating user details:', error.message);
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

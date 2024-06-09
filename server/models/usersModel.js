@@ -54,13 +54,12 @@ async function logIn(userName) {
     }
 }
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId) {
     try {
-        const sqlAddress = "INSERT INTO addresses (`city`, `street`, `zipcode`) VALUES(?, ?, ?)";
-        const resultAddress = await pool.query(sqlAddress, [city, street, zipcode]);
-        const address_id = resultAddress[0].insertId;
+        const sqlAddress = `UPDATE addresses SET city = ?, street = ?, zipcode = ?  WHERE address_id = ?`;
+        const resultAddress = await pool.query(sqlAddress, [city, street, zipcode,addressId]);
         const sql = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ?, role = ? WHERE user_id = ?`;
-        const result = await pool.query(sql, [name, username, email, address_id, phone, Bonus, role, id]);
+        const result = await pool.query(sql, [name, username, email, addressId, phone, Bonus, role, id]);
         return result;
     } catch (err) {
         console.error('Error updating branch:', err);

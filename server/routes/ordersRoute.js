@@ -4,7 +4,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const { getOrder, getOrderByGiftID } = require('../controllers/orderController');
+const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId } = require('../controllers/orderController');
 
 
 router.get("/user_id/:user_id", async (req, res) => {
@@ -31,6 +31,20 @@ router.get("/gift_id/:gift_id", async (req, res) => {
         console.log(gift_id);
         order = await getOrderByGiftID(gift_id);
         res.send(order);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+});
+router.post("/", async (req, res) => {
+    try {
+        const response = await createOrder(req.body.user_id, req.body.order_date,req.body.order);
+        console.log(response)
+
+        const newOrder = await getOrderByOrderId(response.orderId);
+        res.send(newOrder);
     } catch (err) {
         const error = {
             message: err.message
