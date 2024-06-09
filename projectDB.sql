@@ -1,18 +1,21 @@
-
 CREATE DATABASE IF NOT EXISTS projectDB;
 USE projectDB;
 
-
 -- Drop existing tables to avoid conflicts
-DROP TABLE IF EXISTS lotteries_tickets;
+DROP TABLE IF EXISTS order_gifts;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS lotteries_tickets;
+DROP TABLE IF EXISTS lottery;
 DROP TABLE IF EXISTS donations;
-DROP TABLE IF EXISTS passwords;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS passwords;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS gifts;
-DROP TABLE IF EXISTS lottery;
 
+
+
+
+-- Create tables
 CREATE TABLE addresses (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     city VARCHAR(255),
@@ -40,11 +43,11 @@ CREATE TABLE passwords (
 
 CREATE TABLE gifts (
     gift_id INT AUTO_INCREMENT PRIMARY KEY,
+    winner_id INT,
     name VARCHAR(255) NOT NULL,
     price VARCHAR(255) NOT NULL,
     image_url VARCHAR(500) NOT NULL
 );
-
 
 CREATE TABLE donations (
     donation_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -54,28 +57,17 @@ CREATE TABLE donations (
     description VARCHAR(255),
     FOREIGN KEY (donate_id) REFERENCES users(user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) 
-    ON DELETE CASCADE
-);
-
-
-CREATE TABLE lotteries_tickets (
-    ticket_id INT AUTO_INCREMENT PRIMARY KEY,
-    donation_id INT,
-    winner_id INT,
-    FOREIGN KEY (donation_id) REFERENCES donations(donation_id)    
-    ON DELETE CASCADE,
-    FOREIGN KEY (winner_id) REFERENCES users(user_id)
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    lotteries_tickets_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     gift_id INT,
     order_date DATE,
+    quantity INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id)
-	ON DELETE CASCADE
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
 
 CREATE TABLE lottery (
@@ -84,9 +76,16 @@ CREATE TABLE lottery (
     end_date DATE
 );
 
+CREATE TABLE order_gifts (
+    order_id INT,
+    gift_id INT,
+    PRIMARY KEY (order_id, gift_id),
+    FOREIGN KEY (order_id) REFERENCES orders(lotteries_tickets_id) ON DELETE CASCADE,
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+);
 
--- הוספת כתובות
-INSERT INTO addresses (city, street, zipcode) VALUES 
+-- Insert addresses
+INSERT INTO addresses (city, street, zipcode) VALUES
 ('Tel Aviv', 'Rothschild', '12345'),
 ('Jerusalem', 'Jaffa', '54321'),
 ('Haifa', 'Ben Gurion', '67890'),
@@ -98,21 +97,21 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 ('Bnei Brak', 'Rabbi Akiva', '11111'),
 ('Ramat Gan', 'Ayalon', '22222');
 
--- הוספת משתמשים
-INSERT INTO users (name, username, email, address_id, phone,Bonus, role) VALUES 
-('John Doe', 'johndoe', 'john@example.com', 1, '050-1234567',0, 'user'),
-('Jane Smith', 'janesmith', 'jane@example.com', 2, '050-2345678',0, 'admin'),
-('David Cohen', 'davidcohen', 'david@example.com', 3, '050-3456789',0, 'user'),
-('Rachel Levi', 'rachellevi', 'rachel@example.com', 4, '050-4567890',0, 'user'),
-('Michael Rosen', 'michaelrosen', 'michael@example.com', 5, '050-5678901',0, 'user'),
-('Sarah Gold', 'sarahgold', 'sarah@example.com', 6, '050-6789012',0,'admin'),
-('Daniel Katz', 'danielkatz', 'daniel@example.com', 7, '050-7890123',0, 'user'),
-('Esther Green', 'esthergreen', 'esther@example.com', 8, '050-8901234',0, 'user'),
-('Yossi Azulay', 'yossiazulay', 'yossi@example.com', 9, '050-9012345',0, 'user'),
-('Leah Bar', 'leahbar', 'leah@example.com', 10, '050-0123456',0, 'admin');
+-- Insert users
+INSERT INTO users (name, username, email, address_id, phone, Bonus, role) VALUES
+('John Doe', 'johndoe', 'john@example.com', 1, '050-1234567', 0, 'user'),
+('Jane Smith', 'janesmith', 'jane@example.com', 2, '050-2345678', 0, 'admin'),
+('David Cohen', 'davidcohen', 'david@example.com', 3, '050-3456789', 0, 'user'),
+('Rachel Levi', 'rachellevi', 'rachel@example.com', 4, '050-4567890', 0, 'user'),
+('Michael Rosen', 'michaelrosen', 'michael@example.com', 5, '050-5678901', 0, 'user'),
+('Sarah Gold', 'sarahgold', 'sarah@example.com', 6, '050-6789012', 0, 'admin'),
+('Daniel Katz', 'danielkatz', 'daniel@example.com', 7, '050-7890123', 0, 'user'),
+('Esther Green', 'esthergreen', 'esther@example.com', 8, '050-8901234', 0, 'user'),
+('Yossi Azulay', 'yossiazulay', 'yossi@example.com', 9, '050-9012345', 0, 'user'),
+('Leah Bar', 'leahbar', 'leah@example.com', 10, '050-0123456', 0, 'admin');
 
--- הוספת סיסמאות
-INSERT INTO passwords (user_id, password) VALUES 
+-- Insert passwords
+INSERT INTO passwords (user_id, password) VALUES
 (1, 'hashed_password1'),
 (2, 'hashed_password2'),
 (3, 'hashed_password3'),
@@ -124,78 +123,47 @@ INSERT INTO passwords (user_id, password) VALUES
 (9, 'hashed_password9'),
 (10, 'hashed_password10');
 
--- הוספת מתנות
-INSERT INTO gifts (name, price, image_url) VALUES 
-('Toy Car', '50', '1'),
-('Doll', '60', '2'),
-('Board Game', '80', '3'),
-('Bicycle', '200', '4'),
-('Book', '30', '5'),
-('Puzzle', '40', '6'),
-('Lego Set', '100', '7'),
-('Action Figure', '70', '8'),
-('Drone', '300', '9'),
-('Tablet', '500', '10'),
-('Toy Car', '50', '11'),
-('Doll', '60', '12'),
-('Board Game', '80', '13'),
-('Bicycle', '200', '14'),
-('Book', '30', '15'),
-('Puzzle', '40', '16'),
-('Lego Set', '100', '17'),
-('Action Figure', '70', '18'),
-('Drone', '300', '19'),
-('Tablet', '500', '20'),
-('Toy Car', '50', '21'),
-('Doll', '60', '22'),
-('Board Game', '80', '23'),
-('Bicycle', '200', '24'),
-('Book', '30', '25'),
-('Puzzle', '40', '26'),
-('Lego Set', '100', '27'),
-('Action Figure', '70', '28'),
-('Drone', '300', '29');
+-- Insert gifts
+INSERT INTO gifts (winner_id, name, price, image_url) VALUES
+(NULL, 'Toy Car', '50', '1'),
+(NULL, 'Doll', '60', '2'),
+(NULL, 'Board Game', '80', '3'),
+(NULL, 'Bicycle', '200', '4'),
+(NULL, 'Book', '30', '5'),
+(NULL, 'Puzzle', '40', '6'),
+(NULL, 'Lego Set', '100', '7'),
+(NULL, 'Action Figure', '70', '8'),
+(NULL, 'Drone', '300', '9'),
+(NULL, 'Tablet', '500', '10');
 
-INSERT INTO donations (user_id, gift_id, description) VALUES 
-(1, 1, 'Donation for kids'),
-(2, 2, 'Charity donation'),
-(3, 3, 'Gift for orphanage'),
-(4, 4, 'Support for local school'),
-(5, 5, 'Community donation'),
-(6, 6, 'Help for underprivileged children'),
-(7, 7, 'Support for hospital'),
-(8, 8, 'Charity for needy families'),
-(9, 9, 'Assistance for elderly'),
-(10, 10, 'Help for disaster victims');
+-- Insert donations
+INSERT INTO donations (donate_id, user_id, gift_id, description) VALUES
+(1, 1, 1, 'Donation for kids'),
+(2, 2, 2, 'Charity donation'),
+(3, 3, 3, 'Gift for orphanage'),
+(4, 4, 4, 'Support for local school'),
+(5, 5, 5, 'Community donation'),
+(6, 6, 6, 'Help for underprivileged children'),
+(7, 7, 7, 'Support for hospital'),
+(8, 8, 8, 'Charity for needy families'),
+(9, 9, 9, 'Assistance for elderly'),
+(10, 10, 10, 'Help for disaster victims');
 
--- הוספת כרטיסי הגרלה
-INSERT INTO lotteries_tickets (donation_id, winner_id) VALUES 
-(1, NULL),
-(2, NULL),
-(3, NULL),
-(4, NULL),
-(5, NULL),
-(6, NULL),
-(7, NULL),
-(8, NULL),
-(9, NULL),
-(10, NULL);
+-- Insert orders
+INSERT INTO orders (user_id, gift_id, order_date, quantity) VALUES
+(1, 1, '2024-05-23', 1),
+(2, 2, '2024-05-24', 1),
+(3, 3, '2024-05-25', 1),
+(4, 4, '2024-05-26', 1),
+(5, 5, '2024-05-27', 1),
+(6, 6, '2024-05-28', 1),
+(7, 7, '2024-05-29', 1),
+(8, 8, '2024-05-30', 1),
+(9, 9, '2024-05-31', 1),
+(10, 10, '2024-06-01', 1);
 
--- הוספת הזמנות
-INSERT INTO orders (user_id, gift_id, order_date) VALUES 
-(1, 1, '2024-05-23'),
-(2, 2, '2024-05-24'),
-(3, 3, '2024-05-25'),
-(4, 4, '2024-05-26'),
-(5, 5, '2024-05-27'),
-(6, 6, '2024-05-28'),
-(7, 7, '2024-05-29'),
-(8, 8, '2024-05-30'),
-(9, 9, '2024-05-31'),
-(10, 10, '2024-06-01');
-
--- הוספת הגרלות
-INSERT INTO lottery (start_date, end_date) VALUES 
+-- Insert lotteries
+INSERT INTO lottery (start_date, end_date) VALUES
 ('2024-06-01', '2024-06-30'),
 ('2024-07-01', '2024-07-31'),
 ('2024-08-01', '2024-08-31'),
@@ -207,4 +175,18 @@ INSERT INTO lottery (start_date, end_date) VALUES
 ('2025-02-01', '2025-02-28'),
 ('2025-03-01', '2025-03-31');
 
+-- Insert order_gifts
+INSERT INTO order_gifts (order_id, gift_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- Hash the passwords
 UPDATE passwords SET password = SHA2(password, 256) WHERE user_id > 0;
