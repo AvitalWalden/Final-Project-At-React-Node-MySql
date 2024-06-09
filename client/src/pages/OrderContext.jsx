@@ -7,11 +7,19 @@ export const OrderProvider = ({ children }) => {
   const [message, setMessage] = useState('');
 
   const addOrder = (gift) => {
-    setOrder([...order, gift]);
+    const existingGiftIndex = order.findIndex((item) => item.gift_id === gift.gift_id);
+    if (existingGiftIndex !== -1) {
+      const updatedOrder = [...order];
+      updatedOrder[existingGiftIndex].quantity += 1;
+      setOrder(updatedOrder);
+    } else {
+      setOrder([...order, { ...gift, quantity: 1 }]);
+    }
+
     setMessage(`Gift "${gift.name}" added to the order!`);
     setTimeout(() => {
       setMessage('');
-    }, 3000); 
+    }, 3000);
   };
 
   return (

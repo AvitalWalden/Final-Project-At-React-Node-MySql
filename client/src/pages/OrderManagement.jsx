@@ -20,22 +20,24 @@ const OrderManagement = () => {
         setIsLoading(true);
         const orderPost = await createOrder(user.user_id, order);
         setIsLoading(false);
-        navigate('/payment', { state: { orderPost } });
+        if (orderPost.order_id) {
+          navigate('/payment', { state: { orderPost } });
+        } else {
+          console.error('Failed to create order:', orderPost);
+        }
       } catch (err) {
         console.error('Error creating order:', err);
         setIsLoading(false);
       }
     }
   };
+  
 
   const createOrder = async (userId, order) => {
     const formattedOrder = order.map(item => ({
-      gift_id: item.id,
-      name: item.name,
-      price: item.price,
-      image_url: item.image_url
+      gift_id: item.gift_id,
+      quantity: item.quantity,
     }));
-
     const response = await fetch('http://localhost:3000/orders', {
       method: 'POST',
       headers: {

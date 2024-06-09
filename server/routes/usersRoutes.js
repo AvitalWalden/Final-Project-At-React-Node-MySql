@@ -22,9 +22,10 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        await getUser(id);
+        const resultUser=await getUser(id);
+        const adrressId=resultUser.address_id;
         console.log(req.body)
-        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, req.body.role);
+        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, req.body.role,adrressId);
         const userAfterChange = await getUser(id);
         delete userAfterChange.address_id;
         res.send(userAfterChange);
