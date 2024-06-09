@@ -5,9 +5,10 @@ import CheckoutForm from './CheckoutForm';
 
 const stripePromise = loadStripe('your-publishable-key-here');
 
-const Checkout = () => (
+const Checkout = ({ onPrevious }) => (
   <Elements stripe={stripePromise}>
     <CheckoutForm />
+    <button type="button" onClick={onPrevious}>Previous</button>
   </Elements>
 );
 

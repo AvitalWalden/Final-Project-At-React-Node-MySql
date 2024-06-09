@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import UserDetailsPayment from './UserDetailsPayment';
 import PaymentDetailsForm from './PaymentDetailsForm';
+import Checkout from "./Checkout";
 import '../css/Payment.css'; 
 
 const Payment = () => {
@@ -24,7 +25,7 @@ const Payment = () => {
       </div>
 
       {step === 1 && <UserDetailsPayment user={user} onNext={handleNext} />}
-      {step === 2 && <PaymentDetailsForm onPrevious={handlePrevious} />}
+      {step === 2 && <Checkout onPrevious={handlePrevious} />}
     </div>
   );
 };

@@ -3,11 +3,11 @@ import React, { createContext, useState } from 'react';
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
-  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
 
   const addOrder = (gift) => {
-    setOrders([...orders, gift]);
+    setOrder([...order, gift]);
     setMessage(`Gift "${gift.name}" added to the order!`);
     setTimeout(() => {
       setMessage('');
@@ -15,7 +15,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder, message }}>
+    <OrderContext.Provider value={{ order, addOrder, message }}>
       {children}
     </OrderContext.Provider>
   );
