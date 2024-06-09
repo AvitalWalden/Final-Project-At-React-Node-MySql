@@ -59,10 +59,8 @@ CREATE TABLE donations (
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    gift_id INT,
     order_date DATE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE lottery (
@@ -146,17 +144,17 @@ INSERT INTO donations (donate_id, user_id, gift_id, description) VALUES
 (10, 10, 10, 'Help for disaster victims');
 
 -- Insert orders
-INSERT INTO orders (user_id, gift_id, order_date) VALUES
-(1, 1, '2024-05-23'),
-(2, 2, '2024-05-24'),
-(3, 3, '2024-05-25'),
-(4, 4, '2024-05-26'),
-(5, 5, '2024-05-27'),
-(6, 6, '2024-05-28'),
-(7, 7, '2024-05-29'),
-(8, 8, '2024-05-30'),
-(9, 9, '2024-05-31'),
-(10, 10, '2024-06-01');
+INSERT INTO orders (user_id, order_date) VALUES
+(1, '2024-05-23'),
+(2, '2024-05-24'),
+(3, '2024-05-25'),
+(4, '2024-05-26'),
+(5, '2024-05-27'),
+(6, '2024-05-28'),
+(7, '2024-05-29'),
+(8, '2024-05-30'),
+(9, '2024-05-31'),
+(10,'2024-06-01');
 
 -- Insert lotteries
 INSERT INTO lottery (start_date, end_date) VALUES
