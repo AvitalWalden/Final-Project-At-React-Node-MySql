@@ -8,4 +8,12 @@ async function getOrder(id) {
     }
 }
 
-module.exports = {getOrder}
+async function getOrderByGiftID(gift_id) {
+    try {
+        return model.getOrderByGiftID(gift_id);
+    } catch (err) {
+        throw err;
+    }
+}
+
+module.exports = {getOrder,getOrderByGiftID}
