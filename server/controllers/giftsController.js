@@ -32,6 +32,13 @@ async function getGift(id) {
     }
 }
 
+async function getGiftsWithUserDetails() {
+    try {
+        return model.getGiftsWithUserDetails();
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function deleteGift(id) {
     try {
@@ -41,4 +48,11 @@ async function deleteGift(id) {
     }
 }
 
-module.exports = { getGifts, createGift, getGift,deleteGift }
+async function updateWinnerOfGift(id,winner_id) {
+    try {
+        return model.updateWinnerOfGift(id,winner_id);
+    } catch (err) {
+        throw err;
+    }
+}
+module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails,updateWinnerOfGift }

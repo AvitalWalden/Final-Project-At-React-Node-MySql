@@ -45,7 +45,8 @@ async function getOrderByGiftID(gift_id) {
 
         const sql = 'SELECT * FROM orders NATURAL JOIN  lotteries_tickets where lotteries_tickets.gift_id=?';
         const result = await pool.query(sql, [gift_id]);
-        return result[0][0];
+        console.log(result);
+        return result[0];
     } catch (err) {
         console.log(err);
         throw err;

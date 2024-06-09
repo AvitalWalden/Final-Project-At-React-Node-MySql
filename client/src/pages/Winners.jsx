@@ -4,7 +4,7 @@ const Winners = () => {
   const [winners, setWinners] = useState([]);
 
   useEffect(() => {
-    const url = `http://localhost:3000/winners`;
+    const url = `http://localhost:3000/gifts/winners`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -17,7 +17,7 @@ const Winners = () => {
       <h1>Winners List</h1>
       <div className="winners-container">
         {winners.map((winner) => (
-          <div key={winner.ticket_id} className="winner-card">
+          <div key={winner.gift} className="winner-card">
             <img src={winner.image_url} alt={winner.name} />
             <div>
               <h2>{winner.name}</h2>

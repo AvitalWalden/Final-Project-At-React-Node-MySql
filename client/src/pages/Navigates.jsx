@@ -25,7 +25,7 @@ function Navigates() {
                 <Link to="/gifts">Gifts <FaGift /></Link>
                 <Link to="/orderManagement"><FaCartShopping /></Link>
                 <Link to="/winners">Winners</Link>
-                {user && user.role === 'admin' && <Link to="/Lo">Lottery</Link>}
+                {user && user.role === 'admin' && <Link to="/Lottery">Lottery</Link>}
                 {user && user.role === 'admin' && <Link to="/">Edit Gifts</Link>}
                 {user && user.role === 'admin' && <Link to="/">Order Management</Link>}
                 <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>

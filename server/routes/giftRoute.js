@@ -4,7 +4,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const { getGifts ,getGift ,createGift,deleteGift} = require('../controllers/giftsController');
+const { getGifts ,getGift ,createGift,deleteGift,getGiftsWithUserDetails,updateWinnerOfGift} = require('../controllers/giftsController');
 
 
 router.get("/", async (req, res) => {
@@ -17,6 +17,18 @@ router.get("/", async (req, res) => {
         res.status(500).send(error);
     }
 })
+
+router.get("/winners", async (req, res) => {
+    try {
+        res.send(await getGiftsWithUserDetails());
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+})
+
 
 router.get("/:id", async (req, res) => {
     try {
@@ -56,5 +68,20 @@ router.delete("/:gift_id", async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+router.put("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const giftAfterUpdate = await updateWinnerOfGift(id, req.body.winner_id);
+        res.send(giftAfterUpdate);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+
+});
+
 
 module.exports = router

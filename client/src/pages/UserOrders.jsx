@@ -23,10 +23,10 @@ const Profile = () => {
   }, [user]);
 
   if (!user) {
-    return(<> 
-        <p>Please log in to view your orders.</p>
-        <br></br>
-        <Link to='/login'>Log here</Link>
+    return (<>
+      <p>Please log in to view your orders.</p>
+      <br></br>
+      <Link to='/login'>Log here</Link>
     </>
     )
   }

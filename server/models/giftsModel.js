@@ -1,18 +1,31 @@
 const pool = require('../DB.js');
 
 async function getGifts() {
-    try {
-      const sql = 'SELECT * FROM gifts';
-      const result = await pool.query(sql);
-      return result[0];
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  
+  try {
+    const sql = 'SELECT * FROM gifts';
+    const result = await pool.query(sql);
+    return result[0];
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 
-  
+}
+
+async function getGiftsWithUserDetails() {
+  try {
+    const sql = 'SELECT * FROM gifts NATURAL JOIN users';
+    const result = await pool.query(sql);
+    return result[0][0];
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+
+}
+
+
+
 async function getGift(id) {
   try {
     const sql = 'SELECT * FROM gifts where id=?';
@@ -44,4 +57,15 @@ async function deleteGift(id) {
     throw err;
   }
 }
-  module.exports = {getGifts,createGift,getGift,deleteGift}
+
+async function updateWinnerOfGift(id, winner_id) {
+  try {
+    const sql = `UPDATE gifts SET winner_id = ? WHERE gift_id = ?`;
+    const result = await pool.query(sql, [winner_id, id]);
+    return result;
+  } catch (err) {
+    console.error('Error deleting gift:', err);
+    throw err;
+  }
+}
+module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails ,updateWinnerOfGift}

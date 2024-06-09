@@ -172,10 +172,10 @@ INSERT INTO lottery (start_date, end_date) VALUES
 -- Insert lotteries_tickets
 INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
 (1, 10, 1),
-(2, 20, 2),
+(2, 20, 1),
 (3, 30, 3),
 (4, 40, 4),
-(5, 50, 5),
+(5, 50, 1),
 (6, 60, 6),
 (7, 70, 7),
 (8, 80, 8),
