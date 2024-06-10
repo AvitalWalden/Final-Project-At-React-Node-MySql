@@ -19,6 +19,9 @@ function Lottery({ gift }) {
             },
             body: JSON.stringify({
                 gift_id: gift_id,
+                name:gift.name,
+                price:gift.price,
+                image_url: gift.image_url,
                 winner_id: id
             })
         };

@@ -50,9 +50,9 @@ async function deleteGift(id) {
     }
 }
 
-async function updateWinnerOfGift(id,winner_id) {
+async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
     try {
-        return model.updateWinnerOfGift(id,winner_id);
+        return model.updateWinnerOfGift(id,winner_id,name,price, image_url);
     } catch (err) {
         throw err;
     }
