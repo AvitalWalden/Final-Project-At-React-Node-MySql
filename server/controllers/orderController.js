@@ -7,7 +7,13 @@ async function getOrder(id) {
         throw err;
     }
 }
-
+async function getOrders() {
+    try {
+        return model.getOrders();
+    } catch (err) {
+        throw err;
+    }
+}
 async function getOrderByGiftID(gift_id) {
     try {
         return model.getOrderByGiftID(gift_id);
@@ -31,4 +37,4 @@ async function createOrder(user_id, order_date,order) {
             throw err;
     }
 }
-module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId}
+module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders}
