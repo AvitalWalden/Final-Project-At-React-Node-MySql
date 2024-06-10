@@ -28,20 +28,21 @@ body {
 .gift-container>div {
   display: flex;
   align-items: end;
+  border:solid black;
   font-size: 2em;
   color: #ffffff;
   flex-direction: column;
   width: 100%;
   justify-content: space-between;
   border-radius: 2%;
-  box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
+  /* box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px; */
 }
 
 .gift-card img ,
 .gift-container>div>img {
   width: 100%;
   border-radius: 2%;
-  height: 60%;
+  height: 50%;
   object-fit: cover;
   align-items: flex-end;
   transition: all 0.5s linear;
@@ -66,9 +67,9 @@ img:active {
 .gift-card >h1,
 .grid-container>div>h1 {
   font-size: 65%;
-  margin: 3%;
+  /* margin: 3% */
   color: black;
-  width: 90%;
+  width: 100%;
 
 }
 
@@ -82,27 +83,20 @@ img:active {
   }
 }
 
-.btnDelete,
-.btnAdd {
-  /* background-color: #99D9EA;
-  font-weight: bold;
-  border-style: groove;
-  border-color: #374042;
-  margin-bottom: 4px;
-  margin-left: 46%; */
-  background-color: #000000;
+/* .btnDelete,
+.btnAdd { */
 
-  color: #ffffff;
-  border-color: #ffffff;
-  font-size: 65%;
-  margin: 3%;
-  width: 90%;
-}
-
+  /* border-color: #ffffff; */
+  /* font-size: 50%; */
+  /* margin: 3%; */
+  /* width: 100%; */
+  /* padding: 0%; */
+/* } */
+/* 
 .btnAdd:hover {
   font-weight: bold;
   border-radius: 9px;
   color: #ffffff;
   border-color: #000000;
   text-shadow: 0 2px 15px rgba(50, 65, 68, 0.7);
-}
+} */

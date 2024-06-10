@@ -16,7 +16,7 @@ async function getGiftsWithUserDetails() {
   try {
     const sql = 'SELECT  gifts.name AS gift_name, gifts.*, users.* FROM gifts JOIN users ON gifts.winner_id = users.user_id';
     const result = await pool.query(sql);
-    return result[0];
+    return result;
   } catch (err) {
     console.log(err);
     throw err;
@@ -28,8 +28,13 @@ async function getGiftsWithUserDetails() {
 
 async function getGift(id) {
   try {
+    console.log("fffffff");
+    console.log(id);
+
     const sql = 'SELECT * FROM gifts where gift_id=?';
     const result = await pool.query(sql, [id]);
+    console.log(result);
+
     return result[0][0];
   } catch (err) {
     console.log(err);
@@ -61,15 +66,9 @@ async function deleteGift(id) {
 async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
   try {
     const sql = `UPDATE gifts SET winner_id = ? ,name = ?,price = ? ,image_url = ? WHERE gift_id = ?`;
-    console.log(winner_id);
-    console.log(name);
-
-    console.log(price);
-
-    console.log(image_url);
-
     const result = await pool.query(sql, [winner_id,name,price, image_url, id]);
     console.log(result);
+
     return result;
   } catch (err) {
     console.error('Error deleting gift:', err);

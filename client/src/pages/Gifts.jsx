@@ -4,11 +4,11 @@ import '../css/Gift.css';
 import { UserContext } from './UserContext';
 
 function Gifts() {
-  const [giftes, setGifts] = useState([]);
+  const [gifts, setGifts] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
   const [isAddGiftModalOpen, setIsAddGiftModalOpen] = useState(false);
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
-
+  const [file, setFile] = useState(null);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -18,11 +18,39 @@ function Gifts() {
       .then(data => {
         const filteredGifts = data.filter(gift => !gift.winner_id);
         setGifts(filteredGifts);
-      })
+      });
   }, []);
 
   const handleAddGift = () => {
     setIsAddGiftModalOpen(true);
+  };
+
+  const handleUpload = (gift_id) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch(`http://localhost:3000/gifts/upload/${gift_id}`, {
+      method: 'PUT',
+      body: formData,
+      headers: {
+        'Accept': 'multipart/form-data',
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("newGift" +data)
+
+        console.log('File uploaded successfully', data);
+        setNewGift({ ...newGift, image_url: data.filename }); // Assuming your API returns the filename
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+      });
   };
 
   const saveGift = () => {
@@ -37,7 +65,9 @@ function Gifts() {
     })
       .then(res => res.json())
       .then(data => {
-        setGifts([...giftes, data]);
+        handleUpload(data.gift_id);
+        console.log(newGift)
+        setGifts([...gifts, newGift]);
         setIsAddGiftModalOpen(false);
         setNewGift({ name: '', price: '', image_url: '' });
       });
@@ -47,9 +77,9 @@ function Gifts() {
     <>
       <input className='inputItem' type="text" value={searchCriteria} placeholder="Search gift" onChange={(event) => setSearchCriteria(event.target.value)} />
       <div className="gift-container">
-        {giftes != null &&
-          giftes.map((gift, index) => (
-            <Gift key={index} gift={gift} user={user} searchCriteria={searchCriteria} setGifts={setGifts} giftes={giftes} />
+        {gifts != null &&
+          gifts.map((gift, index) => (
+            <Gift key={index} gift={gift} user={user} searchCriteria={searchCriteria} setGifts={setGifts} gifts={gifts} file={file} setFile={setFile}/>
           ))}
       </div>
 
@@ -66,6 +96,8 @@ function Gifts() {
           <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
           <label>Price:</label>
           <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+          {/* <button onClick={handleUpload}>Upload</button> */}
           <label>Image URL:</label>
           <input type="text" value={newGift.image_url} onChange={(e) => setNewGift({ ...newGift, image_url: e.target.value })} />
           <button onClick={saveGift}>Save</button>

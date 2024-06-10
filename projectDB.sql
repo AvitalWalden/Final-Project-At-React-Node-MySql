@@ -119,19 +119,38 @@ INSERT INTO passwords (user_id, password) VALUES
 (9, 'hashed_password9'),
 (10, 'hashed_password10');
 
+
 -- Insert gifts
 INSERT INTO gifts (winner_id, name, price, image_url) VALUES
-(NULL, 'Toy Car', '50', '1'),
-(NULL, 'Doll', '60', '2'),
-(NULL, 'Board Game', '80', '3'),
-(NULL, 'Bicycle', '200', '4'),
-(NULL, 'Book', '30', '5'),
-(NULL, 'Puzzle', '40', '6'),
-(NULL, 'Lego Set', '100', '7'),
-(NULL, 'Action Figure', '70', '8'),
-(NULL, 'Drone', '300', '9'),
-(NULL, 'Tablet', '500', '10');
-
+(NULL, 'Toy Car', '50', '1.jpg'),
+(NULL, 'Doll', '60', '2.jpg'),
+(NULL, 'Board Game', '80', '3.jpg'),
+(NULL, 'Bicycle', '200', '4.jpg'),
+(NULL, 'Book', '30', '5.jpg'),
+(NULL, 'Puzzle', '40', '6.jpg'),
+(NULL, 'Lego Set', '100', '7.jpg'),
+(NULL, 'Action Figure', '70', '8.jpg'),
+(NULL, 'Drone', '300', '9.jpg'),
+(NULL, 'Tablet', '500', '10.jpg'),
+(NULL, 'Toy Car', '50', '11.jpg'),
+(NULL, 'Doll', '60', '12.jpg'),
+(NULL, 'Board Game', '80', '13.jpg'),
+(NULL, 'Bicycle', '200', '14.jpg'),
+(NULL, 'Book', '30', '15.jpg'),
+(NULL, 'Puzzle', '40', '16.jpg'),
+(NULL, 'Lego Set', '100', '17.jpg'),
+(NULL, 'Action Figure', '70', '18.jpg'),
+(NULL, 'Drone', '300', '19.jpg'),
+(NULL, 'Tablet', '500', '20.jpg'),
+(NULL, 'Toy Car', '50', '21.jpg'),
+(NULL, 'Doll', '60', '22.jpg'),
+(NULL, 'Board Game', '80', '23.jpg'),
+(NULL, 'Bicycle', '200', '24.jpg'),
+(NULL, 'Book', '30', '25.jpg'),
+(NULL, 'Puzzle', '40', '26.jpg'),
+(NULL, 'Lego Set', '100', '27.jpg'),
+(NULL, 'Action Figure', '70', '28.jpg'),
+(NULL, 'Drone', '300', '29.jpg');
 -- Insert donations
 INSERT INTO donations (donate_id, user_id, gift_id, description) VALUES
 (1, 1, 1, 'Donation for kids'),
