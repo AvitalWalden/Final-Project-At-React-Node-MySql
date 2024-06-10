@@ -6,7 +6,7 @@ export const OrderProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
 
-  const addOrder = (gift) => {
+  const addToOrder = (gift) => {
     const existingGiftIndex = order.findIndex((item) => item.gift_id === gift.gift_id);
     if (existingGiftIndex !== -1) {
       const updatedOrder = [...order];
@@ -22,8 +22,18 @@ export const OrderProvider = ({ children }) => {
     }, 3000);
   };
 
+  const removeFromOrder = (giftId) => {
+    const updatedOrder = order.filter((item) => item.gift_id !== giftId);
+    setOrder(updatedOrder);
+
+    setMessage('Gift removed from the order!');
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
+  };
+
   return (
-    <OrderContext.Provider value={{ order, addOrder, message }}>
+    <OrderContext.Provider value={{ order, addToOrder, removeFromOrder, message }}>
       {children}
     </OrderContext.Provider>
   );

@@ -5,7 +5,7 @@ import { OrderContext } from '../pages/OrderContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
 
 function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
-  const { addOrder } = useContext(OrderContext);
+  const { addToOrder } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
 
@@ -34,7 +34,7 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
   };
 
   const handleAddGift = () => {
-    addOrder(gift)
+    addToOrder(gift)
   };
 
   const handleEditGift = () => {
@@ -56,40 +56,40 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
         setGifts(giftes.map(g => g.gift_id === giftData.gift_id ? giftData : g));
         setIsEditGiftModalOpen(false);
       });
-  };
 
-  return (
-    <>
-      {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
-        <div className="gift-card">
-          <img src={`/images/${gift.image_url}`} alt={gift.name} />
-          <h1>{highlightSearchTerm(gift.name)}</h1>
-          <h1>{highlightSearchTerm(gift.price)}</h1>
-          {user && user.role === 'admin' && (
-            <>
-              <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
-              <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
-            </>
-          )}
-          <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
-        </div>
-      }
 
-      {isEditGiftModalOpen && (
-        <div className="modal">
-          <h2>Edit Gift</h2>
-          <label>Name:</label>
-          <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
-          <label>Price:</label>
-          <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
-          <label>Image URL:</label>
-          <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
-          <button onClick={saveGift}>Save</button>
-          <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
-        </div>
-      )}
-    </>
-  );
+    return (
+      <>
+        {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
+          <div className="gift-card">
+            <img src={`/images/${gift.image_url}`} alt={gift.name} />
+            <h1>{highlightSearchTerm(gift.name)}</h1>
+            <h1>{highlightSearchTerm(gift.price)}</h1>
+            {user && user.role === 'admin' && (
+              <>
+                <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
+                <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
+              </>
+            )}
+            <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
+          </div>
+        }
+
+        {isEditGiftModalOpen && (
+          <div className="modal">
+            <h2>Edit Gift</h2>
+            <label>Name:</label>
+            <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
+            <label>Price:</label>
+            <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
+            <label>Image URL:</label>
+            <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
+            <button onClick={saveGift}>Save</button>
+            <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
+          </div>
+        )}
+      </>
+    );
+  }
 }
-
 export default Gift;
