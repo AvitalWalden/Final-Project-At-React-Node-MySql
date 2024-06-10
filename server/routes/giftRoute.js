@@ -73,7 +73,7 @@ router.delete("/:gift_id", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const giftAfterUpdate = await updateWinnerOfGift(id, req.body.winner_id);
+        const giftAfterUpdate = await updateWinnerOfGift(id,req.body.winner_id,req.body.name,req.body.price, req.body.image_url);
         res.send(giftAfterUpdate);
     } catch (err) {
         const error = {
