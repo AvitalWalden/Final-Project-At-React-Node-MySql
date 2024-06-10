@@ -6,10 +6,11 @@ const cookieParser = require('cookie-parser')
 app.use(express.json( ));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static('images'));
+app.use(express.static('public'));
 
 const port = 3000;
-
+// const imageRoutes = require("./routes/imagesRouts")
+// app.use("/upload",imageRoutes)
 const loginRoutes=require("./routes/loginRoutes")
 app.use("/logIn",loginRoutes);
 const giftsRoutes=require("./routes/giftRoute")
@@ -18,7 +19,7 @@ const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
 const winnerRoutes=require("./routes/usersRoutes")
 app.use("/signup",winnerRoutes);
-
+;
 // app.use(verifyJWT);
 const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
