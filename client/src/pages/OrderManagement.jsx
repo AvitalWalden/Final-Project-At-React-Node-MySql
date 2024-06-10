@@ -3,6 +3,7 @@ import { OrderContext } from './OrderContext';
 import { UserContext } from './UserContext';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
+import { FaTrashCan } from "react-icons/fa6";
 
 const OrderManagement = () => {
   const navigate = useNavigate();
@@ -65,6 +66,11 @@ const OrderManagement = () => {
     setShowLoginPrompt(false);
   };
 
+  const handleDeleteGift = () => {
+    
+  };
+
+
   return (
     <div>
       <h1>Order Management</h1>
@@ -79,7 +85,8 @@ const OrderManagement = () => {
                 <h1>{order.name}</h1>
                 <h1>{order.price}</h1>
                 <img src={order.image_url} alt={order.name} />
-              </div>
+            <button className="btnDelete" onClick={()=>handleDeleteGift()}><FaTrashCan /></button>
+            </div>
             ))}
           </ul>
           <button onClick={handlePaymentClick} disabled={isLoading}>
