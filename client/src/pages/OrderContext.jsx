@@ -5,22 +5,23 @@ export const OrderContext = createContext();
 export const OrderProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
-
   const addToOrder = (gift) => {
-    const existingGiftIndex = order.findIndex((item) => item.gift_id === gift.gift_id);
-    if (existingGiftIndex !== -1) {
-      const updatedOrder = [...order];
-      updatedOrder[existingGiftIndex].quantity += 1;
+    const existingGift = order.find((item) => item.gift_id === gift.gift_id);
+    if (existingGift) {
+      const updatedOrder = order.map((item) =>
+        item.gift_id === gift.gift_id ? { ...item, quantity: item.quantity + 1 } : item
+      );
       setOrder(updatedOrder);
     } else {
       setOrder([...order, { ...gift, quantity: 1 }]);
     }
-
+  
     setMessage(`Gift "${gift.name}" added to the order!`);
     setTimeout(() => {
       setMessage('');
     }, 3000);
   };
+  
 
   const removeFromOrder = (giftId) => {
     const updatedOrder = order.filter((item) => item.gift_id !== giftId);
@@ -33,7 +34,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   return (
-    <OrderContext.Provider value={{ order, addToOrder, removeFromOrder, message }}>
+    <OrderContext.Provider value={{setOrder, order, addToOrder, removeFromOrder, message }}>
       {children}
     </OrderContext.Provider>
   );

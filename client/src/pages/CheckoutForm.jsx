@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { OrderContext } from './OrderContext';
+import { UserContext } from './UserContext';
 import '../css/CheckoutForm.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const CheckoutForm = ({ onPrevious }) => {
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
+  const { user } = useContext(UserContext);
+  const { order, message } = useContext(OrderContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: '',
@@ -30,8 +38,44 @@ const CheckoutForm = ({ onPrevious }) => {
       console.log('[error]', error);
     } else {
       console.log('[PaymentMethod]', paymentMethod);
-      // Send the paymentMethod.id to your server to complete the payment
     }
+    try {
+      setIsLoading(true);
+      const orderPost = await createOrder(user.user_id, order);
+      setIsLoading(false);
+      if (orderPost.order_id) {
+        alert('thank you for your order')
+        navigate('/');
+      } else {
+        console.error('Failed to create order:', orderPost);
+      }
+    } catch (err) {
+      console.error('Error creating order:', err);
+      setIsLoading(false);
+    }
+  };
+
+  const createOrder = async (userId, order) => {
+    const formattedOrder = order.map(item => ({
+      gift_id: item.gift_id,
+      quantity: item.quantity,
+    }));
+    const response = await fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        order_date: new Date().toISOString().split('T')[0],
+        order: formattedOrder
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create order');
+    }
+    return response.json();
   };
 
   return (
@@ -50,8 +94,8 @@ const CheckoutForm = ({ onPrevious }) => {
         <CardCvcElement id="card-cvc-element" className="card-element" />
       </div>
       <button type="button" onClick={onPrevious} className="prev-button">Previous</button>
-      <button type="submit" className="pay-button" disabled={!stripe}>
-        Pay
+      <button type="submit" className="pay-button" disabled={!stripe} >
+      {isLoading ? 'Processing...' : 'Pay'}
       </button>
     </form>
   );

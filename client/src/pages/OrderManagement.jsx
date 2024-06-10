@@ -8,55 +8,19 @@ import { FaTrashCan } from "react-icons/fa6";
 const OrderManagement = () => {
   const { removeFromOrder } = useContext(OrderContext);
   const navigate = useNavigate();
-  const { order, message } = useContext(OrderContext);
+  const {setOrder, order, message } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handlePaymentClick = async (e) => {
     e.preventDefault();
     if (!user) {
       setShowLoginPrompt(true);
     } else {
-      try {
-        setIsLoading(true);
-        const orderPost = await createOrder(user.user_id, order);
-        setIsLoading(false);
-        if (orderPost.order_id) {
-          navigate('/payment', { state: { orderPost } });
-        } else {
-          console.error('Failed to create order:', orderPost);
-        }
-      } catch (err) {
-        console.error('Error creating order:', err);
-        setIsLoading(false);
-      }
+     navigate('/payment')
     }
   };
   
-
-  const createOrder = async (userId, order) => {
-    const formattedOrder = order.map(item => ({
-      gift_id: item.gift_id,
-      quantity: item.quantity,
-    }));
-    const response = await fetch('http://localhost:3000/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        order_date: new Date().toISOString().split('T')[0],
-        order: formattedOrder
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to create order');
-    }
-    return response.json();
-  };
 
   const handleLoginRedirect = () => {
     setShowLoginPrompt(false);
@@ -71,6 +35,12 @@ const OrderManagement = () => {
     removeFromOrder(giftId);
   };
 
+  const handleQuantityChange = (giftId, newQuantity) => {
+    const updatedOrder = order.map((item) =>
+      item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
+    );
+    setOrder(updatedOrder);
+  };
 
   return (
     <div>
@@ -85,13 +55,18 @@ const OrderManagement = () => {
               <div key={index} className="gift-card">
                 <h1>{gift.name}</h1>
                 <h1>{gift.price}</h1>
+                <input
+                  type="number"
+                  value={gift.quantity}
+                  onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value))}
+                />
                 <img src={gift.image_url} alt={gift.name} />
             <button className="btnDelete" onClick={()=>handleDeleteGift(gift.gift_id)}><FaTrashCan /></button>
             </div>
             ))}
           </ul>
-          <button onClick={handlePaymentClick} disabled={isLoading}>
-            {isLoading ? 'Processing...' : 'Buy here'}
+          <button onClick={handlePaymentClick} >
+            buy here
           </button>
         </>
       )}
