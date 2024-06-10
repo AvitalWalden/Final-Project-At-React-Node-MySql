@@ -4,7 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { OrderContext } from '../pages/OrderContext';
 
 function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
-  const { addOrder } = useContext(OrderContext);
+  const { addToOrder } = useContext(OrderContext);
 
   const highlightSearchTerm = (title) => {
     const index = title.toLowerCase().indexOf(searchCriteria.toLowerCase());
@@ -33,7 +33,7 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
   };
 
   const handleAddGift = () => {
-    addOrder(gift)
+    addToOrder(gift)
   };
 
   return (

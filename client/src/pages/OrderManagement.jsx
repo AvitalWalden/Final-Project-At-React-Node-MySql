@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrashCan } from "react-icons/fa6";
 
 const OrderManagement = () => {
+  const { removeFromOrder } = useContext(OrderContext);
   const navigate = useNavigate();
   const { order, message } = useContext(OrderContext);
   const { user } = useContext(UserContext);
@@ -66,8 +67,8 @@ const OrderManagement = () => {
     setShowLoginPrompt(false);
   };
 
-  const handleDeleteGift = () => {
-    
+  const handleDeleteGift = (giftId) => {
+    removeFromOrder(giftId);
   };
 
 
@@ -80,12 +81,12 @@ const OrderManagement = () => {
       ) : (
         <>
           <ul>
-            {order.map((order, index) => (
+            {order.map((gift, index) => (
               <div key={index} className="gift-card">
-                <h1>{order.name}</h1>
-                <h1>{order.price}</h1>
-                <img src={order.image_url} alt={order.name} />
-            <button className="btnDelete" onClick={()=>handleDeleteGift()}><FaTrashCan /></button>
+                <h1>{gift.name}</h1>
+                <h1>{gift.price}</h1>
+                <img src={gift.image_url} alt={gift.name} />
+            <button className="btnDelete" onClick={()=>handleDeleteGift(gift.gift_id)}><FaTrashCan /></button>
             </div>
             ))}
           </ul>
