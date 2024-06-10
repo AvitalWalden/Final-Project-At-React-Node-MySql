@@ -9,11 +9,11 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 const port = 3000;
-// const imageRoutes = require("./routes/imagesRouts")
-// app.use("/upload",imageRoutes)
+const imageRoutes = require("./routes/imagesRoutes")
+app.use("/upload",imageRoutes)
 const loginRoutes=require("./routes/loginRoutes")
 app.use("/logIn",loginRoutes);
-const giftsRoutes=require("./routes/giftRoute")
+const giftsRoutes=require("./routes/giftsRoutes")
 app.use("/gifts",giftsRoutes);
 const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
@@ -23,7 +23,7 @@ app.use("/signup",winnerRoutes);
 // app.use(verifyJWT);
 const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
-const ordersRoutes=require("./routes/ordersRoute")
+const ordersRoutes=require("./routes/ordersRoutes")
 app.use("/orders",ordersRoutes);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

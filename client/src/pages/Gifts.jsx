@@ -29,7 +29,7 @@ function Gifts() {
     const formData = new FormData();
     formData.append('image', file);
 
-    fetch(`http://localhost:3000/gifts/upload/${gift_id}`, {
+    fetch(`http://localhost:3000/upload/${gift_id}`, {
       method: 'PUT',
       body: formData,
       headers: {

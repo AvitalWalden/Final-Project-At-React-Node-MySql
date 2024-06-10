@@ -41,11 +41,11 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
     setIsEditGiftModalOpen(true);
   };
    const handleUpload = () => {
-    
+    console.log(handleUpload);
     const formData = new FormData();
     formData.append('image', file);
     const gift_id= currentGift.gift_id;
-    fetch(`http://localhost:3000/gifts/upload/${gift_id}`, {
+    fetch(`http://localhost:3000/upload/${gift_id}`, {
       method: 'PUT',
       body: formData,
       headers: {
