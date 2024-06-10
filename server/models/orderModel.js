@@ -21,6 +21,17 @@ const pool = require('../DB.js');
 //     }
 // }
 
+async function getOrders() {
+    try {
+        const sql = `SELECT * FROM orders`
+        const result = await pool.query(sql);
+        return result[0];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 async function getOrder(userId) {
     try {
         const sql = `
@@ -81,4 +92,4 @@ async function createOrder(user_id, order_date, order) {
     }
 }
 
-module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId}
+module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders}

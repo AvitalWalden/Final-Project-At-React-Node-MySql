@@ -4,8 +4,20 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId } = require('../controllers/orderController');
+const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders } = require('../controllers/orderController');
 
+
+router.get("/", async (req, res) => {
+    try {
+        const orders = await getOrders();
+        res.send(orders);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+});
 
 router.get("/user_id/:user_id", async (req, res) => {
     try {

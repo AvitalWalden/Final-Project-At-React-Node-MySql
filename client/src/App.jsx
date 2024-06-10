@@ -14,7 +14,7 @@ import { OrderProvider } from './pages/OrderContext';
 import { UserProvider } from './pages/UserContext'; 
 import Winners from "./pages/Winners";
 import Lotteries from "./pages/Lotteries";
-
+import AllOrders from "./pages/AllOrders";
 function App() {
   return (
     <div>
@@ -35,6 +35,7 @@ function App() {
               <Route path="/payment" element={<Payment />} />
               <Route path="/winners" element={<Winners />} />
               <Route path="/Lottery" element={<Lotteries />} />
+              <Route path="/allOrders" element={<AllOrders />} />
 
             </Routes>
           </BrowserRouter>
