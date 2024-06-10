@@ -4,7 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { OrderContext } from '../pages/OrderContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
 
-function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
+function Gift({ gift, user, searchCriteria, setGifts, gifts }) {
   const { addToOrder } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
@@ -28,8 +28,8 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
       method: 'DELETE',
     })
       .then(() => {
-        const updatedGiftes = giftes.filter((gift) => gift.gift_id !== gift_id);
-        setGifts(updatedGiftes);
+        const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
+        setGifts(updatedgifts);
       })
   };
 
@@ -53,43 +53,43 @@ function Gift({ gift, user, searchCriteria, setGifts, giftes }) {
     })
       .then(res => res.json())
       .then(data => {
-        setGifts(giftes.map(g => g.gift_id === giftData.gift_id ? giftData : g));
+        setGifts(gifts.map(g => g.gift_id === data.gift_id ? data : g));
         setIsEditGiftModalOpen(false);
       });
+  };
 
+  return (
+    <>
+      {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
+        <div className="gift-card">
+          <img src={`/images/${gift.image_url}`} alt={gift.name} />
+          <h1>{highlightSearchTerm(gift.name)}</h1>
+          <h1>{highlightSearchTerm(gift.price)}</h1>
+          {user && user.role === 'admin' && (
+            <>
+              <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
+              <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
+            </>
+          )}
+          <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
+        </div>
+      }
 
-    return (
-      <>
-        {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
-          <div className="gift-card">
-            <img src={`/images/${gift.image_url}`} alt={gift.name} />
-            <h1>{highlightSearchTerm(gift.name)}</h1>
-            <h1>{highlightSearchTerm(gift.price)}</h1>
-            {user && user.role === 'admin' && (
-              <>
-                <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
-                <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
-              </>
-            )}
-            <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
-          </div>
-        }
-
-        {isEditGiftModalOpen && (
-          <div className="modal">
-            <h2>Edit Gift</h2>
-            <label>Name:</label>
-            <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
-            <label>Price:</label>
-            <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
-            <label>Image URL:</label>
-            <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
-            <button onClick={saveGift}>Save</button>
-            <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
-          </div>
-        )}
-      </>
-    );
-  }
+      {isEditGiftModalOpen && (
+        <div className="modal">
+          <h2>Edit Gift</h2>
+          <label>Name:</label>
+          <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
+          <label>Price:</label>
+          <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
+          <label>Image URL:</label>
+          <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
+          <button onClick={saveGift}>Save</button>
+          <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
+        </div>
+      )}
+    </>
+  );
 }
+
 export default Gift;
