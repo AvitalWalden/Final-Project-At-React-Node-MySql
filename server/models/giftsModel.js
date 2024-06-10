@@ -14,9 +14,9 @@ async function getGifts() {
 
 async function getGiftsWithUserDetails() {
   try {
-    const sql = 'SELECT * FROM gifts NATURAL JOIN users';
+    const sql = 'SELECT  gifts.name AS gift_name, gifts.*, users.* FROM gifts JOIN users ON gifts.winner_id = users.user_id';
     const result = await pool.query(sql);
-    return result[0][0];
+    return result[0];
   } catch (err) {
     console.log(err);
     throw err;

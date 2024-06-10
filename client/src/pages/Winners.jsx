@@ -17,12 +17,11 @@ const Winners = () => {
       <h1>Winners List</h1>
       <div className="winners-container">
         {winners.map((winner) => (
-          <div key={winner.gift} className="winner-card">
-            <img src={winner.image_url} alt={winner.name} />
-            <div>
-              <h2>{winner.name}</h2>
-              <p>Winner: {winner.winner_name}</p>
-            </div>
+          <div key={winner.user_id} className="winner-card">
+            <img src={winner.image_url} alt={winner.gift_name} />
+            <h2>{winner.gift_name}</h2>
+            <p>Winner ID: {winner.user_id}</p>
+            <p>Winner name: {winner.name}</p>
           </div>
         ))}
       </div>

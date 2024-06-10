@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
 
 router.get("/winners", async (req, res) => {
     try {
+        console.log("lllll")
         res.send(await getGiftsWithUserDetails());
     } catch (err) {
         const error = {

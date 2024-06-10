@@ -34,6 +34,8 @@ async function getGift(id) {
 
 async function getGiftsWithUserDetails() {
     try {
+        console.log("22222222222222")
+
         return model.getGiftsWithUserDetails();
     } catch (err) {
         throw err;

@@ -7,9 +7,9 @@ DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS lottery;
 DROP TABLE IF EXISTS donations;
 DROP TABLE IF EXISTS passwords;
+DROP TABLE IF EXISTS gifts;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS addresses;
-DROP TABLE IF EXISTS gifts;
 
 -- Create tables
 CREATE TABLE addresses (
@@ -42,7 +42,9 @@ CREATE TABLE gifts (
     winner_id INT,
     name VARCHAR(255) NOT NULL,
     price VARCHAR(255) NOT NULL,
-    image_url VARCHAR(500) NOT NULL
+    image_url VARCHAR(500) NOT NULL,
+	FOREIGN KEY (winner_id) REFERENCES users(user_id) ON DELETE CASCADE
+
 );
 
 CREATE TABLE donations (
