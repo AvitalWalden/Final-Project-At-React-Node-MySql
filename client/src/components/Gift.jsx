@@ -112,7 +112,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
           <label>Price:</label>
           <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          {/* <button onClick={handleUpload}>Upload</button> */}
           <label>Image URL:</label>
           <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
           <button onClick={saveGift}>Save</button>

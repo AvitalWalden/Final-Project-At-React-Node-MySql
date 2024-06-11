@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import UserDetailsPayment from './UserDetailsPayment';
-import PaymentDetailsForm from './PaymentDetailsForm';
 import Checkout from "./Checkout";
 import '../css/Payment.css'; 
 

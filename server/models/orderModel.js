@@ -35,20 +35,31 @@ async function getOrders() {
 async function getOrder(userId) {
     try {
         const sql = `
-            SELECT orders.order_id, GROUP_CONCAT(gifts.name) AS ordered_gifts
-            FROM orders
-            NATURAL JOIN lotteries_tickets 
-            NATURAL JOIN gifts
-            WHERE orders.user_id = ?
-            GROUP BY orders.order_id;
+            SELECT 
+                orders.order_id, 
+                orders.order_date, 
+                gifts.name, 
+                gifts.price 
+            FROM 
+                orders 
+            JOIN 
+                lotteries_tickets ON orders.order_id = lotteries_tickets.order_id
+            JOIN 
+                gifts ON lotteries_tickets.gift_id = gifts.gift_id
+            WHERE 
+                orders.user_id = ?
         `;
-        const result = await pool.query(sql, [userId]);
-        return result[0];
+        const [rows] = await pool.query(sql, [userId]);
+        console.log(rows); // Log the rows to check the returned data structure
+        return rows;
     } catch (err) {
         console.error(err);
         throw err;
     }
 }
+
+
+
 
 
 async function getOrderByGiftID(gift_id) {
