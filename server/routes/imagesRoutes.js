@@ -10,6 +10,7 @@ const cors = require('cors');
 router.use(cors());
 
 const { updateImage } = require('../controllers/imagesController');
+const { getGift } = require('../controllers/giftsController');
 
 
 // Ensure the directory exists
@@ -36,12 +37,12 @@ router.put('/:gift_id', upload.single('image'), async (req, res) => {
         const image = req.file.filename;
         const gift_id = req.params.gift_id;
 
-        console.log(gift_id);
         if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
             return res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
         }
         const imageAfterUpdate = await updateImage(image ,gift_id);
-        res.send(imageAfterUpdate);
+        const giftAfterUpdate=await getGift(gift_id)
+        res.send(giftAfterUpdate);
     } catch (err) {
         const error = {
             message: err.message

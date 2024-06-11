@@ -16,8 +16,16 @@ function Gifts() {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const filteredGifts = data.filter(gift => !gift.winner_id);
-        setGifts(filteredGifts);
+        if (Array.isArray(data)) {
+          const filteredGifts = data.filter(gift => !gift.winner_id);
+          setGifts(filteredGifts);
+        } else {
+          setGifts([]); // Ensure it's an array
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching gifts:', error);
+        setGifts([]); // Ensure it's an array in case of error
       });
   }, []);
 
@@ -43,10 +51,12 @@ function Gifts() {
         return res.json();
       })
       .then(data => {
-        console.log("newGift" +data)
-
         console.log('File uploaded successfully', data);
-        setNewGift({ ...newGift, image_url: data.filename }); // Assuming your API returns the filename
+        setGifts(prevGifts => 
+          prevGifts.map(gift => 
+            gift.gift_id === data.gift_id ? data : gift
+          )
+        );
       })
       .catch(error => {
         console.error('Error uploading file:', error);
@@ -56,7 +66,7 @@ function Gifts() {
   const saveGift = () => {
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
-    const giftData = newGift;
+    const giftData = { ...newGift, image_url: '' }; // Reset image_url initially
 
     fetch(url, {
       method,
@@ -65,22 +75,38 @@ function Gifts() {
     })
       .then(res => res.json())
       .then(data => {
+        setGifts(prevGifts => [...prevGifts, data]);
         handleUpload(data.gift_id);
-        console.log(newGift)
-        setGifts([...gifts, newGift]);
         setIsAddGiftModalOpen(false);
         setNewGift({ name: '', price: '', image_url: '' });
+      })
+      .catch(error => {
+        console.error('Error saving gift:', error);
       });
   };
 
   return (
     <>
-      <input className='inputItem' type="text" value={searchCriteria} placeholder="Search gift" onChange={(event) => setSearchCriteria(event.target.value)} />
+      <input
+        className='inputItem'
+        type="text"
+        value={searchCriteria}
+        placeholder="Search gift"
+        onChange={(event) => setSearchCriteria(event.target.value)}
+      />
       <div className="gift-container">
-        {gifts != null &&
-          gifts.map((gift, index) => (
-            <Gift key={index} gift={gift} user={user} searchCriteria={searchCriteria} setGifts={setGifts} gifts={gifts} file={file} setFile={setFile}/>
-          ))}
+        {Array.isArray(gifts) && gifts.map((gift, index) => (
+          <Gift
+            key={index}
+            gift={gift}
+            user={user}
+            searchCriteria={searchCriteria}
+            setGifts={setGifts}
+            gifts={gifts}
+            file={file}
+            setFile={setFile}
+          />
+        ))}
       </div>
 
       {user && user.role === 'admin' && (
@@ -93,13 +119,24 @@ function Gifts() {
         <div className="modal">
           <h2>Add Gift</h2>
           <label>Name:</label>
-          <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
+          <input
+            type="text"
+            value={newGift.name}
+            onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}
+          />
           <label>Price:</label>
-          <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
+          <input
+            type="text"
+            value={newGift.price}
+            onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}
+          />
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          {/* <button onClick={handleUpload}>Upload</button> */}
           <label>Image URL:</label>
-          <input type="text" value={newGift.image_url} onChange={(e) => setNewGift({ ...newGift, image_url: e.target.value })} />
+          <input
+            type="text"
+            value={newGift.image_url}
+            onChange={(e) => setNewGift({ ...newGift, image_url: e.target.value })}
+          />
           <button onClick={saveGift}>Save</button>
           <button onClick={() => setIsAddGiftModalOpen(false)}>Cancel</button>
         </div>

@@ -29,9 +29,7 @@ async function getGiftsWithUserDetails() {
 
 async function getGift(id) {
   try {
-    console.log("fffffff");
-    console.log(id);
-
+    
     const sql = 'SELECT * FROM gifts where gift_id=?';
     const result = await pool.query(sql, [id]);
     console.log(result);
