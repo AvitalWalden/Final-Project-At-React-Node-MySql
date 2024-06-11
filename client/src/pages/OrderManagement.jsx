@@ -8,7 +8,7 @@ import { FaTrashCan } from "react-icons/fa6";
 const OrderManagement = () => {
   const { removeFromOrder } = useContext(OrderContext);
   const navigate = useNavigate();
-  const {setOrder, order, message } = useContext(OrderContext);
+  const { setOrder, order, message } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
@@ -17,10 +17,10 @@ const OrderManagement = () => {
     if (!user) {
       setShowLoginPrompt(true);
     } else {
-     navigate('/payment')
+      navigate('/payment')
     }
   };
-  
+
 
   const handleLoginRedirect = () => {
     setShowLoginPrompt(false);
@@ -60,9 +60,10 @@ const OrderManagement = () => {
                   value={gift.quantity}
                   onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value))}
                 />
-                <img src={gift.image_url} alt={gift.name} />
-            <button className="btnDelete" onClick={()=>handleDeleteGift(gift.gift_id)}><FaTrashCan /></button>
-            </div>
+                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+
+                <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><FaTrashCan /></button>
+              </div>
             ))}
           </ul>
           <button onClick={handlePaymentClick} >

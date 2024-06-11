@@ -29,7 +29,7 @@ const Winners = () => {
         {winners.length>0 ? (
           winners.map((winner,key) => (
             <div key={key} className="winner-card">
-              <img src={winner.image_url} alt={winner.gift_name} />
+          <img src={`http://localhost:3000/images/${winner.image_url}`} alt={winner.name} />
               <h2>{winner.gift_name}</h2>
               <p>Winner ID: {winner.user_id}</p>
               <p>Winner Name: {winner.name}</p>
