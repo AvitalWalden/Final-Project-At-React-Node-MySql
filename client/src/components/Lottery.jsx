@@ -70,8 +70,8 @@ function Lottery({ gift }) {
 
     return (
         <div className="gift-card">
-            <img src={`/images/${gift.image_url}`} alt={gift.name} />
-            <h1>{gift.name}</h1>
+          <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+          <h1>{gift.name}</h1>
             <h1>{gift.price}</h1>
             <button className="btnLottery" onClick={() => handleLottery(gift.gift_id)}>Lottery</button>
         </div>
