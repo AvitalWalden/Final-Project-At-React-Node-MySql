@@ -4,7 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { OrderContext } from '../pages/OrderContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
 
-function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
+function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
   const { addToOrder } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
@@ -40,11 +40,12 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
   const handleEditGift = () => {
     setIsEditGiftModalOpen(true);
   };
-   const handleUpload = () => {
+
+  const handleUpload = () => {
     console.log(handleUpload);
     const formData = new FormData();
     formData.append('image', file);
-    const gift_id= currentGift.gift_id;
+    const gift_id = currentGift.gift_id;
     fetch(`http://localhost:3000/upload/${gift_id}`, {
       method: 'PUT',
       body: formData,
@@ -67,8 +68,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
       });
   };
 
-  const saveGift =  async () => {
-    await handleUpload();
+  const saveGift = async () => {
     const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
     const method = 'PUT';
     const giftData = currentGift;
@@ -112,8 +112,10 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts ,file,setFile}) {
           <label>Price:</label>
           <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          <label>Image URL:</label>
-          <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} />
+          <button onClick={handleUpload}>Upload</button>
+
+          {/* <label>Image URL:</label> */}
+          {/* <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} /> */}
           <button onClick={saveGift}>Save</button>
           <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
         </div>

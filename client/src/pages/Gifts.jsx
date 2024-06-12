@@ -33,7 +33,7 @@ function Gifts() {
     setIsAddGiftModalOpen(true);
   };
 
-  const handleUpload = (gift_id) => {
+  const handleUpload =  ((gift_id) => {
     const formData = new FormData();
     formData.append('image', file);
 
@@ -61,7 +61,7 @@ function Gifts() {
       .catch(error => {
         console.error('Error uploading file:', error);
       });
-  };
+  });
 
   const saveGift = () => {
     const url = 'http://localhost:3000/gifts';
@@ -131,12 +131,12 @@ function Gifts() {
             onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}
           />
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          <label>Image URL:</label>
+          {/* <label>Image URL:</label>
           <input
             type="text"
             value={newGift.image_url}
             onChange={(e) => setNewGift({ ...newGift, image_url: e.target.value })}
-          />
+          /> */}
           <button onClick={saveGift}>Save</button>
           <button onClick={() => setIsAddGiftModalOpen(false)}>Cancel</button>
         </div>

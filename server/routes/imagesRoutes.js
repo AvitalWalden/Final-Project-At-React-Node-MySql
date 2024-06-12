@@ -30,18 +30,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
-
 router.put('/:gift_id', upload.single('image'), async (req, res) => {
     try {
         const image = req.file.filename;
         const gift_id = req.params.gift_id;
 
         if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-            return res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+            return res.status(400).send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
         }
-        const imageAfterUpdate = await updateImage(image ,gift_id);
-        const giftAfterUpdate=await getGift(gift_id)
+        await updateImage(image, gift_id);
+        const giftAfterUpdate = await getGift(gift_id);
+        console.log(giftAfterUpdate);
         res.send(giftAfterUpdate);
     } catch (err) {
         const error = {
