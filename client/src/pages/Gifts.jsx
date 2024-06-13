@@ -124,22 +124,13 @@ function Gifts() {
           <div className="modal">
             <h2>Add Gift</h2>
             <label>Name:</label>
-            <input
-              type="text"
-              value={newGift.name}
-              onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}
-            />
+            <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}/>
             <label>Price:</label>
-            <input
-              type="text"
-              value={newGift.price}
-              onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}
-            />
+            <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}/>
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
             <div className="modal-buttons">
               <button onClick={saveGift}>Save</button>
               <button className ="cancel"onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle />
-
               </button>
             </div>
           </div>

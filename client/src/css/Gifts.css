@@ -14,8 +14,8 @@ body {
   display: grid;
   grid-gap: 35px;
   grid-template-columns: repeat(auto-fit, minmax(300px, auto));
-  grid-auto-rows: 400px;
-  margin: 7% 5% 5% 5%;
+  grid-auto-rows: 300px;
+  margin: 5% 5% 5% 5%;
 }
 
 /* .gift-container {

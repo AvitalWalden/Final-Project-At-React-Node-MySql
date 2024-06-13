@@ -262,7 +262,7 @@ input {
 }
 
 .modal-content button {
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
   background-color: #99D9EA;
   border: none;
   border-radius: 5px;
