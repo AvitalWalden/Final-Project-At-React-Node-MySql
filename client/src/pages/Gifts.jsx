@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Gift from '../components/Gift';
-import '../css/Gift.css';
+import '../css/Gifts.css';
 import { UserContext } from './UserContext';
+import { FaSearch } from "react-icons/fa";
+
 
 function Gifts() {
   const [gifts, setGifts] = useState([]);
@@ -63,10 +65,10 @@ function Gifts() {
       });
   });
 
-  const saveGift = () => {
+  const saveGift =async () => {
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
-    const giftData = { ...newGift, image_url: '' }; // Reset image_url initially
+    const giftData = { ...newGift, image_url: '' }; 
 
     fetch(url, {
       method,
@@ -91,7 +93,7 @@ function Gifts() {
         className='inputItem'
         type="text"
         value={searchCriteria}
-        placeholder="Search gift"
+        placeholder={`${<FaSearch />}`}
         onChange={(event) => setSearchCriteria(event.target.value)}
       />
       <div className="gift-container">

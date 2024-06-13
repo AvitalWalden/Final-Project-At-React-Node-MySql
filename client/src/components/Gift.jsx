@@ -3,6 +3,7 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { OrderContext } from '../pages/OrderContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
+import '../css/Gift.css';
 
 function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
   const { addToOrder } = useContext(OrderContext);
@@ -98,14 +99,14 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
         <div className="gift-card">
           <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
           <h1>{highlightSearchTerm(gift.name)}</h1>
-          <h1>{highlightSearchTerm(gift.price)}</h1>
+          <h1>{highlightSearchTerm(gift.price)}$</h1>
           {user && user.role === 'admin' && (
             <>
               <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
               <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
             </>
           )}
-          <button className="btnAdd" onClick={handleAddGift}><IoMdAdd /></button>
+          <button className="btnAdd" onClick={handleAddGift}>Add To Cart</button>
         </div>
       }
 

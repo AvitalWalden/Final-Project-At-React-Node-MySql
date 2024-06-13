@@ -12,12 +12,6 @@ async function createGift(name, price, image_url) {
 async function getGifts() {
     try {
         const allGifts = await model.getGifts();
-        // const giftsWithImages = allGifts.map(gift => {
-        //     return {
-        //         ...gift,
-        //         image_url: `${gift.image_url}.jpg`
-        //     };
-        // });
         return allGifts;
     } catch (err) {
         throw err;
