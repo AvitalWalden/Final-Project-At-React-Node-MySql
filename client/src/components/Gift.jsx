@@ -53,22 +53,26 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
         'Accept': 'multipart/form-data',
       }
     })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then(data => {
-        console.log('File uploaded successfully', data);
-        setGifts({ ...gift, image_url: data.filename }); // Assuming your API returns the filename
-      })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log('File uploaded successfully', data);
+      setGifts(prevGifts => 
+        prevGifts.map(gift => 
+          gift.gift_id === data.gift_id ? data : gift
+        )
+      );
+    })
       .catch(error => {
         console.error('Error uploading file:', error);
       });
   };
 
-  const saveGift = async () => {
+  const saveGift = () => {
     const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
     const method = 'PUT';
     const giftData = currentGift;
@@ -80,6 +84,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
     })
       .then(res => res.json())
       .then(data => {
+        handleUpload(data.gift_id);
         const a = gifts.map(g => g.gift_id === data.gift_id ? data : g);
         console.log(a);
         setGifts(a);
@@ -112,7 +117,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
           <label>Price:</label>
           <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          <button onClick={handleUpload}>Upload</button>
+          {/* <button onClick={handleUpload}>Upload</button> */}
 
           {/* <label>Image URL:</label> */}
           {/* <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} /> */}
