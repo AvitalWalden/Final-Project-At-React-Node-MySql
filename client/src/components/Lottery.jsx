@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoMdAdd } from "react-icons/io";
+import '../css/Lottery.css'
 
 function Lottery({ gift }) {
     function shuffle(array) {
@@ -69,7 +70,7 @@ function Lottery({ gift }) {
     };
 
     return (
-        <div className="gift-card">
+        <div className="gift-lottery-card">
           <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
           <h1>{gift.name}</h1>
             <h1>{gift.price}</h1>

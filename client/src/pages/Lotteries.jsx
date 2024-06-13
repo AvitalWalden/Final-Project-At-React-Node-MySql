@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import '../css/Gift.css';
 import { UserContext } from './UserContext';
 import Lottery from '../components/Lottery';
-
+import '../css/Lottery.css'
 
 function Lotteries() {
     const [gifts, setGifts] = useState([]);
@@ -19,7 +19,7 @@ function Lotteries() {
     }, []);
     return (
         <>
-            <div className="gift-container">
+            <div className="gift-lottery-container">
                 {gifts != null &&
                     gifts.map((gift, index) => (
                         <Lottery key={index} gift={gift} gifts={gifts} />

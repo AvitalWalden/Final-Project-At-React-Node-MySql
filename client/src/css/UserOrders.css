@@ -1,0 +1,48 @@
+/* Styles for UserOrders component */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    text-align: center;
+    color: #555;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .order-card h2 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .order-card h3 {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  @media (max-width: 600px) {
+    .order-card {
+      padding: 15px;
+    }
+  }
+  

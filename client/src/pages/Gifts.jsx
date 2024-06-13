@@ -64,6 +64,7 @@ function Gifts() {
       })
       .catch(error => {
         console.error('Error uploading file:', error);
+        throw error;
       });
   });
 
@@ -71,28 +72,31 @@ function Gifts() {
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
     const giftData = { ...newGift, image_url: '' };
-
-    fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(giftData)
-    })
-      .then(res => res.json())
-      .then(data => {
-        setGifts(prevGifts => [...prevGifts, data]);
-        handleUpload(data.gift_id);
-        setIsAddGiftModalOpen(false);
-        setNewGift({ name: '', price: '', image_url: '' });
+    try {
+      fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(giftData)
       })
-      .catch(error => {
-        console.error('Error saving gift:', error);
-      });
+        .then(res => res.json())
+        .then(data => {
+          handleUpload(data.gift_id);
+          setGifts(prevGifts => [...prevGifts, data]);
+          setIsAddGiftModalOpen(false);
+          setNewGift({ name: '', price: '', image_url: '' });
+        })
+    } catch (error) {
+      console.error('Error saving gift:', error);
+      alert('There was an error saving the gift. Please try again.');
+
+
+    }
   };
 
   return (
     <>
       <div className='topContainer'>
-      
+
         <div className='searchContainer'>
           <input
             className='inputItem'
@@ -101,11 +105,11 @@ function Gifts() {
             placeholder='search gift'
             onChange={(event) => setSearchCriteria(event.target.value)}
           />
-          <FontAwesomeIcon icon={faSearch} className='searchIcon' />
-      
+          {/* <FontAwesomeIcon icon={faSearch} className='searchIcon' /> */}
+
         </div>
         {user && user.role === 'admin' && (
-            <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
+          <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
         )}
       </div>
       <div className="gift-container">
@@ -130,13 +134,13 @@ function Gifts() {
           <div className="modal">
             <h2>Add Gift</h2>
             <label>Name:</label>
-            <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}/>
+            <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
             <label>Price:</label>
-            <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}/>
+            <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
             <div className="modal-buttons">
               <button onClick={saveGift}>Save</button>
-              <button className ="cancel"onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle />
+              <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle />
               </button>
             </div>
           </div>

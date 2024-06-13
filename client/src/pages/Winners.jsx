@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../css/Winners.css';
 
 const Winners = () => {
   const [winners, setWinners] = useState([]);
@@ -26,10 +27,10 @@ const Winners = () => {
     <div>
       <h1>Winners List</h1>
       <div className="winners-container">
-        {winners.length>0 ? (
-          winners.map((winner,key) => (
+        {winners.length > 0 ? (
+          winners.map((winner, key) => (
             <div key={key} className="winner-card">
-          <img src={`http://localhost:3000/images/${winner.image_url}`} alt={winner.name} />
+              <img src={`http://localhost:3000/images/${winner.image_url}`} alt={winner.name} />
               <h2>{winner.gift_name}</h2>
               <p>Winner ID: {winner.user_id}</p>
               <p>Winner Name: {winner.name}</p>
