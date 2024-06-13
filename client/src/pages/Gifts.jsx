@@ -3,6 +3,8 @@ import Gift from '../components/Gift';
 import '../css/Gifts.css';
 import { UserContext } from './UserContext';
 import { FaSearch } from "react-icons/fa";
+import { ImCancelCircle } from "react-icons/im";
+
 
 
 function Gifts() {
@@ -35,7 +37,7 @@ function Gifts() {
     setIsAddGiftModalOpen(true);
   };
 
-  const handleUpload =  ((gift_id) => {
+  const handleUpload = ((gift_id) => {
     const formData = new FormData();
     formData.append('image', file);
 
@@ -54,8 +56,8 @@ function Gifts() {
       })
       .then(data => {
         console.log('File uploaded successfully', data);
-        setGifts(prevGifts => 
-          prevGifts.map(gift => 
+        setGifts(prevGifts =>
+          prevGifts.map(gift =>
             gift.gift_id === data.gift_id ? data : gift
           )
         );
@@ -65,10 +67,10 @@ function Gifts() {
       });
   });
 
-  const saveGift =async () => {
+  const saveGift = async () => {
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
-    const giftData = { ...newGift, image_url: '' }; 
+    const giftData = { ...newGift, image_url: '' };
 
     fetch(url, {
       method,
@@ -118,31 +120,32 @@ function Gifts() {
       )}
 
       {isAddGiftModalOpen && (
-        <div className="modal">
-          <h2>Add Gift</h2>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={newGift.name}
-            onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}
-          />
-          <label>Price:</label>
-          <input
-            type="text"
-            value={newGift.price}
-            onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}
-          />
-          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          {/* <label>Image URL:</label>
-          <input
-            type="text"
-            value={newGift.image_url}
-            onChange={(e) => setNewGift({ ...newGift, image_url: e.target.value })}
-          /> */}
-          <button onClick={saveGift}>Save</button>
-          <button onClick={() => setIsAddGiftModalOpen(false)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Add Gift</h2>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={newGift.name}
+              onChange={(e) => setNewGift({ ...newGift, name: e.target.value })}
+            />
+            <label>Price:</label>
+            <input
+              type="text"
+              value={newGift.price}
+              onChange={(e) => setNewGift({ ...newGift, price: e.target.value })}
+            />
+            <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
+            <div className="modal-buttons">
+              <button onClick={saveGift}>Save</button>
+              <button className ="cancel"onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle />
+
+              </button>
+            </div>
+          </div>
         </div>
       )}
+
     </>
   );
 }

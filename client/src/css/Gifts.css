@@ -6,7 +6,7 @@ html {
 body {
 
   margin: 0 !important;
-  font-family: 'Arial', 'sans-serif';
+  /* font-family: 'Arial', 'sans-serif'; */
   text-align: center;
 }
 
@@ -17,6 +17,7 @@ body {
   grid-auto-rows: 400px;
   margin: 7% 5% 5% 5%;
 }
+
 /* .gift-container {
   display: grid;
   grid-gap: 35px;
@@ -24,11 +25,11 @@ body {
   margin: 15% 5% 5% 5%;
 } */
 
-.gift-card ,
+.gift-card,
 .gift-container>div {
   display: flex;
   align-items: end;
-  border:solid black;
+  border: solid black;
   font-size: 2em;
   color: #ffffff;
   flex-direction: column;
@@ -38,7 +39,7 @@ body {
   /* box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px; */
 }
 
-.gift-card img ,
+.gift-card img,
 .gift-container>div>img {
   width: 100%;
   border-radius: 2%;
@@ -54,7 +55,8 @@ img:focus,
 img:active {
   transform: scale(1.05);
 }
-.gift-card >p,
+
+.gift-card>p,
 .gift-container>div>p {
   font-size: 45%;
   margin: 2%;
@@ -64,7 +66,7 @@ img:active {
 }
 
 
-.gift-card >h1,
+.gift-card>h1,
 .grid-container>div>h1 {
   font-size: 65%;
   /* margin: 3% */
@@ -83,20 +85,65 @@ img:active {
   }
 }
 
-/* .btnDelete,
-.btnAdd { */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(211, 211, 211, 0.8);
+  /* צבע רקע אפור בהיר עם שקיפות */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  z-index: 1000;
+  /* לוודא שהמודל מעל לכל תוכן אחר */
+}
 
-  /* border-color: #ffffff; */
-  /* font-size: 50%; */
-  /* margin: 3%; */
-  /* width: 100%; */
-  /* padding: 0%; */
-/* } */
-/* 
-.btnAdd:hover {
-  font-weight: bold;
-  border-radius: 9px;
-  color: #ffffff;
-  border-color: #000000;
-  text-shadow: 0 2px 15px rgba(50, 65, 68, 0.7);
-} */
+
+.modal {
+  background-color: white;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  height: 60%;
+  /* רוחב בינוני */
+  text-align: left;
+  /* ליישור טקסט לשמאל */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal label,
+.modal input,
+.modal-buttons {
+  /* display: block; */
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.file{
+  background-color: white;
+  font-size: medium;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.modal input {
+  padding: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons button {
+  margin-top: 10px;
+  padding: 5px 10px;
+}
