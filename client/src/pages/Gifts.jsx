@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import Gift from '../components/Gift';
 import '../css/Gifts.css';
 import { UserContext } from './UserContext';
-import { FaSearch } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 function Gifts() {
@@ -35,7 +36,7 @@ function Gifts() {
     setIsAddGiftModalOpen(true);
   };
 
-  const handleUpload =  ((gift_id) => {
+  const handleUpload = ((gift_id) => {
     const formData = new FormData();
     formData.append('image', file);
 
@@ -54,8 +55,8 @@ function Gifts() {
       })
       .then(data => {
         console.log('File uploaded successfully', data);
-        setGifts(prevGifts => 
-          prevGifts.map(gift => 
+        setGifts(prevGifts =>
+          prevGifts.map(gift =>
             gift.gift_id === data.gift_id ? data : gift
           )
         );
@@ -65,10 +66,10 @@ function Gifts() {
       });
   });
 
-  const saveGift =async () => {
+  const saveGift = async () => {
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
-    const giftData = { ...newGift, image_url: '' }; 
+    const giftData = { ...newGift, image_url: '' };
 
     fetch(url, {
       method,
@@ -89,13 +90,23 @@ function Gifts() {
 
   return (
     <>
-      <input
-        className='inputItem'
-        type="text"
-        value={searchCriteria}
-        placeholder={`${<FaSearch />}`}
-        onChange={(event) => setSearchCriteria(event.target.value)}
-      />
+      <div className='topContainer'>
+      
+        <div className='searchContainer'>
+          <input
+            className='inputItem'
+            type='text'
+            value={searchCriteria}
+            placeholder='search gift'
+            onChange={(event) => setSearchCriteria(event.target.value)}
+          />
+          <FontAwesomeIcon icon={faSearch} className='searchIcon' />
+      
+        </div>
+        {user && user.role === 'admin' && (
+            <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
+        )}
+      </div>
       <div className="gift-container">
         {Array.isArray(gifts) && gifts.map((gift, index) => (
           <Gift
@@ -111,11 +122,7 @@ function Gifts() {
         ))}
       </div>
 
-      {user && user.role === 'admin' && (
-        <div>
-          <button onClick={handleAddGift}>Add Gift</button>
-        </div>
-      )}
+
 
       {isAddGiftModalOpen && (
         <div className="modal">

@@ -17,6 +17,7 @@ body {
   grid-auto-rows: 400px;
   margin: 7% 5% 5% 5%;
 }
+
 /* .gift-container {
   display: grid;
   grid-gap: 35px;
@@ -24,11 +25,11 @@ body {
   margin: 15% 5% 5% 5%;
 } */
 
-.gift-card ,
+.gift-card,
 .gift-container>div {
   display: flex;
   align-items: end;
-  border:solid black;
+  border: solid black;
   font-size: 2em;
   color: #ffffff;
   flex-direction: column;
@@ -38,7 +39,7 @@ body {
   /* box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px; */
 }
 
-.gift-card img ,
+.gift-card img,
 .gift-container>div>img {
   width: 100%;
   border-radius: 2%;
@@ -54,7 +55,8 @@ img:focus,
 img:active {
   transform: scale(1.05);
 }
-.gift-card >p,
+
+.gift-card>p,
 .gift-container>div>p {
   font-size: 45%;
   margin: 2%;
@@ -64,7 +66,7 @@ img:active {
 }
 
 
-.gift-card >h1,
+.gift-card>h1,
 .grid-container>div>h1 {
   font-size: 65%;
   /* margin: 3% */
@@ -83,20 +85,51 @@ img:active {
   }
 }
 
-/* .btnDelete,
-.btnAdd { */
 
-  /* border-color: #ffffff; */
-  /* font-size: 50%; */
-  /* margin: 3%; */
-  /* width: 100%; */
-  /* padding: 0%; */
-/* } */
-/* 
+.btnAdd {
+  background-color: white;
+  border: none;
+  color: black;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  margin-left: 30%;
+}
+
+
 .btnAdd:hover {
   font-weight: bold;
   border-radius: 9px;
   color: #ffffff;
   border-color: #000000;
   text-shadow: 0 2px 15px rgba(50, 65, 68, 0.7);
-} */
+}
+
+.inputItem {
+  margin-top: 0;
+  flex-grow: 1;
+  background-color: white; 
+}
+
+.topContainer {
+  display: flex;
+  align-items: center; /* Vertically centers items */
+  margin-top: 2%;
+}
+.searchContainer {
+  margin-left: 30%;
+}
+.searchIcon {
+  margin-left: 17px; /* Spacing between input and icon */
+}
+
+.inputItem{
+   margin-top: 0;
+   width: auto;
+}

@@ -100,13 +100,15 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
           <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}$</h1>
+          <div className='giftButtons'>
           {user && user.role === 'admin' && (
             <>
               <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
               <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
             </>
           )}
-          <button className="btnAdd" onClick={handleAddGift}>Add To Cart</button>
+          <button className="btnAddGift" onClick={handleAddGift}>Add To Cart</button>
+        </div>
         </div>
       }
 
