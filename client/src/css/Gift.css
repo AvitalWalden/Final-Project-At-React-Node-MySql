@@ -2,27 +2,27 @@
     background-color: white;
     font-size: medium;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border: none;
-    cursor: pointer;
-    margin: 0 5px; /* Optional: Adds some spacing between buttons */
-  }
- 
-  .giftButtons {
-    padding: 0;
+}
+ h1{
+    margin: 1%;
+ }
+
+ .btn-admin{
     display: flex;
-    justify-content: space-between; 
-    margin-top: 10px; 
-    width: 100%; 
-    box-sizing: border-box; 
-  }
-  
-  .gift-card {
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    margin-bottom: 20px; 
-    position: relative; 
-  }
-  .btnEdit, .btnDelete {
-    padding: 20px;
-  }
-  
+    flex-direction: row-reverse;
+    justify-content: space-evenly
+ }
+
+ 
+.btnEdit,.btnDelete,.save
+ {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0px;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+

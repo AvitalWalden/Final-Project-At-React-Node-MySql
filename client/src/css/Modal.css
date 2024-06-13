@@ -11,10 +11,12 @@
   
   .modal h2 {
     margin-top: 0;
+    color: black;
   }
   
   .modal label {
-    display: block;
+    /* display: block; */
+    color: black;
     margin-top: 10px;
   }
   
@@ -25,13 +27,30 @@
     box-sizing: border-box;
   }
   
-  .modal button {
+  /* .modal button {
+    
     margin-top: 20px;
     padding: 10px 20px;
     cursor: pointer;
   }
-  
+   */
   .modal button:nth-child(2) {
     margin-left: 10px;
   }
   
+  .cancel{
+    background-color: rgb(255, 255, 255);
+    padding: 1%;
+    position: absolute;
+    outline: none;
+    height: 10%;
+    top: 1%;
+    right: 1%;
+    box-shadow: none;
+    width: 10%;
+  }
+
+  .cancel:hover {
+    border: none;
+  
+  }

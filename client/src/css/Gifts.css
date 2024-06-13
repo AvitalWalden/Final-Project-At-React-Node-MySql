@@ -6,7 +6,7 @@ html {
 body {
 
   margin: 0 !important;
-  font-family: 'Arial', 'sans-serif';
+  /* font-family: 'Arial', 'sans-serif'; */
   text-align: center;
 }
 
@@ -14,9 +14,10 @@ body {
   display: grid;
   grid-gap: 35px;
   grid-template-columns: repeat(auto-fit, minmax(300px, auto));
-  grid-auto-rows: 400px;
-  margin: 7% 5% 5% 5%;
+  grid-auto-rows: 300px;
+  margin: 5% 5% 5% 5%;
 }
+
 
 /* .gift-container {
   display: grid;
@@ -85,51 +86,65 @@ img:active {
   }
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(211, 211, 211, 0.8);
+  /* צבע רקע אפור בהיר עם שקיפות */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  z-index: 1000;
+  /* לוודא שהמודל מעל לכל תוכן אחר */
+}
 
-.btnAdd {
+
+.modal {
   background-color: white;
-  border: none;
-  color: black;
-  padding: 10px 24px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 12px;
-  margin-left: 30%;
-}
-
-
-.btnAdd:hover {
-  font-weight: bold;
-  border-radius: 9px;
-  color: #ffffff;
-  border-color: #000000;
-  text-shadow: 0 2px 15px rgba(50, 65, 68, 0.7);
-}
-
-.inputItem {
-  margin-top: 0;
-  flex-grow: 1;
-  background-color: white; 
-}
-
-.topContainer {
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  height: 60%;
+  /* רוחב בינוני */
+  text-align: left;
+  /* ליישור טקסט לשמאל */
   display: flex;
-  align-items: center; /* Vertically centers items */
-  margin-top: 2%;
-}
-.searchContainer {
-  margin-left: 30%;
-}
-.searchIcon {
-  margin-left: 17px; /* Spacing between input and icon */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.inputItem{
-   margin-top: 0;
-   width: auto;
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal label,
+.modal input,
+.modal-buttons {
+  /* display: block; */
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.file{
+  background-color: white;
+  font-size: medium;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.modal input {
+  padding: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons button {
+  margin-top: 10px;
+  padding: 5px 10px;
 }

@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { MdDeleteForever, MdEdit } from "react-icons/md";
-import { IoMdAdd } from "react-icons/io";
 import { OrderContext } from '../pages/OrderContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
 import '../css/Gift.css';
+import '../css/Gifts.css';
+
+import { ImCancelCircle } from "react-icons/im";
+
+
 
 function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
   const { addToOrder } = useContext(OrderContext);
@@ -54,20 +58,20 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
         'Accept': 'multipart/form-data',
       }
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('File uploaded successfully', data);
-      setGifts(prevGifts => 
-        prevGifts.map(gift => 
-          gift.gift_id === data.gift_id ? data : gift
-        )
-      );
-    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('File uploaded successfully', data);
+        setGifts(prevGifts =>
+          prevGifts.map(gift =>
+            gift.gift_id === data.gift_id ? data : gift
+          )
+        );
+      })
       .catch(error => {
         console.error('Error uploading file:', error);
       });
@@ -102,30 +106,30 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
           <h1>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
           {user && user.role === 'admin' && (
-            <>
+            <div className="btn-admin">
               <button className="btnDelete" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
               <button className="btnEdit" onClick={handleEditGift}><MdEdit /></button>
-            </>
+            </div>
           )}
           <button className="btnAddGift" onClick={handleAddGift}>Add To Cart</button>
         </div>
         </div>
       }
-
       {isEditGiftModalOpen && (
-        <div className="modal">
-          <h2>Edit Gift</h2>
-          <label>Name:</label>
-          <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
-          <label>Price:</label>
-          <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
-          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          {/* <button onClick={handleUpload}>Upload</button> */}
-
-          {/* <label>Image URL:</label> */}
-          {/* <input type="text" value={currentGift.image_url} onChange={(e) => setCurrentGift({ ...currentGift, image_url: e.target.value })} /> */}
-          <button onClick={saveGift}>Save</button>
-          <button onClick={() => setIsEditGiftModalOpen(false)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Edit Gift</h2>
+            <label>Name:</label>
+            <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
+            <label>Price:</label>
+            <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
+            <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
+            <div className="modal-buttons">
+              <button className="save" onClick={saveGift}>Save</button>
+              <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </>
