@@ -1,0 +1,67 @@
+.side-slide-panel {
+    position: fixed;
+    top: 0;
+    right: -500px; /* Hidden by default */
+    width: 500px; /* Adjust width as needed */
+    height: 100%;
+    background-color: #f1f1f1;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease-in-out;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 2000; /* Ensure it stays on top */
+  }
+  
+  .side-slide-panel.open {
+    right: 0; /* Slide in */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Position it at the top right */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .side-slide-panel h2 {
+    margin-top: 20px;
+  }
+  
+  .side-slide-panel ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .side-slide-panel li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .side-slide-panel li img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .gift-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .gift-info p {
+    margin: 0;
+  }
+  
+  /* Ensure other elements do not interfere with the panel */
+  .gift-container {
+    z-index: 1;
+  }
+  .modal-overlay {
+    z-index: 1500; /* Ensure it's above other content but below the side panel */
+  }
+  
