@@ -1,17 +1,29 @@
-import React from 'react';
-import { IoMdAdd } from "react-icons/io";
-import '../css/Lottery.css'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import '../css/Lottery.css';
 
 function Lottery({ gift }) {
-    function shuffle(array) {
+    const [winner, setWinner] = useState(gift.winner_id); // Initialize winner state with gift's winner_id
+    const [spinning, setSpinning] = useState(false);
+
+    useEffect(() => {
+        if (gift.winner_id) {
+            setSpinning(true);
+            setTimeout(() => {
+                setSpinning(false);
+            }, 4000);
+        }
+    }, [gift.winner_id]);
+
+    const shuffle = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
-    }
+    };
 
-    function updateWinner(gift_id, id) {
+    const updateWinner = (gift_id, id) => {
         const url = `http://localhost:3000/gifts/${id}`;
         const requestOptions = {
             method: 'PUT',
@@ -20,8 +32,8 @@ function Lottery({ gift }) {
             },
             body: JSON.stringify({
                 gift_id: gift_id,
-                name:gift.name,
-                price:gift.price,
+                name: gift.name,
+                price: gift.price,
                 image_url: gift.image_url,
                 winner_id: id
             })
@@ -29,13 +41,18 @@ function Lottery({ gift }) {
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => {
-               console.log(data);
+                console.log(id);
+                setWinner(id);
+                setSpinning(true);
+                setTimeout(() => {
+                    setSpinning(false);
+                }, 4000);
             })
             .catch(error => {
-                console.log('Error');
+                console.error('Error updating winner:', error);
+                alert('Error updating winner. Please try again later.');
             });
-    }
-
+    };
 
     const getOrder = (gift_id) => {
         const url = `http://localhost:3000/orders/gift_id/${gift_id}`;
@@ -50,7 +67,7 @@ function Lottery({ gift }) {
                             usersEntered.push(order.user_id);
                         }
                     });
-                    shuffle(usersEntered); // ערבב את המערך
+                    shuffle(usersEntered);
                     const winnerIndex = Math.floor(Math.random() * usersEntered.length);
                     const winnerUserID = usersEntered[winnerIndex];
                     updateWinner(gift_id, winnerUserID);
@@ -59,8 +76,9 @@ function Lottery({ gift }) {
                     console.log('No orders found for this gift.');
                     alert('No orders found for this gift.');
                 }
-            }).catch(error => {
-                console.log(error);
+            })
+            .catch(error => {
+                console.error('Error fetching orders:', error);
                 alert('An error occurred while fetching orders.');
             });
     };
@@ -70,11 +88,26 @@ function Lottery({ gift }) {
     };
 
     return (
-        <div className="gift-lottery-card">
-          <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-          <h1>{gift.name}</h1>
-            <h1>{gift.price}</h1>
-            <button className="btnLottery" onClick={() => handleLottery(gift.gift_id)}>Lottery</button>
+        <div className={`gift-lottery-card ${winner && !spinning ? 'winner' : spinning ? 'spinning' : ''}`}>
+            {winner && !spinning ? (
+                <>
+                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+                    <h1 className="winner-text">{gift.name}</h1>
+                    <h1 className="winner-text">The gift was already grilled...check result in here👇</h1>
+                    <Link to="/winners" className="winner-link">Winners</Link>
+                </>
+            ) : spinning ? (
+                <div className="spinning-wheel">
+                    <div className="wheel"></div>
+                </div>
+            ) : (
+                <>
+                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+                    <h1>{gift.name}</h1>
+                    <h1>{gift.price}</h1>
+                    <button className="btnLottery" onClick={() => handleLottery(gift.gift_id)}>Lottery</button>
+                </>
+            )}
         </div>
     );
 }
