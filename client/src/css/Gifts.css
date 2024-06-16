@@ -18,13 +18,9 @@ body {
   margin: 5% 5% 5% 5%;
 }
 
-
-/* .gift-container {
-  display: grid;
-  grid-gap: 35px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin: 15% 5% 5% 5%;
-} */
+.shearch{
+  font-size: 100%;
+}
 
 
 .gift-container>div {
@@ -148,13 +144,17 @@ img:active {
   padding: 5px 10px;
 }
 
-.searchContainer{
+.searchContainer {
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   border: 1px solid #cccccc;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 10px 10px;
-  margin: 15px;
-  width: 300px;
+  margin: 3%;
+  width: 600px;
+  height: 30px;
+  margin-left: auto;
+  margin-right: auto;
   background-color: white;
 }

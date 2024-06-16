@@ -1,5 +1,6 @@
 const model = require('../models/giftsModel');
-
+const { getUser} = require('../controllers/usersController');
+const { sendWinnerEmail} = require('../middleware/mailServices');
 
 async function createGift(name, price, image_url) {
     try {
@@ -28,8 +29,6 @@ async function getGift(id) {
 
 async function getGiftsWithUserDetails() {
     try {
-        console.log("22222222222222")
-
         return model.getGiftsWithUserDetails();
     } catch (err) {
         throw err;
@@ -46,9 +45,14 @@ async function deleteGift(id) {
 
 async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
     try {
-        return model.updateWinnerOfGift(id,winner_id,name,price, image_url);
+        const afterUpdate = model.updateWinnerOfGift(id,winner_id,name,price, image_url);
+        if(afterUpdate){
+            const winnerEmail = await getUser(winner_id);
+            await sendWinnerEmail(winnerEmail, name);
+        }
     } catch (err) {
         throw err;
     }
 }
+
 module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails,updateWinnerOfGift }
