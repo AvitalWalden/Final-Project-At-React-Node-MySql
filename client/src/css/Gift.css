@@ -6,7 +6,7 @@
   border: 1px solid transparent;
   padding: 10px 20px; /* Adjust padding as needed */
   cursor: pointer;
-  transition: border-color 0.25s;
+ transition: border-color 0.25s;
   box-sizing: border-box;
 }
 

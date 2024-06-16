@@ -8,7 +8,7 @@ import '../css/OrderManagement.css';
 const OrderManagement = () => {
   const { removeFromOrder } = useContext(OrderContext);
   const navigate = useNavigate();
-  const { setOrder, order, message } = useContext(OrderContext);
+  const { setOrder, order } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
@@ -44,7 +44,6 @@ const OrderManagement = () => {
   return (
     <div className="order-management">
       <h1>Shopping Cart</h1>
-      {message && <p className="confirmation-message">{message}</p>}
       {order.length === 0 ? (
         <p>No gifts added to the order.</p>
       ) : (

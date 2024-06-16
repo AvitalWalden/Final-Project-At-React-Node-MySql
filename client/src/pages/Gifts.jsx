@@ -4,8 +4,8 @@ import '../css/Gifts.css';
 import { UserContext } from './UserContext';
 import { FaSearch } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
-
-
+import { OrderContext } from './OrderContext';
+import SideSlidePanel from '../components/SideSlidePanel';
 
 function Gifts() {
   const [gifts, setGifts] = useState([]);
@@ -14,6 +14,8 @@ function Gifts() {
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
   const [file, setFile] = useState(null);
   const { user } = useContext(UserContext);
+  const { order } = useContext(OrderContext);
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
 
   useEffect(() => {
     const url = `http://localhost:3000/gifts`;
@@ -37,7 +39,7 @@ function Gifts() {
     setIsAddGiftModalOpen(true);
   };
 
-  const handleUpload = ((gift_id) => {
+  const handleUpload = (gift_id) => {
     const formData = new FormData();
     formData.append('image', file);
 
@@ -66,7 +68,7 @@ function Gifts() {
         console.error('Error uploading file:', error);
         throw error;
       });
-  });
+  };
 
   const saveGift = async () => {
     const url = 'http://localhost:3000/gifts';
@@ -84,29 +86,26 @@ function Gifts() {
           setGifts(prevGifts => [...prevGifts, data]);
           setIsAddGiftModalOpen(false);
           setNewGift({ name: '', price: '', image_url: '' });
+          setIsSidePanelOpen(true);
         })
     } catch (error) {
       console.error('Error saving gift:', error);
       alert('There was an error saving the gift. Please try again.');
-
-
     }
   };
 
   return (
     <>
       <div className='topContainer'>
-
         <div className='searchContainer'>
           <input
             className='inputItem'
             type='text'
             value={searchCriteria}
-            placeholder='search gift'
+            placeholder='Search gift'
             onChange={(event) => setSearchCriteria(event.target.value)}
           />
-          {/* <FontAwesomeIcon icon={faSearch} className='searchIcon' /> */}
-
+          <FaSearch className='searchIcon' />
         </div>
         {user && user.role === 'admin' && (
           <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
@@ -127,7 +126,7 @@ function Gifts() {
         ))}
       </div>
 
-
+      <SideSlidePanel isOpen={isSidePanelOpen} orderGifts={order} onClose={() => setIsSidePanelOpen(false)} />
 
       {isAddGiftModalOpen && (
         <div className="modal-overlay">
@@ -140,13 +139,11 @@ function Gifts() {
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
             <div className="modal-buttons">
               <button onClick={saveGift}>Save</button>
-              <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle />
-              </button>
+              <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
             </div>
           </div>
         </div>
       )}
-
     </>
   );
 }
