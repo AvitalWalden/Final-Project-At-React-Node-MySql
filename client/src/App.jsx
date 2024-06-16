@@ -10,37 +10,42 @@ import UserOrders from "./pages/UserOrders";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import OrderManagement from "./pages/OrderManagement";
-import { OrderProvider } from './pages/OrderContext'; 
-import { UserProvider } from './pages/UserContext'; 
+import { OrderProvider } from './pages/OrderContext';
+import { UserProvider } from './pages/UserContext';
 import Winners from "./pages/Winners";
 import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
+// import { createContext, useState } from 'react';
+
 function App() {
+  // const [user, setUser] = useState();
   return (
     <div>
-      <UserProvider>
-        <OrderProvider>
-          <BrowserRouter>
-            <Navigates />
-            <Routes>
-              <Route path="/" element={<Navigate to="/gifts" />} />
-              <Route path="/gifts" element={<Gifts />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/logout" element={<LogOut />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/userDetails" element={<UserDetails />} />
-              <Route path="/orders" element={<UserOrders />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/orderManagement" element={<OrderManagement />} /> 
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/winners" element={<Winners />} />
-              <Route path="/Lottery" element={<Lotteries />} />
-              <Route path="/allOrders" element={<AllOrders />} />
+      {/* <UserContext.Provider value={{ user, setUser }}> */}
+        <UserProvider>
+          <OrderProvider>
+            <BrowserRouter>
+              <Navigates />
+              <Routes>
+                <Route path="/" element={<Navigate to="/gifts" />} />
+                <Route path="/gifts" element={<Gifts />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/logout" element={<LogOut />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/userDetails" element={<UserDetails />} />
+                <Route path="/orders" element={<UserOrders />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/orderManagement" element={<OrderManagement />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/winners" element={<Winners />} />
+                <Route path="/Lottery" element={<Lotteries />} />
+                <Route path="/allOrders" element={<AllOrders />} />
 
-            </Routes>
-          </BrowserRouter>
-        </OrderProvider>
-      </UserProvider>
+              </Routes>
+            </BrowserRouter>
+          </OrderProvider>
+        </UserProvider>
+      {/* </UserContext.Provider> */}
     </div>
   );
 }
