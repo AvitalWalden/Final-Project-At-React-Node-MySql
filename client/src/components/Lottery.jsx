@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import '../css/Lottery.css';
 
 function Lottery({ gift }) {
-    const [winner, setWinner] = useState(gift.winner_id); // Initialize winner state with gift's winner_id
+    const [winner, setWinner] = useState(gift.winner_id); 
     const [spinning, setSpinning] = useState(false);
-
-    useEffect(() => {
-        if (gift.winner_id) {
-            setSpinning(true);
-            setTimeout(() => {
-                setSpinning(false);
-            }, 4000);
-        }
-    }, [gift.winner_id]);
 
     const shuffle = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -24,7 +15,7 @@ function Lottery({ gift }) {
     };
 
     const updateWinner = (gift_id, id) => {
-        const url = `http://localhost:3000/gifts/${id}`;
+        const url = `http://localhost:3000/gifts/${gift_id}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
@@ -39,9 +30,13 @@ function Lottery({ gift }) {
             })
         };
         fetch(url, requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+              
+            })
             .then(data => {
-                console.log(id);
                 setWinner(id);
                 setSpinning(true);
                 setTimeout(() => {
@@ -50,14 +45,19 @@ function Lottery({ gift }) {
             })
             .catch(error => {
                 console.error('Error updating winner:', error);
-                alert('Error updating winner. Please try again later.');
+                alert(`Error updating winner: ${error.message}. Please try again later.`);
             });
     };
 
     const getOrder = (gift_id) => {
         const url = `http://localhost:3000/orders/gift_id/${gift_id}`;
         fetch(url)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(data => {
                 console.log(data);
                 if (data.length > 0) {
@@ -79,7 +79,7 @@ function Lottery({ gift }) {
             })
             .catch(error => {
                 console.error('Error fetching orders:', error);
-                alert('An error occurred while fetching orders.');
+                alert(`An error occurred while fetching orders: ${error.message}`);
             });
     };
 
