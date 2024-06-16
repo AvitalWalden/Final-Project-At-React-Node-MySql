@@ -2,23 +2,30 @@ import React, { useState } from 'react';
 
 const UserDetailsPayment = ({ user, onNext }) => {
   const [details, setDetails] = useState(user);
-
+console.log(details);
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setDetails({
+  //     ...details,
+  //     [name]: value,
+  //   });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDetails({
-      ...details,
-      [name]: value,
-    });
+    
+    if (details) {
+      setDetails({
+        ...details,
+        [name]: value,
+      });
+    }
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  
+  const handleSubmit = async () => {
     try {
       const response = await fetch(`http://localhost:3000/users/${details.user_id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(details),
       });
       if (!response.ok) {
@@ -32,7 +39,7 @@ const UserDetailsPayment = ({ user, onNext }) => {
   
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form >
       <h2>Update Your Details</h2>
       <label>
         Name:
@@ -51,10 +58,10 @@ const UserDetailsPayment = ({ user, onNext }) => {
         <input type="text" name="street" value={details.street} onChange={handleChange} />
       </label>
       <label>
-        Zip Code::
+        Zip Code:
         <input type="text" name="zipcode" value={details.zipcode} onChange={handleChange} />
       </label>
-      <button type="submit">Next</button>
+      <button onClick={handleSubmit}>Next</button>
     </form>
   );
 };

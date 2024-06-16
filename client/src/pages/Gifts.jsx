@@ -105,8 +105,7 @@ function Gifts() {
             placeholder='search gift'
             onChange={(event) => setSearchCriteria(event.target.value)}
           />
-          {/* <FontAwesomeIcon icon={faSearch} className='searchIcon' /> */}
-
+          <FaSearch/>
         </div>
         {user && user.role === 'admin' && (
           <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>

@@ -147,3 +147,14 @@ img:active {
   margin-top: 10px;
   padding: 5px 10px;
 }
+
+.searchContainer{
+  display: flex;
+  align-items: center;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 10px 10px;
+  margin: 15px;
+  width: 300px;
+  background-color: white;
+}

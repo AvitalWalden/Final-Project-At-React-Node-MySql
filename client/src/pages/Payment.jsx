@@ -2,18 +2,18 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import UserDetailsPayment from './UserDetailsPayment';
 import Checkout from "./Checkout";
-import '../css/Payment.css'; 
+import '../css/Payment.css';
 
 const Payment = () => {
   const { user } = useContext(UserContext);
   const [step, setStep] = useState(1);
 
   const handleNext = () => {
-    setStep(step + 1);
+    setStep(prev => prev + 1);
   };
 
   const handlePrevious = () => {
-    setStep(step - 1);
+    setStep(prev => prev - 1);
   };
 
   return (

@@ -12,6 +12,7 @@
 
 .h1 {
   margin: 1%;
+
 }
 
 .btn-admin {
@@ -60,13 +61,17 @@
   font-size: 16px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 2px solid #cccccc;
   padding: 10px 20px; /* Adjust padding as needed */
   cursor: pointer;
   transition: border-color 0.25s;
   box-sizing: border-box;
 }
+.btnAddGift, .btnEditGift, .btnDeleteGift:hover {
 
+  border: 2px solid #cccccc;
+
+}
 .modal-overlay {
   position: fixed;
   top: 0;
