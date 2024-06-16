@@ -1,24 +1,28 @@
 import React from 'react';
 import '../css/SideSlidePanel.css';
 
-const SideSlidePanel = ({ isOpen, orderGifts, onClose }) => {
-  return (
-    <div className={`side-slide-panel ${isOpen ? 'open' : ''}`}>
-      <button className="close-button" onClick={onClose}>Close</button>
-      <h2>Order Gifts</h2>
-      <ul>
-        {orderGifts.map((gift, index) => (
-          <li key={index}>
-            <img src={gift.image_url} alt={gift.name} />
-            <div className="gift-info">
-              <p>{gift.name}</p>
-              <p>{gift.price}</p>
+const SideSlidePanel = ({ orders, isOpen, onClose }) => {
+    console.log(orders)
+    return (
+        <div className={`order-list ${isOpen ? 'open' : ''}`}>
+            <div className="header">
+                <h2>Orders</h2>
+                <button className="close-button" onClick={onClose}>Close</button>
             </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+            <ul className="orders">
+                {orders.map((gift, index) => (
+                    <li key={index}>
+                        <div className="gift-info">
+                            <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+                            <p>Name:{gift.name}</p>
+                            <p>Price:{gift.price}</p>
+                            <p>Quantity:{gift.quantity}</p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default SideSlidePanel;
