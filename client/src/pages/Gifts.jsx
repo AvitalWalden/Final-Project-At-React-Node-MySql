@@ -1,3 +1,5 @@
+// Gifts.js
+
 import React, { useEffect, useState, useContext } from 'react';
 import Gift from '../components/Gift';
 import '../css/Gifts.css';
@@ -14,8 +16,7 @@ function Gifts() {
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
   const [file, setFile] = useState(null);
   const { user } = useContext(UserContext);
-  const { order } = useContext(OrderContext);
-  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
+  const { order,isOrderListOpen ,setIsOrderListOpen} = useContext(OrderContext);
 
   useEffect(() => {
     const url = `http://localhost:3000/gifts`;
@@ -26,12 +27,12 @@ function Gifts() {
           const filteredGifts = data.filter(gift => !gift.winner_id);
           setGifts(filteredGifts);
         } else {
-          setGifts([]); // Ensure it's an array
+          setGifts([]);
         }
       })
       .catch(error => {
         console.error('Error fetching gifts:', error);
-        setGifts([]); // Ensure it's an array in case of error
+        setGifts([]);
       });
   }, []);
 
@@ -86,7 +87,6 @@ function Gifts() {
           setGifts(prevGifts => [...prevGifts, data]);
           setIsAddGiftModalOpen(false);
           setNewGift({ name: '', price: '', image_url: '' });
-          setIsSidePanelOpen(true);
         })
     } catch (error) {
       console.error('Error saving gift:', error);
@@ -126,7 +126,7 @@ function Gifts() {
         ))}
       </div>
 
-      <SideSlidePanel isOpen={isSidePanelOpen} orderGifts={order} onClose={() => setIsSidePanelOpen(false)} />
+      <SideSlidePanel orders={order} isOpen={isOrderListOpen} onClose={() => setIsOrderListOpen(false)} />
 
       {isAddGiftModalOpen && (
         <div className="modal-overlay">

@@ -5,6 +5,8 @@ export const OrderContext = createContext();
 export const OrderProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
+  const [isOrderListOpen, setIsOrderListOpen] = useState(false);
+
   const addToOrder = (gift) => {
     const existingGift = order.find((item) => item.gift_id === gift.gift_id);
     if (existingGift) {
@@ -15,7 +17,7 @@ export const OrderProvider = ({ children }) => {
     } else {
       setOrder([...order, { ...gift, quantity: 1 }]);
     }
-  
+    setIsOrderListOpen(true);
     setMessage(`Gift "${gift.name}" added to the order!`);
     setTimeout(() => {
       setMessage('');
@@ -34,7 +36,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   return (
-    <OrderContext.Provider value={{setOrder, order, addToOrder, removeFromOrder, message }}>
+    <OrderContext.Provider value={{setOrder, order, addToOrder, removeFromOrder, message,isOrderListOpen,setIsOrderListOpen }}>
       {children}
     </OrderContext.Provider>
   );
