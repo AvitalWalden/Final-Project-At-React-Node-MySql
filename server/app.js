@@ -25,6 +25,9 @@ const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
 const ordersRoutes=require("./routes/ordersRoutes")
 app.use("/orders",ordersRoutes);
+const shoppingCartRoutes=require("./routes/shoppingCartRoutes")
+app.use("/shoppingCart",shoppingCartRoutes);
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });

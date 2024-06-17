@@ -2,7 +2,6 @@ import React from 'react';
 import '../css/SideSlidePanel.css';
 
 const SideSlidePanel = ({ orders, isOpen, onClose }) => {
-    console.log(orders)
     return (
         <div className={`order-list ${isOpen ? 'open' : ''}`}>
             <div className="header">

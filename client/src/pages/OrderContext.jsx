@@ -6,6 +6,7 @@ export const OrderProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
   const [isOrderListOpen, setIsOrderListOpen] = useState(false);
+  const [savedCartItems, setSavedCartItems] = useState([]);
 
   const addToOrder = (gift) => {
     const existingGift = order.find((item) => item.gift_id === gift.gift_id);
@@ -23,7 +24,6 @@ export const OrderProvider = ({ children }) => {
       setMessage('');
     }, 3000);
   };
-  
 
   const removeFromOrder = (giftId) => {
     const updatedOrder = order.filter((item) => item.gift_id !== giftId);
@@ -35,8 +35,22 @@ export const OrderProvider = ({ children }) => {
     }, 3000);
   };
 
+  
+ 
   return (
-    <OrderContext.Provider value={{setOrder, order, addToOrder, removeFromOrder, message,isOrderListOpen,setIsOrderListOpen }}>
+    <OrderContext.Provider
+      value={{
+        setOrder,
+        order,
+        addToOrder,
+        removeFromOrder,
+        message,
+        isOrderListOpen,
+        setIsOrderListOpen,
+        savedCartItems,
+        setSavedCartItems,
+      }}
+    >
       {children}
     </OrderContext.Provider>
   );
