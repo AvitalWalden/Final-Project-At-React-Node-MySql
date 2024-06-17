@@ -97,7 +97,7 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 INSERT INTO users (name, username, email, address_id, phone, Bonus, role) VALUES
 ('John Doe', 'johndoe', 'A0583295187@gmail.com', 1, '050-1234567', 0, 'user'),
 ('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678', 0, 'admin'),
-('David Cohen', 'davidcohen', 'n025711858@gmail.com', 3, '050-3456789', 0, 'user'),
+('David Cohen', 'davidcohen', 'efratmiletzky1@gmail.com', 3, '050-3456789', 0, 'user'),
 ('Rachel Levi', 'rachellevi', 'n025711858@gmail.com', 4, '050-4567890', 0, 'user'),
 ('Michael Rosen', 'michaelrosen', 'n025711858@gmail.com', 5, '050-5678901', 0, 'user'),
 ('Sarah Gold', 'sarahgold', 'n025711858@gmail.com', 6, '050-6789012', 0, 'admin'),

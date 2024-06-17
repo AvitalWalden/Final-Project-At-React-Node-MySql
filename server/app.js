@@ -1,12 +1,16 @@
+const config = require('./config/config')
 const express = require('express');
 const path = require('path');
 const app = express();
+const cors = require('cors');
 const verifyJWT = require('./middleware/verifyJWT')
 const cookieParser = require('cookie-parser')
 app.use(express.json( ));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
+app.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
+
 
 const port = 3000;
 const imageRoutes = require("./routes/imagesRoutes")
