@@ -35,6 +35,8 @@ const UserDetails = () => {
             return;
         }
         const url = `http://localhost:3000/users/${user.user_id}`;
+        console.log("dsf:",userDetails)
+
         const requestOptions = {
             method: 'PUT',
             headers: {

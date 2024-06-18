@@ -24,23 +24,22 @@ async function getUserForSignup(id) {
 
 async function createUser(username, password) {
     try {
-        console.log("aaa");
+        const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
+        const resultAddress = await pool.query(sqlAddress, ['', '', '']);
+        const addressId = resultAddress[0].insertId;
+        const sqlUser = "INSERT INTO users (username, address_id) VALUES (?, ?)";
+        const resultUser = await pool.query(sqlUser, [username, addressId]);
+        const userId = resultUser[0].insertId;
+        const sqlPassword = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
+        await pool.query(sqlPassword, [userId, password]);
 
-        const sql = "INSERT INTO users (`username`) VALUES( ?)";
-        const result = await pool.query(sql, [username]);
-        const id = result[0].insertId;
-        console.log(id);
-
-        const sqlPassword = "INSERT INTO passwords (`user_id`,`password`) VALUES(?,?)";
-        await pool.query(sqlPassword, [id, password]);
-        console.log(result[0]);
-        return result[0];
-
+        return resultUser[0];
     } catch (err) {
-        console.log(err);
+        console.error('Error creating user:', err);
         throw err;
     }
 }
+
 
 async function logIn(userName) {
     try {
@@ -54,18 +53,26 @@ async function logIn(userName) {
     }
 }
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId) {
     try {
-        const sqlAddress = `UPDATE addresses SET city = ?, street = ?, zipcode = ?  WHERE address_id = ?`;
-        const resultAddress = await pool.query(sqlAddress, [city, street, zipcode,addressId]);
-        const sql = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ?, role = ? WHERE user_id = ?`;
-        const result = await pool.query(sql, [name, username, email, addressId, phone, Bonus, role, id]);
-        return result;
+        const sqlValidateAddress = `SELECT * FROM addresses WHERE address_id = ?`;
+        const [addressRows] = await pool.query(sqlValidateAddress, [addressId]);
+
+        if (addressRows.length === 0) {
+            throw new Error(`Address ID ${addressId} does not exist`);
+        }
+        const sqlAddress = `UPDATE addresses SET city = ?, street = ?, zipcode = ? WHERE address_id = ?`;
+        await pool.query(sqlAddress, [city, street, zipcode, addressId]);
+        const sqlUser = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ?, role = ? WHERE user_id = ?`;
+        const resultUser = await pool.query(sqlUser, [name, username, email, addressId, phone, Bonus, role, id]);
+
+        return resultUser;
     } catch (err) {
-        console.error('Error updating branch:', err);
+        console.error('Error updating user:', err);
         throw err;
     }
 }
+
 
 
 module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup }

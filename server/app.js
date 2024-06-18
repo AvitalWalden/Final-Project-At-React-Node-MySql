@@ -16,7 +16,7 @@ const port = 3000;
 const imageRoutes = require("./routes/imagesRoutes")
 app.use("/upload",imageRoutes)
 const loginRoutes=require("./routes/loginRoutes")
-app.use("/logIn",loginRoutes);
+app.use("/login",loginRoutes);
 const giftsRoutes=require("./routes/giftsRoutes")
 app.use("/gifts",giftsRoutes);
 const signupRoutes=require("./routes/usersRoutes")

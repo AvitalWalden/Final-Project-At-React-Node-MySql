@@ -8,9 +8,8 @@ const jwt = require('jsonwebtoken');
 
 async function createUser(username, password) {
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword);
-        console.log(user);
         return user;
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
@@ -23,35 +22,32 @@ async function createUser(username, password) {
 
 async function logIn(userName, password) {
     try {
+        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.logIn(userName);
         if (user) {
-            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-            if (user.password === hashedPassword) {
-
+            if (hashedPassword === user.password){
                 const accessToken = jwt.sign(
                     { "username": user.username },
                     config.ACCESS_TOKEN_SECRET,
                     { expiresIn: '30s' }
                 );
-         
+
                 const refreshToken = jwt.sign(
                     { "username": user.username },
                     config.REFRESH_TOKEN_SECRET,
                     { expiresIn: '1d' }
                 );
-                console.log(refreshToken)
+                console.log(refreshToken);
                 return { user, accessToken, refreshToken };
             } else {
-                throw new Error('You are not exist in the system, please sign up');
+                throw new Error('Incorrect password. Please try again.');
             }
-        }
-        else {
-            throw new Error('You are not exist in the system, please sign up');
+        } else {
+            throw new Error('User does not exist in the system, please sign up.');
         }
     } catch (err) {
         throw err;
     }
-
 }
 
 async function getUser(id) {
