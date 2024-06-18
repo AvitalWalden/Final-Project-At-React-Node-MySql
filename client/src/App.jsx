@@ -15,6 +15,8 @@ import { UserProvider } from './pages/UserContext';
 import Winners from "./pages/Winners";
 import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
+import Home from "./pages/Home";
+
 // import { createContext, useState } from 'react';
 
 function App() {
@@ -25,7 +27,7 @@ function App() {
             <BrowserRouter>
               <Navigates />
               <Routes>
-                <Route path="/" element={<Navigate to="/gifts" />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/gifts" element={<Gifts />} />
                 <Route path="/login" element={<LogIn />} />
                 <Route path="/logout" element={<LogOut />} />

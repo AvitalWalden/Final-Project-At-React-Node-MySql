@@ -15,7 +15,7 @@ const LogOut = () => {
       localStorage.removeItem('currentUser'); 
       setUser(null); 
       setOrder([]); 
-      navigate('/gifts');
+      navigate('/');
     } else {
       navigate('/gifts');
     }

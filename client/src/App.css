@@ -139,7 +139,7 @@ h2 {
 }
 
 nav {
-  background-color: #99D9EA;
+  background-color: black;
   padding: 0;
   display: flex;
   justify-content: space-evenly;
@@ -151,7 +151,7 @@ nav a , nav div{
   font-size: 22px;
   text-decoration: none;
   text-align: center;
-  color: rgb(0, 0, 0);
+  color: white;
   cursor: pointer;
   text-shadow: 0 0 1px;
   padding: 10px 20px 13px 20px;
