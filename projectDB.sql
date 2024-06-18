@@ -112,7 +112,7 @@ INSERT INTO users (name, username, email, address_id, phone, Bonus, role) VALUES
 ('Sarah Gold', 'sarahgold', 'n025711858@gmail.com', 6, '050-6789012', 0, 'admin'),
 ('Daniel Katz', 'danielkatz', 'n025711858@gmail.com', 7, '050-7890123', 0, 'user'),
 ('Esther Green', 'esthergreen', 'n025711858@gmail.com', 8, '050-8901234', 0, 'user'),
-('Yossi Azulay', 'yossiazulay', 'n025711858@gmail.com', 9, '050-9012345', 0, 'user'),
+('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345', 0, 'user'),
 ('Leah Bar', 'leahbar', 'n025711858@gmail.com', 10, '050-0123456', 0, 'admin');
 
 -- Insert passwords

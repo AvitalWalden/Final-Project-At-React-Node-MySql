@@ -4,7 +4,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const { getShoppingCart,postShoppingCart} = require('../controllers/shoppingCartController');
+const { getShoppingCart,postShoppingCart,deleteShoppingCart,putShoppingCart} = require('../controllers/shoppingCartController');
 
 
 
@@ -26,7 +26,6 @@ router.post("/", async (req, res) => {
     try {
         let shoppingCart;
         const { userId, order } = req.body;
-        console.log(userId, order )
         shoppingCart = await postShoppingCart(userId, order);
         res.send(shoppingCart);
     } catch (err) {
@@ -36,6 +35,35 @@ router.post("/", async (req, res) => {
         res.status(500).send(error);
     }
 });
+router.put("/", async (req, res) => {  
+
+    try {
+        let shoppingCart;
+        const { userId, giftId,newQuantity } = req.body;
+        shoppingCart = await putShoppingCart(userId, giftId,newQuantity);
+        res.send(shoppingCart);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+});
+router.delete('/:userId/:giftId', async(req, res) => {
+    try {
+        let shoppingCart;
+        const userId= req.params.userId;
+        const giftId= req.params.giftId;
+
+        shoppingCart = await deleteShoppingCart(userId,giftId);
+        res.send(shoppingCart);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+  });
 
   
 module.exports = router;

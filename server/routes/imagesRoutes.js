@@ -40,7 +40,6 @@ router.put('/:gift_id', upload.single('image'), async (req, res) => {
         }
         await updateImage(image, gift_id);
         const giftAfterUpdate = await getGift(gift_id);
-        console.log(giftAfterUpdate);
         res.send(giftAfterUpdate);
     } catch (err) {
         const error = {

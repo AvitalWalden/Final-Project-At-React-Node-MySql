@@ -16,5 +16,21 @@ async function postShoppingCart(userId, temporaryCart) {
     }
 }
 
+async function deleteShoppingCart(userId,giftId) {
 
-module.exports = {getShoppingCart,postShoppingCart}
+    try {
+        return model.deleteShoppingCart(userId,giftId);
+    } catch (err) {
+        throw err;
+    }
+}
+async function putShoppingCart(userId,giftId,newQuantity) {
+
+    try {
+        return model.putShoppingCart(userId,giftId,newQuantity);
+    } catch (err) {
+        throw err;
+    }
+}
+
+module.exports = {getShoppingCart,postShoppingCart,deleteShoppingCart,putShoppingCart}

@@ -25,14 +25,11 @@ async function getShoppingCart(userId) {
 }
 async function postShoppingCart(userId, temporaryCart) {
     try {
-        console.log(temporaryCart)
 
         for (const item of temporaryCart) {
-            console.log("here")
 
             const { gift_id, quantity } = item;
             const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, gift_id]);
-            console.log(gift_id, quantity)
             if (existingRows.length > 0) {
                 await pool.query('UPDATE shopping_cart SET quantity = quantity + ? WHERE user_id = ? AND gift_id = ?', [quantity, userId, gift_id]);
             } else {
@@ -45,5 +42,35 @@ async function postShoppingCart(userId, temporaryCart) {
         throw err;
     }
 }
-
-module.exports = { getShoppingCart, postShoppingCart };
+async function deleteShoppingCart(userId, giftId) {
+    try {
+      const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
+  
+      if (existingRows.length > 0) {
+        await pool.query('DELETE FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
+        return { message: 'Gift deleted from shopping cart successfully' };
+      } else {
+        return { message: 'Gift not found in shopping cart' };
+      }
+    } catch (err) {
+      console.error('Error deleting gift from shopping cart:', err);
+      throw err;
+    }
+  }
+  async function putShoppingCart(userId, giftId, newQuantity) {
+    try {
+      const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
+  
+      if (existingRows.length > 0) {
+        await pool.query('UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND gift_id = ?', [newQuantity, userId, giftId]);
+        return { message: 'Gift quantity updated in shopping cart successfully' };
+      } else {
+        await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES (?, ?, ?)', [userId, giftId, newQuantity]);
+        return { message: 'Gift added to shopping cart successfully' };
+      }
+    } catch (err) {
+      console.error('Error updating shopping cart:', err);
+      throw err;
+    }
+  }
+module.exports = { getShoppingCart, postShoppingCart,deleteShoppingCart,putShoppingCart };

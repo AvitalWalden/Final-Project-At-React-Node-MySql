@@ -18,10 +18,8 @@ import AllOrders from "./pages/AllOrders";
 // import { createContext, useState } from 'react';
 
 function App() {
-  // const [user, setUser] = useState();
   return (
     <div>
-      {/* <UserContext.Provider value={{ user, setUser }}> */}
         <UserProvider>
           <OrderProvider>
             <BrowserRouter>
@@ -45,7 +43,6 @@ function App() {
             </BrowserRouter>
           </OrderProvider>
         </UserProvider>
-      {/* </UserContext.Provider> */}
     </div>
   );
 }

@@ -35,7 +35,6 @@ const UserDetails = () => {
             return;
         }
         const url = `http://localhost:3000/users/${user.user_id}`;
-        console.log("dsf:",userDetails)
 
         const requestOptions = {
             method: 'PUT',
@@ -50,6 +49,7 @@ const UserDetails = () => {
             .then(response => response.json())
             .then(data => {
                 setUser(data);
+                localStorage.setItem('currentUser', JSON.stringify(data));
                 setUseDetailsError('User created successfully');
                 navigate('/gifts');
             })

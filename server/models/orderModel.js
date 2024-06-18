@@ -50,7 +50,6 @@ async function getOrder(userId) {
                 orders.user_id = ?
         `;
         const [rows] = await pool.query(sql, [userId]);
-        console.log(rows); // Log the rows to check the returned data structure
         return rows;
     } catch (err) {
         console.error(err);
@@ -67,7 +66,6 @@ async function getOrderByGiftID(gift_id) {
 
         const sql = 'SELECT * FROM orders NATURAL JOIN  lotteries_tickets where lotteries_tickets.gift_id=?';
         const result = await pool.query(sql, [gift_id]);
-        console.log(result);
         return result[0];
     } catch (err) {
         console.log(err);

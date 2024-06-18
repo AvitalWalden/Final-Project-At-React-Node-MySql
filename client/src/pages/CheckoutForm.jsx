@@ -114,7 +114,7 @@ const CheckoutForm = ({ onPrevious }) => {
         />
       </div>
       <button type="button" onClick={onPrevious} className="prev-button">Previous</button>
-      <button type="submit" className="pay-button" disabled={!stripe || !isFormComplete || isLoading}>
+      <button type="submit" className="pay-button" disabled={ !isFormComplete || isLoading}>
         {isLoading ? 'Processing...' : 'Pay'}
       </button>
     </form>

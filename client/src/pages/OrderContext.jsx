@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect,useContext } from 'react';
+import { UserContext } from './UserContext';
 
 export const OrderContext = createContext();
 
@@ -7,6 +8,18 @@ export const OrderProvider = ({ children }) => {
   const [message, setMessage] = useState('');
   const [isOrderListOpen, setIsOrderListOpen] = useState(false);
   const [savedCartItems, setSavedCartItems] = useState([]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    const storedOrder = localStorage.getItem('currentOrder');
+    if (storedOrder) {
+      setOrder(JSON.parse(storedOrder));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('currentOrder', JSON.stringify(order));
+  }, [order]);
 
   const addToOrder = (gift) => {
     const existingGift = order.find((item) => item.gift_id === gift.gift_id);
@@ -25,18 +38,35 @@ export const OrderProvider = ({ children }) => {
     }, 3000);
   };
 
-  const removeFromOrder = (giftId) => {
-    const updatedOrder = order.filter((item) => item.gift_id !== giftId);
-    setOrder(updatedOrder);
-
+  const removeFromOrder = (giftId, IdentifyString) => {
+    if (IdentifyString == "current") {
+      const updatedOrder = order.filter((item) => item.gift_id !== giftId);
+      setOrder(updatedOrder);
+    }
+    else {
+    
+      const removeFromSavedShoppingCart = async (giftId) => {
+        try {
+          const userId = user.user_id; 
+      
+          await fetch(`http://localhost:3000/shoppingCart/${userId}/${giftId}`, {
+            method: 'DELETE',
+          });
+      
+          setSavedCartItems(savedCartItems.filter(item => item.gift_id !== giftId));
+        } catch (error) {
+          console.error('Error deleting item:', error);
+        }
+      };
+      removeFromSavedShoppingCart(giftId);
+      
+    }
     setMessage('Gift removed from the order!');
     setTimeout(() => {
       setMessage('');
     }, 3000);
   };
 
-  
- 
   return (
     <OrderContext.Provider
       value={{

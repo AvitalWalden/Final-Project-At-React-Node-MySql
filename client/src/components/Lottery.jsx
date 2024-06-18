@@ -59,7 +59,6 @@ function Lottery({ gift }) {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
                 if (data.length > 0) {
                     const usersEntered = [];
                     data.forEach(order => {

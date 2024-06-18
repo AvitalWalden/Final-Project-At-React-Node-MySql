@@ -1,68 +1,85 @@
-/* כללי */
 .order-management {
   position: relative;
   font-family: Arial, sans-serif;
   padding: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
 }
 
-.confirmation-message {
-  color: green;
+.order-management h1 {
   text-align: center;
+  font-size: 24px;
   margin-bottom: 20px;
 }
 
-.gift-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 30px;
-  padding: 0;
-  list-style-type: none;
-}
-
-.gift-card-cart {
-  width: 200px;
-  background-color: #fff;
+.order-management .gift-list,
+.order-management .saved-cart {
+  background-color: #f7f7f7;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-  margin: 10px auto;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Include padding in width calculation */
+  margin-bottom: 20px;
+}
+
+.order-management .gift-list h2,
+.order-management .saved-cart h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.order-management .gift-card-cart {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.gift-card-cart img {
+.order-management .gift-card-cart img {
   width: 100%;
   height: auto;
-  max-width: 100px;
+  max-width: 150px;
   object-fit: cover;
   border-radius: 8px;
   margin: 10px 0;
 }
 
-.gift-card-cart h1 {
+.order-management .gift-card-cart h1 {
   font-size: 18px;
   color: #333;
-  margin: 5px 0;
+  margin: 10px 0;
+  text-align: center;
 }
 
-.gift-card-cart input[type="number"] {
+.order-management .gift-card-cart h1,
+.order-management .gift-card-cart h2 {
+  font-size: 16px;
+}
+
+.order-management .gift-card-cart input[type="number"] {
   width: 60px;
   padding: 5px;
-  font-size: 16px;
+  font-size: 14px;
   margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
   text-align: center;
 }
 
-.btnDelete-cart {
+.order-management .btnDelete-cart {
   background-color: #ff4d4d;
   border: none;
   color: white;
-  padding: 10px;
+  padding: 8px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
@@ -70,42 +87,73 @@
   position: relative;
 }
 
-.btnDelete-cart:hover {
+.order-management .btnDelete-cart:hover {
   background-color: #ff1a1a;
 }
 
-.btn-buy {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-
-  color: rgb(0, 0, 0);
-  padding: 10px 20px;
+.order-management .btn-buy {
+  background-color: #4CAF50;
   border: none;
+  color: white;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
-.btn-buy:hover {
-  background-color: #ffffff;
+.order-management .btn-buy:hover {
+  background-color: #45a049;
 }
 
-.modal-login {
+.order-management .order-summary {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 0px;
+  width: 100%;
+  box-sizing: border-box;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.order-management .order-summary h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.order-management .order-summary p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.order-management .order-summary .summary-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-management .modal {
   position: fixed;
-  
-  width: 23%;
-  height: 24%;
-  background: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensures the modal is above other elements */
+  z-index: 1000;
 }
 
-.modal-content-login {
+.order-management .modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -114,24 +162,21 @@
   max-width: 300px;
 }
 
-.modal-content-login h2 {
+.order-management .modal-content h2 {
   margin: 0 0 20px 0;
 }
 
-.modal-content-login button {
+.order-management .modal-content button {
   margin: 10px 5px;
   padding: 10px 20px;
 }
 
-
-
-/* סגנון לטולטיפ */
-.tooltip {
+.order-management .tooltip {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
+.order-management .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -141,33 +186,46 @@
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* מיקום הטולטיפ */
+  bottom: 125%;
   left: 50%;
-  margin-left: -60px; /* מרכז את הטולטיפ */
+  margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-.tooltip:hover .tooltiptext {
+.order-management .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }
 
 /* Media Queries for Responsiveness */
+@media (max-width: 900px) {
+  .order-management .order-summary {
+    position: relative;
+  }
+}
+
 @media (max-width: 600px) {
-  .btn-buy {
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
+  .order-management .btn-buy {
+    padding: 8px 16px;
     font-size: 14px;
   }
 
-  .gift-card-cart h1 {
+  .order-management .gift-card-cart h1 {
     font-size: 16px;
   }
 
-  .gift-card-cart input[type="number"] {
+  .order-management .gift-card-cart input[type="number"] {
     width: 50px;
     font-size: 14px;
+  }
+
+  .order-management .order-summary .summary-container {
+    flex-direction: column;
+  }
+
+  .order-management .order-summary .summary-container p,
+  .order-management .order-summary .summary-container button {
+    margin-bottom: 10px;
   }
 }

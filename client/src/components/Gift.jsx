@@ -47,7 +47,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
   };
 
   const handleUpload = () => {
-    console.log(handleUpload);
     const formData = new FormData();
     formData.append('image', file);
     const gift_id = currentGift.gift_id;
@@ -92,7 +91,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
       .then(data => {
         handleUpload(data.gift_id);
         const a = gifts.map(g => g.gift_id === data.gift_id ? data : g);
-        console.log(a);
         setGifts(a);
         setIsEditGiftModalOpen(false);
       });

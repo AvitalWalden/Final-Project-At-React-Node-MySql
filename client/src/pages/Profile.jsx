@@ -26,7 +26,6 @@ const Profile = () => {
 
   const fetchUserDetails = async (user_id) => {
     try {
-      console.log(user)
 
       const response = await fetch(`http://localhost:3000/users/${user_id}`);
       const data = await response.json();
@@ -49,7 +48,6 @@ const Profile = () => {
       setUseDetailsError('Please fill in all fields.');
       return;
     }
-    console.log(userDetails);
     const url = `http://localhost:3000/users/${user.user_id}`;
     const requestOptions = {
       method: 'PUT',

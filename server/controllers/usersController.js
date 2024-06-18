@@ -37,7 +37,6 @@ async function logIn(userName, password) {
                     config.REFRESH_TOKEN_SECRET,
                     { expiresIn: '1d' }
                 );
-                console.log(refreshToken);
                 return { user, accessToken, refreshToken };
             } else {
                 throw new Error('Incorrect password. Please try again.');

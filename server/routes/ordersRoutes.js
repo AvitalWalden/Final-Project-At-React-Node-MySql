@@ -23,8 +23,6 @@ router.get("/user_id/:user_id", async (req, res) => {
     try {
         let order;
         const user_id = req.params.user_id;
-        console.log(user_id);
-        console.log("hgfdsa");
         order = await getOrder(user_id);
         res.send(order);
     } catch (err) {
@@ -37,10 +35,8 @@ router.get("/user_id/:user_id", async (req, res) => {
 
 router.get("/gift_id/:gift_id", async (req, res) => {
     try {
-        console.log("gggg");
         let order;
         const gift_id = req.params.gift_id;
-        console.log(gift_id);
         order = await getOrderByGiftID(gift_id);
         res.send(order);
     } catch (err) {
@@ -53,8 +49,6 @@ router.get("/gift_id/:gift_id", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const response = await createOrder(req.body.user_id, req.body.order_date,req.body.order);
-        console.log(response)
-
         const newOrder = await getOrderByOrderId(response.orderId);
         res.send(newOrder);
     } catch (err) {

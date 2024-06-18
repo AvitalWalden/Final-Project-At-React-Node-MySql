@@ -12,7 +12,9 @@ const LogOut = () => {
   const handleUserLogout = (logout) => {
     if (logout) {
       saveToDBShoppingCart(); 
-      setUser(null);
+      localStorage.removeItem('currentUser'); 
+      setUser(null); 
+      setOrder([]); 
       navigate('/gifts');
     } else {
       navigate('/gifts');
@@ -29,7 +31,6 @@ const LogOut = () => {
         body: JSON.stringify({ userId, order }),
       });
 
-      setOrder([]); 
     } catch (error) {
       console.error('Error saving shopping cart:', error);
     }

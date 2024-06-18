@@ -24,7 +24,6 @@ async function handleRefreshToken(userName, password) {
                     config.REFRESH_TOKEN_SECRET,
                     { expiresIn: '1d' }
                 );
-                console.log(refreshToken)
                 return { user, accessToken, refreshToken };
             } else {
                 throw new Error('You are not exist in the system, please sign up');

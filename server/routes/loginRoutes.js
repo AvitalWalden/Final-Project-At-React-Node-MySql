@@ -28,7 +28,6 @@ router.post("/", async (req, res) => {
     try {
         const { username, password } = req.body;
         const { user, accessToken, refreshToken } = await logIn(username, password);
-       console.log("jj")
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
         const userLogIn = await getUser(user.user_id);
         delete userLogIn.address_id;

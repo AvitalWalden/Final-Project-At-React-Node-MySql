@@ -6,11 +6,11 @@ import { FaTrashCan } from "react-icons/fa6";
 import '../css/OrderManagement.css';
 
 const OrderManagement = () => {
-  const { removeFromOrder } = useContext(OrderContext);
   const navigate = useNavigate();
-  const { setOrder, order,temporaryCart,setTemporaryCart,savedCartItems,setSavedCartItems } = useContext(OrderContext);
+  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
@@ -22,13 +22,27 @@ const OrderManagement = () => {
         } catch (error) {
           console.error('Error fetching saved cart items:', error);
         }
-      } else {
-        setSavedCartItems(order);
       }
     };
 
     fetchSavedCartItems();
   }, [user, order]);
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    order.forEach((gift) => {
+      totalPrice += gift.price * gift.quantity;
+    });
+    savedCartItems.forEach((gift) => {
+      totalPrice += gift.price * gift.quantity;
+    });
+
+    return totalPrice.toFixed(2);
+  };
+
+  useEffect(() => {
+    setTotalPrice(calculateTotalPrice());
+  }, [order, savedCartItems]);
 
   const handlePaymentClick = async (e) => {
     e.preventDefault();
@@ -48,80 +62,109 @@ const OrderManagement = () => {
     setShowLoginPrompt(false);
   };
 
-  const handleDeleteGift = (giftId) => {
-    removeFromOrder(giftId);
+  const handleDeleteGift = (giftId, IdentifyString) => {
+    removeFromOrder(giftId, IdentifyString);
   };
 
-  const handleQuantityChange = (giftId, newQuantity) => {
-    const updatedOrder = order.map((item) =>
-      item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
-    );
-    setOrder(updatedOrder);
-   
+  const handleQuantityChange = (giftId, newQuantity, IdentifyString) => {
+    if (IdentifyString == "current") {
+      const updatedOrder = order.map((item) =>
+        item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
+      );
+      setOrder(updatedOrder);
+    }
+    else {
+      const putToDBShoppingCart = async (giftId, newQuantity) => {
+        try {
+          const userId = user.user_id;
+          await fetch(`http://localhost:3000/shoppingCart`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, giftId, newQuantity }),
+          });
+          const updatedSavingCart = savedCartItems.map((item) =>
+            item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
+          );
+          setSavedCartItems(updatedSavingCart);
+        } catch (error) {
+          console.error('Error saving shopping cart:', error);
+        }
+      };
+      putToDBShoppingCart(giftId, newQuantity)
+    }
   };
-
 
   return (
     <div className="order-management">
-      <h1>Shopping Cart</h1>
-      {order.length === 0 && savedCartItems.length === 0 ? (
-        <p>No gifts added to the order.</p>
-      ) : (
-        <>
-          <div className="gift-list">
-            {order.length > 0 && (
-              <>
-                <h2>Current Order:</h2>
-                {order.map((gift, index) => (
-                  <div key={index} className="gift-card-cart">
-                    <h1>{gift.name}</h1>
-                    <h1>{gift.price}$</h1>
-                    <input
-                      type="number"
-                      value={gift.quantity}
-                      onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value))}
-                    />
-                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-                    <div className="tooltip">
-                      <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id)}>
-                        <FaTrashCan />
-                      </button>
-                      <span className="tooltiptext">Remove item</span>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            {savedCartItems.length > 0 && (
-              <>
-               <br></br>
-                <h2>You also added:</h2>
-                {savedCartItems.map((gift, index) => (
-                  <div key={index} className="gift-card-cart">
-                    <h1>{gift.name}</h1>
-                    <h1>{gift.price}$</h1>
-                    <input
-                      type="number"
-                      value={gift.quantity}
-                      onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value))}
-                    />
-                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-                    <div className="tooltip">
-                      <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id)}>
-                        <FaTrashCan />
-                      </button>
-                      <span className="tooltiptext">Remove item</span>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-        </>
+      <h1>Order Management</h1>
+      {order.length > 0 && (
+        <div className="gift-list">
+          <h2>Current Gift List</h2>
+          {
+            order.map((gift, index) => (
+              <div key={index} className="gift-card-cart">
+                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+                <h1>{gift.name}</h1>
+                <h1>${gift.price}</h1>
+                <input
+                  type="number"
+                  value={gift.quantity}
+                  onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value), "current")}
+                />
+                <div className="tooltip">
+                  <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "current")}>
+                    <FaTrashCan />
+                  </button>
+                  <span className="tooltiptext">Remove item</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
       )}
-      <button className="btn-buy" onClick={handlePaymentClick} disabled={order.length === 0 && savedCartItems.length === 0}>
-        Buy here
-      </button>
+      {savedCartItems.length > 0 && (
+        <div className="saved-cart">
+          <h2>Saved Shopping Cart</h2>
+          {
+            savedCartItems.map((gift, index) => (
+              <div key={index} className="gift-card-cart">
+                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
+                <h1>{gift.name}</h1>
+                <h1>${gift.price}</h1>
+                <input
+                  type="number"
+                  value={gift.quantity}
+                  onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value), "saved")}
+                />
+                <div className="tooltip">
+                  <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "saved")}>
+                    <FaTrashCan />
+                  </button>
+                  <span className="tooltiptext">Remove item</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      )}
+
+      <div className="order-summary">
+        <h2>Order Summary</h2>
+        <div className="summary-container">
+          <p>Total Price: {totalPrice}$</p>
+          <button
+            className="btn-buy"
+            onClick={handlePaymentClick}
+            disabled={order.length === 0 && savedCartItems.length === 0}
+          >
+            Proceed to Payment
+          </button>
+        </div>
+      </div>
+
+
       {showLoginPrompt && (
         <div className='modal'>
           <div className="modal-content">
@@ -131,7 +174,6 @@ const OrderManagement = () => {
           </div>
         </div>
       )}
-  
     </div>
   );
 };

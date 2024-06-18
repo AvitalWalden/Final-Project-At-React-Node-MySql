@@ -20,7 +20,6 @@ router.get("/", async (req, res) => {
 
 router.get("/winners", async (req, res) => {
     try {
-        console.log("lllll")
         res.send(await getGiftsWithUserDetails());
     } catch (err) {
         const error = {
@@ -59,7 +58,6 @@ router.post("/", async (req, res) => {
 router.delete("/:gift_id", async (req, res) => {
     try{
         const id = req.params.gift_id;
-        console.log(id);
         await deleteGift(id);
         res.send();
     }catch (err) {
