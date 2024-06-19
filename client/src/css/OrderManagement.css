@@ -1,10 +1,13 @@
+/* General Styles */
 .order-management {
   position: relative;
   font-family: Arial, sans-serif;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center items horizontally */
+  align-items: center;
+  height: 94vh; /* Ensure it covers the entire viewport */
+  margin-top: 80px; /* Reset margin-top to 0 */
 }
 
 .order-management h1 {
@@ -116,10 +119,11 @@
   padding-top: 0px;
   width: 100%;
   box-sizing: border-box;
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
+
+  position: fixed;
+  margin-top: 30%;
+     z-index: 1000; 
+
 }
 
 .order-management .order-summary h2 {

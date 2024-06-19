@@ -24,7 +24,7 @@ const Winners = () => {
   }, []);
 
   return (
-    <div>
+    <div className="W-container">
       <h1>Winners List</h1>
       <div className="winners-container">
         {winners.length > 0 ? (

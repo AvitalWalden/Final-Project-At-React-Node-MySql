@@ -26,6 +26,7 @@ function App() {
           <OrderProvider>
             <BrowserRouter>
               <Navigates />
+              
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/gifts" element={<Gifts />} />
@@ -50,3 +51,6 @@ function App() {
 }
 
 export default App;
+
+
+            

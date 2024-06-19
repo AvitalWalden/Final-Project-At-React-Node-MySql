@@ -1,14 +1,17 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Home.css';
 import gift1 from '../images/gift1.jpg';
 import gift2 from '../images/gift2.jpg';
 import gift3 from '../images/gift3.jpg';
 import { useNavigate } from 'react-router-dom';
+import { MdKeyboardDoubleArrowDown } from "react-icons/md";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 const Home = () => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeSection, setActiveSection] = useState('intro');
+  const [isScrolledDown, setIsScrolledDown] = useState(false);
 
   const slides = [gift1, gift2, gift3];
 
@@ -23,29 +26,57 @@ const Home = () => {
   const nextSection = () => {
     setActiveSection('about');
   };
+
+  const handleArrowClickDown = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    setIsScrolledDown(true);
+  };
+
+  const handleArrowClickUp = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsScrolledDown(false);
+  };
+
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000);
-    return () => clearInterval(interval); 
+    const interval = setInterval(nextSlide, 6000);
+    return () => clearInterval(interval);
   }, []);
 
-
   return (
-    <div className="home-container">
-      <div className="slideshow">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={index === currentSlide ? 'slide active' : 'slide'}
-            style={{ backgroundImage: `url(${slide})` }}
-          />
-        ))}
-
+    <>
+      <div className="home-container">
+        <h1 className="title">
+          <span style={{ '--animation-order': 0 }}>Donation</span>
+          {'                    '}
+          <span style={{ '--animation-order': 1 }}>Sale</span>
+          {'                    '}
+          <span style={{ '--animation-order': 2 }}>Site</span>
+        </h1>
+        <div className="slideshow">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={index === currentSlide ? 'slide active' : 'slide'}
+              style={{ backgroundImage: `url(${slide})` }}
+            />
+          ))}
+        </div>
+        {!isScrolledDown && (
+          <div className="arrow-scroll" onClick={handleArrowClickDown}>
+            <MdKeyboardDoubleArrowDown style={{ color: "white", fontSize: "50px" }} />
+          </div>
+        )}
+      </div>
+      {isScrolledDown && (
+        <div className="arrow-scroll" onClick={handleArrowClickUp}>
+          <MdKeyboardDoubleArrowUp style={{ fontSize: "50px" }} />
+        </div>
+      )}
       <div className="content">
         {activeSection === 'intro' && (
           <div className="intro">
-            <h1>Welcome to Our Donation Sale Site</h1>
             <p>
-              Welcome to our online platform dedicated to supporting charitable causes through the
+              <span style={{ fontSize: "50px" }}>Welcome</span> to our online platform dedicated to supporting charitable causes through the
               sale of donated gifts. Here, every purchase you make directly contributes to meaningful
               charitable endeavors. Explore our selection of unique gifts from generous donors and
               find something special while making a difference in the lives of those in need.
@@ -70,14 +101,12 @@ const Home = () => {
             <button className="prev-button" onClick={prevSection}>
               ⬅Previous
             </button>
-            <button className="gifts-button" onClick={()=>{navigate('/gifts')}}>
-                See our gifts🎁
+            <button className="gifts-button" onClick={() => { navigate('/gifts') }}>
+              See our gifts🎁
             </button>
           </div>
         )}
       </div>
-      </div>
-
       <footer className="footer">
         <div className="inner">
           <p>&copy; 2024 Donation Sale Site. All rights reserved.</p>
@@ -88,7 +117,7 @@ const Home = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 };
 

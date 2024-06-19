@@ -20,6 +20,7 @@ body {
 
 .shearch{
   font-size: 100%;
+ 
 }
 
 
@@ -157,4 +158,5 @@ img:active {
   margin-left: auto;
   margin-right: auto;
   background-color: white;
+  margin-top: 90px;
 }

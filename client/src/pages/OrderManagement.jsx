@@ -98,7 +98,6 @@ const OrderManagement = () => {
 
   return (
     <div className="order-management">
-      <h1>Order Management</h1>
       {order.length > 0 && (
         <div className="gift-list">
           <h2>Current Gift List</h2>
