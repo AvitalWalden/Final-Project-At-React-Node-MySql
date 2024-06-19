@@ -13,18 +13,23 @@ app.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 const port = 3000;
-const imageRoutes = require("./routes/imagesRoutes")
-app.use("/upload",imageRoutes)
+
 const loginRoutes=require("./routes/loginRoutes")
 app.use("/login",loginRoutes);
 const giftsRoutes=require("./routes/giftsRoutes")
 app.use("/gifts",giftsRoutes);
 const signupRoutes=require("./routes/usersRoutes")
 app.use("/signup",signupRoutes);
+const refreshRoutes=require("./routes/refreshTokenRoutes")
+app.use("/refresh",refreshRoutes);
+const logoutRoutes=require("./routes/logoutRoutes")
+app.use("/logout",logoutRoutes);
+
+app.use(verifyJWT);
 const winnerRoutes=require("./routes/usersRoutes")
 app.use("/signup",winnerRoutes);
-;
-// app.use(verifyJWT);
+const imageRoutes = require("./routes/imagesRoutes")
+app.use("/upload",imageRoutes)
 const usersRoutes=require("./routes/usersRoutes")
 app.use("/users",usersRoutes);
 const ordersRoutes=require("./routes/ordersRoutes")

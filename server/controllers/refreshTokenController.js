@@ -1,39 +1,40 @@
-const config = require('../config/config.js');
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const { getTokenAndUser} = require('../models/tokensModel.js');
 
-async function handleRefreshToken(userName, password) {
-    try {
-        const cookies = req.cookies;
-        if(!cookies?.jwt){
-            return 403;
-        }
-        
-        const user = await model.logIn(userName);
-        if (user) {
-            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-            if (user.password === hashedPassword) {
 
-                const accessToken = jwt.sign(
-                    { "username": user.username },
-                    config.ACCESS_TOKEN_SECRET,
-                    { expiresIn: '30s' }
-                );
-         
-                const refreshToken = jwt.sign(
-                    { "username": user.username },
-                    config.REFRESH_TOKEN_SECRET,
-                    { expiresIn: '1d' }
-                );
-                return { user, accessToken, refreshToken };
-            } else {
-                throw new Error('You are not exist in the system, please sign up');
-            }
+const handleRefreshToken = (req, res) => {
+    const cookies = req.cookies;
+    if (!cookies?.jwt_refreshToken){
+        const error = {
+            message: "ERROR, you need log in"
         }
-        else {
-            throw new Error('You are not exist in the system, please sign up');
-        }
-    } catch (err) {
-        throw err;
-    }
+        return res.status(401).send(error);
+    }   
+    const refreshToken = cookies.jwt_refreshToken;
+    const users = getTokenAndUser();
+    const foundUser = users.find(person => person.refreshToken === refreshToken);
 
+    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    // evaluate jwt 
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+            if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
+            const role = Object.values(foundUser.role)
+            const accessToken = jwt.sign(
+                {  "UserInf": {
+                    "username": decoded.username,
+                    "roles": role
+                } },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '30s' }
+            );
+            res.json({ accessToken })
+        }
+    );
 }
+
+
+module.exports = {handleRefreshToken}

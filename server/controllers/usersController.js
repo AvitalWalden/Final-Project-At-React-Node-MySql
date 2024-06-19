@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const config = require('../config/config.js');
 const jwt = require('jsonwebtoken');
+const { updateToken, creatToken } = require('../models/tokensModel.js');
 
 
 
@@ -10,7 +11,12 @@ async function createUser(username, password) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword);
-        return user;
+        const role = Object.values(user.role);
+        token = creatTokens(user, role);
+        creatToken(user.user_id, token.refreshToken);
+        const accessToken = token.accessToken
+        const refreshToken = token.refreshToken
+        return { user, accessToken, refreshToken };
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
             throw new Error('Username is in use')
@@ -25,18 +31,16 @@ async function logIn(userName, password) {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.logIn(userName);
         if (user) {
-            if (hashedPassword === user.password){
-                const accessToken = jwt.sign(
-                    { "username": user.username },
-                    config.ACCESS_TOKEN_SECRET,
-                    { expiresIn: '30s' }
-                );
+            const role = Object.values(user.role);
+            if (hashedPassword === user.password) {
+                token =await creatTokens(user, role);
+                console.log("accessToken      " + token.refreshToken);
 
-                const refreshToken = jwt.sign(
-                    { "username": user.username },
-                    config.REFRESH_TOKEN_SECRET,
-                    { expiresIn: '1d' }
-                );
+                creatToken(user.user_id, token.refreshToken);
+                const accessToken = token.accessToken
+                const refreshToken = token.refreshToken
+                console.log("accessToken      " +accessToken);
+
                 return { user, accessToken, refreshToken };
             } else {
                 throw new Error('Incorrect password. Please try again.');
@@ -66,9 +70,37 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId) {
     try {
-        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role,addressId);
+        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function creatTokens(user, role) {
+    try {
+        const accessToken = jwt.sign(
+            {
+                "UserInf": {
+                    "username": user.username,
+                    "roles": role
+                }
+            },
+            config.ACCESS_TOKEN_SECRET,
+            { expiresIn: '30s' }
+        );
+
+        const refreshToken = jwt.sign(
+            { "username": user.username },
+            config.REFRESH_TOKEN_SECRET,
+            { expiresIn: '1d' }
+        );
+        const token =  {
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        }; 
+        return token;
     } catch (err) {
         throw err;
     }

@@ -4,6 +4,8 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
+const ROLES_LIST = require('../config/role_list');
+const verifyRoles = require('../middleware/verifyRoles');
 const { getGifts ,getGift ,createGift,deleteGift,getGiftsWithUserDetails,updateWinnerOfGift} = require('../controllers/giftsController');
 
 
@@ -18,7 +20,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get("/winners", async (req, res) => {
+router.get("/winners",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         res.send(await getGiftsWithUserDetails());
     } catch (err) {
@@ -30,7 +32,7 @@ router.get("/winners", async (req, res) => {
 })
 
 
-router.get("/:id", async (req, res) => {
+router.get("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const id = req.params.id;
         const gift = await getGift(id);
@@ -43,7 +45,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const response = await createGift(req.body.name, req.body.price, req.body.image_url);
         res.send(await getGift(response.insertId));
@@ -55,7 +57,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.delete("/:gift_id", async (req, res) => {
+router.delete("/:gift_id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try{
         const id = req.params.gift_id;
         await deleteGift(id);
@@ -68,7 +70,7 @@ router.delete("/:gift_id", async (req, res) => {
     }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const id = req.params.id;
         const giftAfterUpdate = await updateWinnerOfGift(id,req.body.winner_id,req.body.name,req.body.price, req.body.image_url);

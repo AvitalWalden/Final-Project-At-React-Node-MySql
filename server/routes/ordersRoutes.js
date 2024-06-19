@@ -5,9 +5,11 @@ router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
 const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders } = require('../controllers/orderController');
+const verifyRoles = require('../middleware/verifyRoles');
+const ROLES_LIST = require('../config/role_list');
 
 
-router.get("/", async (req, res) => {
+router.get("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const orders = await getOrders();
         res.send(orders);

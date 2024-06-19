@@ -3,6 +3,10 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const verifyJWT = require('../middleware/verifyJWT')
+const verifyRoles = require('../middleware/verifyRoles');
+const ROLES_LIST = require('../config/role_list');
+
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -30,7 +34,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.put('/:gift_id', upload.single('image'), async (req, res) => {
+router.put('/:gift_id', verifyRoles(ROLES_LIST.Admin), upload.single('image'), async (req, res) => {
     try {
         const image = req.file.filename;
         const gift_id = req.params.gift_id;
