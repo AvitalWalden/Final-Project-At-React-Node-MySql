@@ -1,5 +1,9 @@
 const express = require("express");
 const cors = require('cors');
+const verifyJWT = require('../middleware/verifyJWT')
+const verifyRoles = require('../middleware/verifyRoles');
+const ROLES_LIST = require('../config/role_list');
+
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -9,8 +13,11 @@ router.use(cors());
 router.post("/", async (req, res) => {
     try {
         const response = await createUser(req.body.username, req.body.password);
-        const newUser = await getUserForSignup(response.insertId);
-        res.send(newUser);
+        const { user, accessToken, refreshToken } = await getUserForSignup(response.insertId);
+        console.log("user"+   user);
+        res.cookie('jwt_refreshToken', refreshToken, { httpOnly: true, sameSite:'none' , secure: true, maxAge: 20* 60* 60* 1000 });
+        res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30* 1000 });
+        res.send(user);
     } catch (err) {
         const error = {
             message: err.message

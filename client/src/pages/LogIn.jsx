@@ -26,7 +26,7 @@ const logIn = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      // credentials: "include",
+      credentials: "include",
       body: JSON.stringify({ ...newUser })
     };
     fetch(url, requestOptions)
