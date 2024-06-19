@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import '../css/Home.css';
 import gift1 from '../images/gift1.jpg';
 import gift2 from '../images/gift2.jpg';
@@ -23,6 +23,11 @@ const Home = () => {
   const nextSection = () => {
     setActiveSection('about');
   };
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 3000);
+    return () => clearInterval(interval); 
+  }, []);
+
 
   return (
     <div className="home-container">
