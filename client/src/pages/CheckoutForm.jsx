@@ -71,6 +71,7 @@ const CheckoutForm = ({ onPrevious }) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include",
       body: JSON.stringify({
         user_id: userId,
         order_date: new Date().toISOString().split('T')[0],

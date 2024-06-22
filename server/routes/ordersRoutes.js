@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -7,7 +8,9 @@ router.use(cors());
 const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders } = require('../controllers/orderController');
 const verifyRoles = require('../middleware/verifyRoles');
 const ROLES_LIST = require('../config/role_list');
-
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 router.get("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {

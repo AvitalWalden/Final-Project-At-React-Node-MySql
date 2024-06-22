@@ -132,14 +132,26 @@ h2 {
 }
 
 .title {
+  font-size: 76px;
+  font-weight: bold;
   text-align: center;
-  color: #000000;
-  font-size: 40px;
+  line-height: 1.2;
+  margin-left: auto;
+  margin-top: auto;
+  color: white;
+  z-index: 2;
+  /* position: absolute; */
+  cursor: pointer;
+  color: white;
+  transition: transform 0.7s, color 0.7s, text-shadow 0.3s, border 0.7s;
+  text-shadow: 0 0 10px black, 0 0 20px black, 0 0 30px black, 0 0 40px black, 0 0 50px black, 0 0 60px black, 0 0 70px black;
 }
+
 
 nav {
   background-color: transparent !important;
   padding: 0;
+  border: 2px solid black;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-end;

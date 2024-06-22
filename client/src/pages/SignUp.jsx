@@ -33,6 +33,7 @@ const SignUp = () => {
     const requestOptions = {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ ...newUser })
     };
     fetch(url, requestOptions)

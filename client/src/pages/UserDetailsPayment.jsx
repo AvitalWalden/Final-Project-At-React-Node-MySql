@@ -19,6 +19,7 @@ const UserDetailsPayment = ({ user, onNext }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
         body: JSON.stringify(details),
       });
       if (!response.ok) {

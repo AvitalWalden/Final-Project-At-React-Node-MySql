@@ -21,6 +21,7 @@ function Lottery({ gift }) {
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: "include",
             body: JSON.stringify({
                 gift_id: gift_id,
                 name: gift.name,
@@ -50,8 +51,10 @@ function Lottery({ gift }) {
     };
 
     const getOrder = (gift_id) => {
-        const url = `http://localhost:3000/orders/gift_id/${gift_id}`;
-        fetch(url)
+        fetch(`http://localhost:3000/orders/gift_id/${gift_id}`, {
+            method: "GET",
+            credentials: "include"
+          })
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
