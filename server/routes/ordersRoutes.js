@@ -13,7 +13,7 @@ const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
-router.get("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.get("/",verifyJWT,/*verifyRoles(ROLES_LIST.Admin),*/ async (req, res) => {
     try {
         const orders = await getOrders();
         res.send(orders);
@@ -30,7 +30,6 @@ router.get("/user_id/:user_id",verifyJWT, async (req, res) => {
         let order;
         const user_id = req.params.user_id;
         order = await getOrder(user_id);
-        console.log(order);
         res.send(order);
     } catch (err) {
         const error = {

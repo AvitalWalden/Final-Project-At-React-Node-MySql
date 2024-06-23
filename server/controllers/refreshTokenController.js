@@ -1,9 +1,10 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { getTokenAndUser } = require('../models/tokensModel.js');
+const { getTokensAndUsers } = require('../models/tokensModel.js');
 
 
 async function handleRefreshToken  (cookies){
+    
     if (!cookies?.jwt_refreshToken) {
         const error = {
             message: "ERROR, you need log in",
@@ -13,9 +14,12 @@ async function handleRefreshToken  (cookies){
     }
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;
-    const users = await getTokenAndUser();
+    const users = await getTokensAndUsers();
+    console.log("zzzz",users)
+    
     const foundUser = users.find(person => person.refreshToken === refreshToken);
     if (!foundUser) return res.sendStatus(403); //Forbidden 
+    console.log("xxxx",foundUser)
     // evaluate jwt 
     jwt.verify(
         refreshToken,
@@ -36,8 +40,9 @@ async function handleRefreshToken  (cookies){
         }
               
     );
+    console.log("qqqq",accessToken)
     return accessToken;
-
+    
 }
 
 

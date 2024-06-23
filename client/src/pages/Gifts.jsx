@@ -1,5 +1,3 @@
-// Gifts.js
-
 import React, { useEffect, useState, useContext } from 'react';
 import Gift from '../components/Gift';
 import '../css/Gifts.css';
@@ -30,7 +28,6 @@ function Gifts() {
         if (Array.isArray(data)) {
           const filteredGifts = data.filter(gift => !gift.winner_id);
           setGifts(filteredGifts);
-          console.log(user)
         } else {
           setGifts([]);
         }
@@ -42,7 +39,6 @@ function Gifts() {
   }, []);
 
   const handleAddGift = () => {
-    console.log(user);
     setIsAddGiftModalOpen(true);
   };
 

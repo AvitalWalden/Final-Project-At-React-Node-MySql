@@ -7,6 +7,7 @@ const cors = require('cors');
 router.use(cors());
 const { getShoppingCart,postShoppingCart,deleteShoppingCart,putShoppingCart} = require('../controllers/shoppingCartController');
 const cookieParser = require('cookie-parser');
+const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
@@ -24,7 +25,7 @@ router.get("/:user_id", async (req, res) => {
         res.status(500).send(error);
     }
 });
-router.post("/", async (req, res) => {  
+router.post("/",verifyJWT, async (req, res) => {  
 
     try {
         let shoppingCart;

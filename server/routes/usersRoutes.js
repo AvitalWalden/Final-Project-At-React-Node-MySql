@@ -3,7 +3,7 @@ const cors = require('cors');
 const verifyJWT = require('../middleware/verifyJWT')
 const verifyRoles = require('../middleware/verifyRoles');
 const ROLES_LIST = require('../config/role_list');
-
+const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -11,30 +11,32 @@ const { createUser, getUser, updateUser, getUserForSignup } = require('../contro
 router.use(cors());
 const { getTokenAndUserByToken } = require('../controllers/tokensController');
 const { handleRefreshToken } = require('../controllers/refreshTokenController');
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 
-
-router.get("/:refreshToken", async (req, res) => {
-    try {
-        const cookies = req.cookies;
-        if (!cookies?.jwt_refreshToken) {
-            const error = {
-                message: "ERROR, you need log in",
-                status: 401
-            }
-            return res.status(401).send(error);
-        }
-        const refreshToken = req.params.refreshToken;
-        const user = await getTokenAndUserByToken(refreshToken);
-        res.send(user);
-    } catch (err) {
-        const error = {
-            message: err.message
-        }
-        res.status(500).send(error);
-    }
-});
+// router.get("/:refreshToken", async (req, res) => {
+//     try {
+//         const cookies = req.cookies;
+//         if (!cookies?.jwt_refreshToken) {
+//             const error = {
+//                 message: "ERROR, you need log in",
+//                 status: 401
+//             }
+//             return res.status(401).send(error);
+//         }
+//         const refreshToken = req.params.refreshToken;
+//         const user = await getTokenAndUserByToken(refreshToken);
+//         res.send(user);
+//     } catch (err) {
+//         const error = {
+//             message: err.message
+//         }
+//         res.status(500).send(error);
+//     }
+// });
 
 router.post("/", async (req, res) => {
     try {
@@ -52,7 +54,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",verifyJWT, async (req, res) => {
     try {
         const id = req.params.id;
         const resultUser = await getUser(id);
@@ -69,17 +71,21 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:user_id",verifyJWT, async (req, res) => {
+    console.log('Route handler called');
     try {
-        const id = req.params.id;
+        const id = req.params.user_id;
+        console.log("kkk")
         const user = await getUser(id);
+        console.log("User fetched: ", user); 
+
         res.send(user);
     } catch (err) {
+        console.error('Error fetching user:', err.message); 
         const error = {
             message: err.message
         }
         res.status(500).send(error);
     }
 });
-
 module.exports = router
