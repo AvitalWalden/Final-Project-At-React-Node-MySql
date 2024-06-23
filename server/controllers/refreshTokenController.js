@@ -14,12 +14,9 @@ async function handleRefreshToken  (cookies){
     }
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;
-    const users = await getTokensAndUsers();
-    console.log("zzzz",users)
-    
+    const users = await getTokensAndUsers();    
     const foundUser = users.find(person => person.refreshToken === refreshToken);
     if (!foundUser) return res.sendStatus(403); //Forbidden 
-    console.log("xxxx",foundUser)
     // evaluate jwt 
     jwt.verify(
         refreshToken,
@@ -40,7 +37,6 @@ async function handleRefreshToken  (cookies){
         }
               
     );
-    console.log("qqqq",accessToken)
     return accessToken;
     
 }

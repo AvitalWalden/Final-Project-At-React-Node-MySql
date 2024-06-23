@@ -37,7 +37,7 @@ router.get("/winners", async (req, res) => {
 })
 
 
-router.get("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.get("/:id",verifyRoles(ROLES_LIST.admin), async (req, res) => {
     try {
         const id = req.params.id;
         const gift = await getGift(id);
@@ -50,7 +50,7 @@ router.get("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     }
 });
 
-router.post("/",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.post("/",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
     try {
         const response = await createGift(req.body.name, req.body.price, req.body.image_url);
         res.send(await getGift(response.insertId));
@@ -62,7 +62,7 @@ router.post("/",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     }
 });
 
-router.delete("/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.delete("/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
     try{
         const id = req.params.gift_id;
         await deleteGift(id);
@@ -75,14 +75,10 @@ router.delete("/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, r
     }
 });
 
-router.put("/:id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.put("/:id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("id");
-        console.log(id);
-
         const giftAfterUpdate = await updateWinnerOfGift(id,req.body.winner_id,req.body.name,req.body.price, req.body.image_url);
-        console.log("giftAfterUpdate"+ giftAfterUpdate);
         res.send(giftAfterUpdate);
     } catch (err) {
         const error = {
