@@ -40,10 +40,11 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 router.post("/", async (req, res) => {
     try {
-        const response = await createUser(req.body.username, req.body.password);
-        const { user, accessToken, refreshToken } = await getUserForSignup(response.insertId);
-        res.cookie('jwt_refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
-        res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30 * 1000 });
+
+        const response = await createUser(req.body.username, req.body.password,req.body.role);
+        const  user = await getUserForSignup(response.user.insertId);
+        res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
+        res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 30 * 1000 });
         res.send(user);
     } catch (err) {
         const error = {
@@ -58,7 +59,7 @@ router.put("/:id",verifyJWT, async (req, res) => {
         const id = req.params.id;
         const resultUser = await getUser(id);
         const addressID = resultUser.address_id;
-        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, req.body.role, addressID);
+        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, addressID);
         const userAfterChange = await getUser(id);
         delete userAfterChange.address_id;
         res.send(userAfterChange);
