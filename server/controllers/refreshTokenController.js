@@ -14,8 +14,7 @@ async function handleRefreshToken  (cookies){
     }
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;
-    const users = await getTokensAndUsers();
-    
+    const users = await getTokensAndUsers();    
     const foundUser = users.find(person => person.refreshToken === refreshToken);
     if (!foundUser) return res.sendStatus(403); //Forbidden 
     const role = foundUser.role

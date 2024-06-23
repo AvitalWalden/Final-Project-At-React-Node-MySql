@@ -75,6 +75,7 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
 
 async function creatTokens(user, role) {
     try {
+        console.log("roleeeeeeeeeeeee" +role)
         const accessToken = jwt.sign(
             {
                 "UserInf": {
