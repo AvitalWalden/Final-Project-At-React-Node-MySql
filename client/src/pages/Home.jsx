@@ -45,7 +45,7 @@ const Home = () => {
   return (
     <>
       <div className="home-container">
-        <h1 className="title">
+        <h1 className="title1">
           <span style={{ '--animation-order': 0 }}>Donation</span>
           {'                    '}
           <span style={{ '--animation-order': 1 }}>Sale</span>

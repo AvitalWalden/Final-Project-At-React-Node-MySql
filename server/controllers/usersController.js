@@ -35,7 +35,6 @@ async function logIn(userName, password) {
             if (hashedPassword === user.password) {
                 token =await creatTokens(user, role);
                 console.log("accessToken      " + token.refreshToken);
-
                 creatToken(user.user_id, token.refreshToken);
                 const accessToken = token.accessToken
                 const refreshToken = token.refreshToken
