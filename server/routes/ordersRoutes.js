@@ -9,6 +9,7 @@ const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders } = 
 const verifyRoles = require('../middleware/verifyRoles');
 const ROLES_LIST = require('../config/role_list');
 const cookieParser = require('cookie-parser');
+const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
@@ -38,7 +39,7 @@ router.get("/user_id/:user_id", async (req, res) => {
     }
 });
 
-router.get("/gift_id/:gift_id", async (req, res) => {
+router.get("/gift_id/:gift_id",verifyJWT, async (req, res) => {
     try {
         let order;
         const gift_id = req.params.gift_id;

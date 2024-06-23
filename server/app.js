@@ -28,8 +28,8 @@ app.use("/logout",logoutRoutes);
 // app.use("/logout",logoutRoutes);
 
 app.use(verifyJWT);
-const winnerRoutes=require("./routes/usersRoutes")
-app.use("/winners",winnerRoutes);
+// const winnerRoutes=require("./routes/giftsRoutes")
+// app.use("/winners",winnerRoutes);
 const imageRoutes = require("./routes/imagesRoutes")
 app.use("/upload",imageRoutes)
 const usersRoutes=require("./routes/usersRoutes")

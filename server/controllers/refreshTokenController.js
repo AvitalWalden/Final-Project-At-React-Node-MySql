@@ -3,11 +3,7 @@ const jwt = require('jsonwebtoken');
 const { getTokenAndUser } = require('../models/tokensModel.js');
 
 
-const handleRefreshToken = async (req, res) => {
-    const cookies = req.cookies;
-    console.log("cookies");
-    console.log(cookies);
-
+async function handleRefreshToken  (cookies){
     if (!cookies?.jwt_refreshToken) {
         const error = {
             message: "ERROR, you need log in",
@@ -40,8 +36,7 @@ const handleRefreshToken = async (req, res) => {
         }
               
     );
-    console.log(accessToken);
-    res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30 * 1000 });
+    return accessToken;
 
 }
 

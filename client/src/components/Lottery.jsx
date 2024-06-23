@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../pages/UserContext';
 import '../css/Lottery.css';
 
 function Lottery({ gift }) {
-    const [winner, setWinner] = useState(gift.winner_id); 
+    const [winner, setWinner] = useState(gift.winner_id);
     const [spinning, setSpinning] = useState(false);
+    const { refreshAccessToken } = useContext(UserContext);
 
     const shuffle = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -33,9 +35,17 @@ function Lottery({ gift }) {
         fetch(url, requestOptions)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    if (response.status === 401) {
+                        console.log('Refreshing token and retrying...');
+                        refreshAccessToken();
+                        return updateWinner(); // Retry fetch after token refresh
+                    }
+
+                    if (response.status === 403) {
+                        console.log('invalid token you cannot do it...');
+                        throw response.error;
+                    }
                 }
-              
             })
             .then(data => {
                 setWinner(id);
@@ -54,31 +64,40 @@ function Lottery({ gift }) {
         fetch(`http://localhost:3000/orders/gift_id/${gift_id}`, {
             method: "GET",
             credentials: "include"
-          })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        console.log('Refreshing token and retrying...');
+                        refreshAccessToken();
+                        return getOrder(); // Retry fetch after token refresh
+                    }
+
+                    if (response.status === 403) {
+                        console.log('invalid token you cannot do it...');
+                        throw response.error;
+                    }
+                    const data = await response.json();
+                    if (data.length > 0) {
+                        const usersEntered = [];
+                        data.forEach(order => {
+                            for (let i = 0; i < order.quantity; i++) {
+                                usersEntered.push(order.user_id);
+                            }
+                        });
+                        shuffle(usersEntered);
+                        const winnerIndex = Math.floor(Math.random() * usersEntered.length);
+                        const winnerUserID = usersEntered[winnerIndex];
+                        updateWinner(gift_id, winnerUserID);
+                        console.log(`The winner is user_id: ${winnerUserID}`);
+                    } else {
+                        console.log('No orders found for this gift.');
+                        alert('No orders found for this gift.');
+                    }
                 }
-                return res.json();
             })
-            .then(data => {
-                if (data.length > 0) {
-                    const usersEntered = [];
-                    data.forEach(order => {
-                        for (let i = 0; i < order.quantity; i++) {
-                            usersEntered.push(order.user_id);
-                        }
-                    });
-                    shuffle(usersEntered);
-                    const winnerIndex = Math.floor(Math.random() * usersEntered.length);
-                    const winnerUserID = usersEntered[winnerIndex];
-                    updateWinner(gift_id, winnerUserID);
-                    console.log(`The winner is user_id: ${winnerUserID}`);
-                } else {
-                    console.log('No orders found for this gift.');
-                    alert('No orders found for this gift.');
-                }
-            })
+            // .then(data => {
+            // })
             .catch(error => {
                 console.error('Error fetching orders:', error);
                 alert(`An error occurred while fetching orders: ${error.message}`);

@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get("/winners", verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.get("/winners", async (req, res) => {
     try {
         res.send(await getGiftsWithUserDetails());
     } catch (err) {
@@ -75,7 +75,7 @@ router.delete("/:gift_id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     }
 });
 
-router.put("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.put("/:id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const id = req.params.id;
         const giftAfterUpdate = await updateWinnerOfGift(id,req.body.winner_id,req.body.name,req.body.price, req.body.image_url);
