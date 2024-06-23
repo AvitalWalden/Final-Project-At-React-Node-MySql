@@ -42,7 +42,6 @@ router.post("/", async (req, res) => {
     try {
         const response = await createUser(req.body.username, req.body.password);
         const { user, accessToken, refreshToken } = await getUserForSignup(response.insertId);
-        console.log("user" + user);
         res.cookie('jwt_refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
         res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30 * 1000 });
         res.send(user);
@@ -72,10 +71,8 @@ router.put("/:id",verifyJWT, async (req, res) => {
 });
 
 router.get("/:user_id",verifyJWT, async (req, res) => {
-    console.log('Route handler called');
     try {
         const id = req.params.user_id;
-        console.log("kkk")
         const user = await getUser(id);
         console.log("User fetched: ", user); 
 
