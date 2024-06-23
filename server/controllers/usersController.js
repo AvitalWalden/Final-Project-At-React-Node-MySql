@@ -5,13 +5,13 @@ const config = require('../config/config.js');
 const jwt = require('jsonwebtoken');
 const { creatToken,updateToken } = require('../models/tokensModel.js');
 
-async function createUser(username, password) {
+async function createUser(username, password,role) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-        const user = await model.createUser(username, hashedPassword);
-        const role = Object.values(user.role);
-        token = creatTokens(user, role);
-        creatToken(user.user_id, token.refreshToken);
+        const user = await model.createUser(username, hashedPassword,role);
+        const token = await creatTokens(user, role);
+        
+        creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken
         return { user, accessToken, refreshToken };
@@ -65,9 +65,9 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId) {
     try {
-        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId);
+        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId);
     } catch (err) {
         throw err;
     }

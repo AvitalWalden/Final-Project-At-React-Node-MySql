@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 
 const UserDetails = () => {
+    const { refreshAccessToken } = useContext(UserContext);
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [UseDetailsError, setUseDetailsError] = useState('');
@@ -14,7 +15,6 @@ const UserDetails = () => {
         street: "",
         zipcode: "",
         phone: "",
-        role: ""
     });
 
     const handleChange = (field, value) => {
@@ -24,8 +24,7 @@ const UserDetails = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         if (!userDetails.name || !userDetails.city || !userDetails.street || !userDetails.zipcode || !userDetails.phone) {
             setUseDetailsError('Please fill in all fields.');
             return;
@@ -35,7 +34,6 @@ const UserDetails = () => {
             return;
         }
         const url = `http://localhost:3000/users/${user.user_id}`;
-
         const requestOptions = {
             method: 'PUT',
             headers: {
@@ -46,17 +44,29 @@ const UserDetails = () => {
                 ...userDetails
             })
         };
-        fetch(url, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                setUser(data);
-                localStorage.setItem('currentUser', JSON.stringify(data));
-                setUseDetailsError('User created successfully');
-                navigate('/gifts');
-            })
-            .catch(error => {
-                setUseDetailsError('Error creating user');
-            });
+        try {
+            const response = await fetch(url, requestOptions);
+            if (!response.ok) {
+                if (response.status === 401) {
+                    console.log('Refreshing token and retrying...');
+                    await refreshAccessToken();
+                    return handleSubmit();
+                }
+
+                if (response.status === 403) {
+                    console.log('invalid token you cannot do it...');
+                    throw response.error;
+                }
+            }
+            setUser(response);
+            localStorage.setItem('currentUser', JSON.stringify(response));
+            setUseDetailsError('User created successfully');
+            navigate('/gifts');
+        } catch (error) {
+            console.error('Error saving user details:', error);
+            setUseDetailsError('Error creating user');
+
+        }
     };
 
     function ValidateEmail(mailAdress) {
@@ -80,14 +90,6 @@ const UserDetails = () => {
                     <input type="text" className='input' placeholder="street" value={userDetails.street} onChange={(e) => handleChange('street', e.target.value)} /><br />
                     <input type="text" className='input' placeholder="zipcode" value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} /><br />
                     <input type="tel" className='input' placeholder="phone" value={userDetails.phone} onChange={(e) => handleChange('phone', e.target.value)} /><br />
-                    
-                    <select className='input' value={userDetails.role} onChange={(e) => handleChange('role', e.target.value)}>
-                        <option value="">Select Role</option>
-                        {/* <option value="admin">Admin</option> */}
-                        <option value="donate">Donate</option>
-                        <option value="user">User</option>
-                    </select><br />
-                    
                     <button className="btnSaveDetails" onClick={handleSubmit}>Save</button><br />
                     {UseDetailsError && <p className='error' style={{ color: UseDetailsError === "The details have been filled in successfully" ? 'green' : 'red' }}>{UseDetailsError}</p>}
                 </div>

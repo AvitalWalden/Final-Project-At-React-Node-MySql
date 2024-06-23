@@ -22,17 +22,18 @@ async function getUserForSignup(id) {
     }
 }
 
-async function createUser(username, password) {
+async function createUser(username, password,role) {
     try {
         const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
         const resultAddress = await pool.query(sqlAddress, ['', '', '']);
         const addressId = resultAddress[0].insertId;
-        const sqlUser = "INSERT INTO users (username, address_id) VALUES (?, ?)";
-        const resultUser = await pool.query(sqlUser, [username, addressId]);
+        console.log("sss",addressId)
+        const sqlUser = "INSERT INTO users (username, address_id,role) VALUES (?, ?,?)";
+        const resultUser = await pool.query(sqlUser, [username, addressId,role]);
         const userId = resultUser[0].insertId;
         const sqlPassword = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
         await pool.query(sqlPassword, [userId, password]);
-
+        console.log("uuu",resultUser)
         return resultUser[0];
     } catch (err) {
         console.error('Error creating user:', err);
@@ -53,7 +54,7 @@ async function logIn(userName) {
     }
 }
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, role, addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId) {
     try {
         const sqlValidateAddress = `SELECT * FROM addresses WHERE address_id = ?`;
         const [addressRows] = await pool.query(sqlValidateAddress, [addressId]);
@@ -63,8 +64,8 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
         }
         const sqlAddress = `UPDATE addresses SET city = ?, street = ?, zipcode = ? WHERE address_id = ?`;
         await pool.query(sqlAddress, [city, street, zipcode, addressId]);
-        const sqlUser = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ?, role = ? WHERE user_id = ?`;
-        const resultUser = await pool.query(sqlUser, [name, username, email, addressId, phone, Bonus, role, id]);
+        const sqlUser = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ? WHERE user_id = ?`;
+        const resultUser = await pool.query(sqlUser, [name, username, email, addressId, phone, Bonus, id]);
 
         return resultUser;
     } catch (err) {
