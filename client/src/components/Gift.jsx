@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { OrderContext } from '../pages/OrderContext';
+import { UserContext } from '../pages/UserContext';
 import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
 import '../css/Gift.css';
 import '../css/Gifts.css';
-
 import { ImCancelCircle } from "react-icons/im";
 
 
 
-function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
+function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refreshAccessToken }) {
   const { addToOrder } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
@@ -33,10 +33,24 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
       method: 'DELETE',
       credentials: "include",
     })
+      .then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return handleDeleteGift(gift_id); // Retry fetch after token refresh
+          }
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
+        }
+      })
       .then(() => {
         const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
         setGifts(updatedgifts);
       })
+
   };
 
   const handleAddGift = () => {
@@ -58,11 +72,19 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
         'Accept': 'multipart/form-data',
       }
     })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
+      .then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return handleUpload(gift_id); // Retry fetch after token refresh
+          }
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
         }
-        return res.json();
+        return await response.json();
       })
       .then(data => {
         console.log('File uploaded successfully', data);
@@ -86,14 +108,26 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-        credentials: "include",
+      credentials: "include",
       body: JSON.stringify(giftData)
     })
-      .then(res => res.json())
-      .then(data => {
-        handleUpload(data.gift_id);
-        const a = gifts.map(g => g.gift_id === data.gift_id ? data : g);
-        setGifts(a);
+      .then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return saveGift(); // Retry fetch after token refresh
+          }
+
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
+        }
+        handleUpload(currentGift.gift_id);
+        console.log(currentGift);
+        const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
+        setGifts(updateGift);
         setIsEditGiftModalOpen(false);
       });
   };

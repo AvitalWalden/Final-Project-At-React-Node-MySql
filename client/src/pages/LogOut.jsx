@@ -6,9 +6,7 @@ import { OrderContext } from './OrderContext';
 const LogOut = () => {
   const { setOrder, order } = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
-
   const navigate = useNavigate();
-
   const handleUserLogout = (logout) => {
     if (logout) {
       saveToDBShoppingCart();

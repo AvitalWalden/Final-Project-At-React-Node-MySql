@@ -45,8 +45,9 @@ async function deleteGift(id) {
 
 async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
     try {
-        const afterUpdate = model.updateWinnerOfGift(id,winner_id,name,price, image_url);
-        if(afterUpdate){
+        const afterUpdate = await model.updateWinnerOfGift(id,winner_id,name,price, image_url);
+        if(afterUpdate && winner_id){
+            console.log("jhgfffffffffffffffffffffffffffffffffff")
             const winnerEmail = await getUser(winner_id);
             await sendWinnerEmail(winnerEmail, name);
         }

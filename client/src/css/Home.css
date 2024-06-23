@@ -81,16 +81,19 @@
     position: relative;
     z-index: 2;
     max-width: 800px;
-    margin: 0 auto; /* Center content horizontally */
+    /* margin: 0 auto; */
+    margin-left: auto;
+    margin-right: auto;
     padding: 20px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 16vh;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    /* margin-top: 16vh; */
     margin-bottom: 46vh;
     overflow: hidden;
-  }
-  
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
   .intro p,
   .about p {
     font-size: 18px;
@@ -189,3 +192,6 @@
     }
   }
   
+  .all{
+    height: 100%;
+  }

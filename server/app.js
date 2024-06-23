@@ -27,7 +27,7 @@ app.use("/logout",logoutRoutes);
 // const logoutRoutes=require("./routes/logoutRoutes")
 // app.use("/logout",logoutRoutes);
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 // const winnerRoutes=require("./routes/giftsRoutes")
 // app.use("/winners",winnerRoutes);
 const imageRoutes = require("./routes/imagesRoutes")

@@ -9,13 +9,15 @@ import { ImCancelCircle } from "react-icons/im";
 import { OrderContext } from './OrderContext';
 import SideSlidePanel from '../components/SideSlidePanel';
 
+
 function Gifts() {
   const [gifts, setGifts] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
   const [isAddGiftModalOpen, setIsAddGiftModalOpen] = useState(false);
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
   const [file, setFile] = useState(null);
-  const { user } = useContext(UserContext);
+  const { user, refreshAccessToken } = useContext(UserContext);
+
   const { order, isOrderListOpen, setIsOrderListOpen } = useContext(OrderContext);
 
   useEffect(() => {
@@ -56,11 +58,21 @@ function Gifts() {
       },
       credentials: "include",
     })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
+      .then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return handleUpload(gift_id); // Retry fetch after token refresh
+          }
+
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
         }
-        return res.json();
+
+        return await response.json();
       })
       .then(data => {
         console.log('File uploaded successfully', data);
@@ -87,12 +99,31 @@ function Gifts() {
         credentials: "include",
         body: JSON.stringify(giftData)
       })
-        .then(res => res.json())
-        .then(data => {
-          handleUpload(data.gift_id);
-          setGifts(prevGifts => [...prevGifts, data]);
-          setIsAddGiftModalOpen(false);
-          setNewGift({ name: '', price: '', image_url: '' });
+        .then(async response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              console.log('Refreshing token and retrying...');
+              await refreshAccessToken();
+              return saveGift(); // Retry fetch after token refresh
+            }
+
+            if (response.status === 403) {
+              console.log('invalid token you cannot do it...');
+              throw response.error;
+            }
+          }
+
+          const data = await response.json();
+
+          if (data && data.gift_id) {
+            await handleUpload(data.gift_id);
+            setGifts(prevGifts => [...prevGifts, data]);
+            setIsAddGiftModalOpen(false);
+            setNewGift({ name: '', price: '', image_url: '' });
+          } else {
+            throw new Error('Invalid response data');
+          }
+
         })
     } catch (error) {
       console.error('Error saving gift:', error);
@@ -120,7 +151,7 @@ function Gifts() {
       <div className="gift-container">
         {Array.isArray(gifts) && gifts.map((gift, index) => (
           <Gift
-            key={index}
+            key={gift.gift_id}
             gift={gift}
             user={user}
             searchCriteria={searchCriteria}
@@ -128,6 +159,7 @@ function Gifts() {
             gifts={gifts}
             file={file}
             setFile={setFile}
+            refreshAccessToken={refreshAccessToken}
           />
         ))}
       </div>
