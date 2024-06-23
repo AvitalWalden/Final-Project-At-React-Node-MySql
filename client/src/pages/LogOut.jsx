@@ -12,51 +12,52 @@ const LogOut = () => {
 
   const handleUserLogout = async (logout) => {
     if (logout) {
-      await saveToDBShoppingCart(); 
+      await saveToDBShoppingCart();
       setOrder([]);
-      setUser(null); 
-    
+      setUser(null);
+      await deleteToken();
+
       navigate('/');
     } else {
       navigate('/gifts');
     }
   };
   const saveToDBShoppingCart = async () => {
-    if(order.length>0){
-      console.log("hereee:",order)
-    const userId = user.user_id;
-    const url = `http://localhost:3000/shoppingCart`;
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: "include",
-      body: JSON.stringify({ userId, order }),
-    };
+    if (order.length > 0) {
+      console.log("hereee:", order)
+      const userId = user.user_id;
+      const url = `http://localhost:3000/shoppingCart`;
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        body: JSON.stringify({ userId, order }),
+      };
 
-    try {
-      const response = await fetch(url, requestOptions);
-      if (!response.ok) {
-        if (response.status === 401) {
-          console.log('Refreshing token and retrying...');
-          await refreshAccessToken();
-          return saveToDBShoppingCart();
-        }
+      try {
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return saveToDBShoppingCart();
+          }
 
-        if (response.status === 403) {
-          console.log('invalid token you cannot do it...');
-          throw response.error;
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
         }
+        const data = await response.json();
+      } catch (error) {
+        console.error('Error saving to shopping cart:', error);
       }
-      const data = await response.json();
-      await deleteToken(); 
-    } catch (error) {
-      console.error('Error saving to shopping cart:', error);
+    } else {
+      return;
     }
-  }else{
-    return;
-  }
+
   };
 
   const deleteToken = async () => {

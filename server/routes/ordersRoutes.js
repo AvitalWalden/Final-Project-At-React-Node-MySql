@@ -44,7 +44,6 @@ router.get("/gift_id/:gift_id",verifyJWT, async (req, res) => {
         let order;
         const gift_id = req.params.gift_id;
         order = await getOrderByGiftID(gift_id);
-        console.log(order);
         res.send(order);
     } catch (err) {
         const error = {

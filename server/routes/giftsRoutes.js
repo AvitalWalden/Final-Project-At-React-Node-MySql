@@ -78,11 +78,8 @@ router.delete("/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, r
 router.put("/:id",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("id");
-        console.log(id);
-
+       
         const giftAfterUpdate = await updateWinnerOfGift(id,req.body.winner_id,req.body.name,req.body.price, req.body.image_url);
-        console.log("giftAfterUpdate"+ giftAfterUpdate);
         res.send(giftAfterUpdate);
     } catch (err) {
         const error = {

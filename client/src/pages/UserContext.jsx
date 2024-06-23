@@ -19,8 +19,9 @@ export const UserProvider = ({ children }) => {
       if (!response.ok) {
         throw new Error('Failed to refresh token');
       }
-
+      
       const data = await response.json();
+      console.log("hhh",data.accessToken)
       return data.accessToken; 
 
     } catch (error) {

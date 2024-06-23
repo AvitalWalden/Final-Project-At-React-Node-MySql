@@ -125,7 +125,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           }
         }
         handleUpload(currentGift.gift_id);
-        console.log(currentGift);
         const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
         setGifts(updateGift);
         setIsEditGiftModalOpen(false);

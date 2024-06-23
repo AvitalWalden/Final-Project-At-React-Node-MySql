@@ -2,6 +2,7 @@
 const { getTokensAndUsers,deleteToken} = require('../models/tokensModel.js');
 
 const handleLogout = async (req, res) => {
+    console.log("ffff")
     // On client, also delete the accessToken
 
     const cookies = req.cookies;

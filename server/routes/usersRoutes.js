@@ -75,7 +75,6 @@ router.get("/:user_id",verifyJWT, async (req, res) => {
     try {
         const id = req.params.user_id;
         const user = await getUser(id);
-        console.log("User fetched: ", user); 
 
         res.send(user);
     } catch (err) {

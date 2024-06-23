@@ -62,18 +62,9 @@ async function deleteGift(id) {
 
 async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
   try {
-    console.log(id);
-    console.log(winner_id);
-
-    console.log(name);
-
-    console.log(price);
-
-    console.log(image_url);
-
+   
     const sql = `UPDATE gifts SET winner_id = ? ,name = ?,price = ? ,image_url = ? WHERE gift_id = ?`;
     const result = await pool.query(sql, [winner_id, name, price, image_url, id]);
-    console.log(result);
     return result;
   } catch (err) {
     console.error('Error deleting gift:', err);
