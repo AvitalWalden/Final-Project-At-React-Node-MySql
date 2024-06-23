@@ -8,7 +8,7 @@ import UserDetails from "./pages/UserDetails";
 import LogOut from "./pages/LogOut";
 import UserOrders from "./pages/UserOrders";
 import Profile from "./pages/Profile";
-import Payment from "./pages/Payment";
+// import Payment from "./pages/Payment";
 import OrderManagement from "./pages/OrderManagement";
 import { OrderProvider } from './pages/OrderContext';
 import { UserProvider } from './pages/UserContext';
@@ -35,7 +35,7 @@ function App() {
                 <Route path="/orders" element={<UserOrders />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orderManagement" element={<OrderManagement />} />
-                <Route path="/payment" element={<Payment />} />
+                {/* <Route path="/payment" element={<Payment />} /> */}
                 <Route path="/winners" element={<Winners />} />
                 <Route path="/Lottery" element={<Lotteries />} />
                 <Route path="/allOrders" element={<AllOrders />} />

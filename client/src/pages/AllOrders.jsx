@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { UserContext } from './UserContext';
+
 import '../css/AllOrders.css'
 function AllOrders() {
   const [orders, setOrders] = useState([]);
+  const { refreshAccessToken } = useContext(UserContext);
 
   useEffect(() => {
     fetchOrders();
@@ -14,13 +17,26 @@ function AllOrders() {
         credentials: "include"
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch orders');
+        if (response.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return fetchOrders(); // Retry fetch after token refresh
+        }
+
+        if (response.status === 403) {
+          console.log('invalid token you cannot do it...');
+          throw response.error;
+        }
       }
+
       const ordersData = await response.json();
       setOrders(ordersData);
     } catch (error) {
       console.error('Error fetching orders:', error);
+      setOrders([]);
     }
+
+
   };
 
   return (

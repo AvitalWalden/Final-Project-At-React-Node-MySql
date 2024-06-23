@@ -22,11 +22,11 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.json();
       console.log(data);
-      return data.accessToken; // Assuming you want to return the new accessToken
+      return data.accessToken; 
 
     } catch (error) {
       console.error('Error refreshing token:', error);
-      throw error; // Rethrow the error to be handled where refreshAccessToken is called
+      throw error; 
     }
   };
 
