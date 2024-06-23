@@ -32,15 +32,10 @@ async function logIn(userName, password) {
             const role = Object.values(user.role);
             if (hashedPassword === user.password) {
                 token =await creatTokens(user, role);
-                console.log("accessToken      " + token.refreshToken);
-                creatToken(user.user_id, token.refreshToken);
-                console.log("accessToken " + token.refreshToken);
-
+                creatTokens(user.user_id, token.refreshToken);
                 updateToken(user.user_id, token.refreshToken);
                 const accessToken = token.accessToken
                 const refreshToken = token.refreshToken
-                console.log("accessToken      " +accessToken);
-
                 return { user, accessToken, refreshToken };
             } else {
                 throw new Error('Incorrect password. Please try again.');

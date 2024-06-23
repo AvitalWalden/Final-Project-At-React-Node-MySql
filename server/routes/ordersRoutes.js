@@ -25,11 +25,12 @@ router.get("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     }
 });
 
-router.get("/user_id/:user_id", async (req, res) => {
+router.get("/user_id/:user_id",verifyJWT, async (req, res) => {
     try {
         let order;
         const user_id = req.params.user_id;
         order = await getOrder(user_id);
+        console.log(order);
         res.send(order);
     } catch (err) {
         const error = {
