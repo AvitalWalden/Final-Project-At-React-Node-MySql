@@ -6,55 +6,76 @@ import { OrderContext } from './OrderContext';
 const LogOut = () => {
   const { setOrder, order } = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
+  const { refreshAccessToken } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  const handleUserLogout = (logout) => {
+  const handleUserLogout = async (logout) => {
     if (logout) {
-      saveToDBShoppingCart();
+      await saveToDBShoppingCart(); 
       setOrder([]);
-      setUser();
+      setUser(null); 
+    
       navigate('/');
     } else {
       navigate('/gifts');
     }
   };
   const saveToDBShoppingCart = async () => {
+    if(order.length>0){
+      console.log("hereee:",order)
+    const userId = user.user_id;
+    const url = `http://localhost:3000/shoppingCart`;
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: "include",
+      body: JSON.stringify({ userId, order }),
+    };
+
     try {
-      const userId = user.user_id;
-      await fetch(`http://localhost:3000/shoppingCart`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: "include",
-        body: JSON.stringify({ userId, order }),
-      });
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return saveToDBShoppingCart();
+        }
 
+        if (response.status === 403) {
+          console.log('invalid token you cannot do it...');
+          throw response.error;
+        }
+      }
+      const data = await response.json();
+      await deleteToken(); 
     } catch (error) {
-      console.error('Error saving shopping cart:', error);
+      console.error('Error saving to shopping cart:', error);
     }
-
+  }else{
+    return;
+  }
   };
 
   const deleteToken = async () => {
     try {
-      const userId = user.user_id;
-      await fetch(`http://localhost:3000/logout`, {
-        method: "GET",
-        credentials: "include"
-      })
-        .then(data => {
+      const response = await fetch('http://localhost:3000/logout', {
+        method: 'GET',
+        credentials: 'include'
+      });
 
-        })
-        .catch(error => {
-          console.error('Error fetching gifts:', error);
-        });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
+      console.log('User successfully logged out');
     } catch (error) {
-      console.error('Error saving shopping cart:', error);
+      console.error('Error logging out user:', error);
     }
-  }
+  };
+
 
   return (
     <div className="form">

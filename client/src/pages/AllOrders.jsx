@@ -20,7 +20,7 @@ function AllOrders() {
         if (response.status === 401) {
           console.log('Refreshing token and retrying...');
           await refreshAccessToken();
-          return fetchOrders(); // Retry fetch after token refresh
+          return fetchOrders(); 
         }
 
         if (response.status === 403) {

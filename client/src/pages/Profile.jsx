@@ -17,6 +17,8 @@ const Profile = () => {
   });
   const [UseDetailsError, setUseDetailsError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const { refreshAccessToken } = useContext(UserContext);
+
 
   useEffect(() => {
     if (user) {
@@ -26,16 +28,33 @@ const Profile = () => {
 
   const fetchUserDetails = async (user_id) => {
     try {
-
+      
       const response = await fetch(`http://localhost:3000/users/${user_id}`, {
         method: "GET",
         credentials: "include"
       });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return fetchUserDetails(user_id);
+        }
+
+        if (response.status === 403) {
+          console.log('invalid token you cannot do it...');
+          throw response.error;
+        }
+      }
       const data = await response.json();
       setUserDetails(data);
     } catch (error) {
       console.error('Error fetching user details:', error);
+      setUserDetails([]);
     }
+
+
+
   };
 
   const handleChange = (field, value) => {
@@ -45,8 +64,7 @@ const Profile = () => {
     }));
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async () => {
     if (!userDetails.name || !userDetails.city || !userDetails.street || !userDetails.zipcode || !userDetails.phone) {
       setUseDetailsError('Please fill in all fields.');
       return;
@@ -62,25 +80,40 @@ const Profile = () => {
         ...userDetails
       })
     };
-    fetch(url, requestOptions)
-      .then(response => response.json())
-      .then(data => {
+    try {
+      const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return handleFormSubmit();
+          }
+  
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            throw response.error;
+          }
+        }
+        const data = await response.json();
         setUserDetails(data);
         setIsEditing(false);
-      })
-      .catch(error => {
+      } catch (error) {
+        console.error('Error updating user details:', error);
         setUseDetailsError('Error updating user:', error);
-      });
+        setUserDetails([]);
+      }
+  
+  
   }
 
   if (!userDetails) {
     return <div>Loading...</div>;
   }
   if (!user) {
-    return(<> 
-        <p>Please log in to view your profile.</p>
-        <br></br>
-        <Link to='/login'>Log here</Link>
+    return (<>
+      <p>Please log in to view your profile.</p>
+      <br></br>
+      <Link to='/login'>Log here</Link>
     </>
     )
   }

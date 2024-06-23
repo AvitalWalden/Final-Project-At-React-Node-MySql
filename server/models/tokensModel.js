@@ -2,7 +2,6 @@ const pool = require('../DB.js');
 
 async function updateToken(user_id, refreshToken) {
     try {
-        console.log(refreshToken);
         const sqlToken = `UPDATE token SET refreshToken = ? WHERE user_id = ?`;
         const [result] = await pool.query(sqlToken, [refreshToken, user_id]);
 
@@ -25,10 +24,11 @@ async function creatToken(user_id, refreshToken) {
     }
 }
 
-async function getTokenAndUser() {
+async function getTokensAndUsers() {
     try {
         const sql = 'SELECT * FROM token NATURAL JOIN users';
         const [result] = await pool.query(sql);
+        console.log("kfjs",[result])
         return result;
     } catch (err) {
         console.log(err);
@@ -49,12 +49,13 @@ async function getTokenAndUserByToken(token) {
 
 async function deleteToken(id) {
     try {
-        const sql = `DELETE FROM token WHERE user_id = ?`;
+        const sql = `UPDATE token SET refreshToken = NULL WHERE user_id = ?`;
         await pool.query(sql, [id]);
     } catch (err) {
-        console.error('Error deleting token:', err);
+        console.error('Error updating token to null:', err);
         throw err;
     }
 }
 
-module.exports = { updateToken, creatToken, getTokenAndUser, deleteToken, getTokenAndUserByToken }
+
+module.exports = { updateToken, creatToken, getTokensAndUsers, deleteToken, getTokenAndUserByToken }

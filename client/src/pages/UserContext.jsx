@@ -21,7 +21,6 @@ export const UserProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log(data);
       return data.accessToken; 
 
     } catch (error) {

@@ -21,7 +21,6 @@ const { handleRefreshToken} = require('../controllers/tokensController');
 
 router.get('/', async (req, res) => {
     try {
-        console.log("ddd");
 
         const accessToken = req.cookies.jwt_accessToken;
         const refreshToken = req.cookies.jwt_refreshToken;
