@@ -50,7 +50,7 @@ router.get("/:id",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     }
 });
 
-router.post("/",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.post("/",verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         const response = await createGift(req.body.name, req.body.price, req.body.image_url);
         res.send(await getGift(response.insertId));
