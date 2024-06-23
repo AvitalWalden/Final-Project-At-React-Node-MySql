@@ -28,7 +28,6 @@ async function getTokensAndUsers() {
     try {
         const sql = 'SELECT * FROM token NATURAL JOIN users';
         const [result] = await pool.query(sql);
-        console.log("kfjs",[result])
         return result;
     } catch (err) {
         console.log(err);

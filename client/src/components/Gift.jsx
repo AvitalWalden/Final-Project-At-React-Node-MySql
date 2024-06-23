@@ -140,7 +140,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
-            {user && user.role === 'admin' && (
+            {user && (
               <div className="btn-admin">
                 <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
                 <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
