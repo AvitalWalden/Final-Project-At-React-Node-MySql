@@ -17,8 +17,6 @@ import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
 
-// import { createContext, useState } from 'react';
-
 function App() {
   return (
     <div>

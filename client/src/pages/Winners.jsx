@@ -1,27 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../css/Winners.css';
+import { UserContext } from './UserContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Winners = () => {
   const [winners, setWinners] = useState([]);
+  const { refreshAccessToken } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchWinners = async () => {
-      try {
-        const url = 'http://localhost:3000/gifts/winners';
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setWinners(data);
-      } catch (error) {
-        console.error('Error fetching winners:', error);
-        setWinners([]);
-      }
-    };
-
     fetchWinners();
   }, []);
+
+  const fetchWinners = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/gifts/winners', {
+        method: "GET",
+        credentials: "include"
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return fetchWinners(); // Retry fetch after token refresh
+        }
+
+        if (response.status === 403) {
+          console.log('invalid token you cannot do it...');
+        }
+      }
+      const data = await response.json();
+      setWinners(data);
+    } catch (error) {
+      console.error('Error fetching winners:', error);
+      setWinners([]);
+    }
+  };
 
   return (
     <div className="W-container">

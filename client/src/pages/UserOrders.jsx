@@ -8,8 +8,10 @@ const UserOrders = () => {
 
   useEffect(() => {
     if (user && user.user_id) {
-      const url = `http://localhost:3000/orders/user_id/${user.user_id}`;
-      fetch(url)
+      fetch(`http://localhost:3000/orders/user_id/${user.user_id}`, {
+        method: "GET",
+        credentials: "include"
+      })
         .then(res => res.json())
         .then(data => {
 

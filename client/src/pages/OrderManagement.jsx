@@ -16,7 +16,10 @@ const OrderManagement = () => {
     const fetchSavedCartItems = async () => {
       if (user) {
         try {
-          const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`);
+          const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
+            method: "GET",
+            credentials: "include"
+          });
           const data = await response.json();
           setSavedCartItems(data);
         } catch (error) {
@@ -82,6 +85,7 @@ const OrderManagement = () => {
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials: "include",
             body: JSON.stringify({ userId, giftId, newQuantity }),
           });
           const updatedSavingCart = savedCartItems.map((item) =>

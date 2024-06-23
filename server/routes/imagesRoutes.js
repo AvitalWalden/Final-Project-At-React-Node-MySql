@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require('../config/config')
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
@@ -6,12 +7,15 @@ const fs = require('fs');
 const verifyJWT = require('../middleware/verifyJWT')
 const verifyRoles = require('../middleware/verifyRoles');
 const ROLES_LIST = require('../config/role_list');
-
-
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
+
+
 
 const { updateImage } = require('../controllers/imagesController');
 const { getGift } = require('../controllers/giftsController');

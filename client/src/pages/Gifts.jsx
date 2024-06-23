@@ -16,16 +16,19 @@ function Gifts() {
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
   const [file, setFile] = useState(null);
   const { user } = useContext(UserContext);
-  const { order,isOrderListOpen ,setIsOrderListOpen} = useContext(OrderContext);
+  const { order, isOrderListOpen, setIsOrderListOpen } = useContext(OrderContext);
 
   useEffect(() => {
-    const url = `http://localhost:3000/gifts`;
-    fetch(url)
+    fetch(`http://localhost:3000/gifts`, {
+      method: "GET",
+      credentials: "include"
+    })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
           const filteredGifts = data.filter(gift => !gift.winner_id);
           setGifts(filteredGifts);
+          console.log(user)
         } else {
           setGifts([]);
         }
@@ -37,6 +40,7 @@ function Gifts() {
   }, []);
 
   const handleAddGift = () => {
+    console.log(user);
     setIsAddGiftModalOpen(true);
   };
 
@@ -49,7 +53,8 @@ function Gifts() {
       body: formData,
       headers: {
         'Accept': 'multipart/form-data',
-      }
+      },
+      credentials: "include",
     })
       .then(res => {
         if (!res.ok) {
@@ -79,6 +84,7 @@ function Gifts() {
       fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
         body: JSON.stringify(giftData)
       })
         .then(res => res.json())
@@ -105,7 +111,7 @@ function Gifts() {
             placeholder='Search gift'
             onChange={(event) => setSearchCriteria(event.target.value)}
           />
-          <FaSearch className='shearch'/>
+          <FaSearch className='shearch' />
         </div>
         {user && user.role === 'admin' && (
           <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>

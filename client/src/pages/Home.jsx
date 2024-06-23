@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/Home.css';
 import gift1 from '../images/gift1.jpg';
 import gift2 from '../images/gift2.jpg';
-import gift3 from '../images/gift3.jpg';
+import gift3 from '../images/gift3.png';
 import { useNavigate } from 'react-router-dom';
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
@@ -38,12 +38,12 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 6000);
+    const interval = setInterval(nextSlide, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <>
+    <div className='all'>
       <div className="home-container">
         <h1 className="title1">
           <span style={{ '--animation-order': 0 }}>Donation</span>
@@ -63,13 +63,13 @@ const Home = () => {
         </div>
         {!isScrolledDown && (
           <div className="arrow-scroll" onClick={handleArrowClickDown}>
-            <MdKeyboardDoubleArrowDown style={{ color: "white", fontSize: "50px" }} />
+            <MdKeyboardDoubleArrowDown className='down' style={{ color: "white", fontSize: "50px" }} />
           </div>
         )}
       </div>
       {isScrolledDown && (
         <div className="arrow-scroll" onClick={handleArrowClickUp}>
-          <MdKeyboardDoubleArrowUp style={{ fontSize: "50px" }} />
+          <MdKeyboardDoubleArrowUp className='up' style={{ fontSize: "50px" }} />
         </div>
       )}
       <div className="content">
@@ -117,7 +117,7 @@ const Home = () => {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 };
 

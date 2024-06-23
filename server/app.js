@@ -24,10 +24,12 @@ const refreshRoutes=require("./routes/refreshTokenRoutes")
 app.use("/refresh",refreshRoutes);
 const logoutRoutes=require("./routes/logoutRoutes")
 app.use("/logout",logoutRoutes);
+// const logoutRoutes=require("./routes/logoutRoutes")
+// app.use("/logout",logoutRoutes);
 
 app.use(verifyJWT);
 const winnerRoutes=require("./routes/usersRoutes")
-app.use("/signup",winnerRoutes);
+app.use("/winners",winnerRoutes);
 const imageRoutes = require("./routes/imagesRoutes")
 app.use("/upload",imageRoutes)
 const usersRoutes=require("./routes/usersRoutes")
@@ -36,6 +38,8 @@ const ordersRoutes=require("./routes/ordersRoutes")
 app.use("/orders",ordersRoutes);
 const shoppingCartRoutes=require("./routes/shoppingCartRoutes")
 app.use("/shoppingCart",shoppingCartRoutes);
+const tokensRoutes=require("./routes/tokensRoutes")
+app.use("/refreshment",tokensRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

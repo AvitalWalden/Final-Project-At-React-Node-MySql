@@ -12,9 +12,8 @@ const LogOut = () => {
   const handleUserLogout = (logout) => {
     if (logout) {
       saveToDBShoppingCart();
-      localStorage.removeItem('currentUser');
-      setUser(null);
       setOrder([]);
+      setUser();
       navigate('/');
     } else {
       navigate('/gifts');
@@ -24,10 +23,11 @@ const LogOut = () => {
     try {
       const userId = user.user_id;
       await fetch(`http://localhost:3000/shoppingCart`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
         body: JSON.stringify({ userId, order }),
       });
 
@@ -40,9 +40,12 @@ const LogOut = () => {
   const deleteToken = async () => {
     try {
       const userId = user.user_id;
-      await fetch(`http://localhost:3000/logout`)
+      await fetch(`http://localhost:3000/logout`, {
+        method: "GET",
+        credentials: "include"
+      })
         .then(data => {
-          
+
         })
         .catch(error => {
           console.error('Error fetching gifts:', error);

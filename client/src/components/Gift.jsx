@@ -31,6 +31,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
   const handleDeleteGift = (gift_id) => {
     fetch(`http://localhost:3000/gifts/${gift_id}`, {
       method: 'DELETE',
+      credentials: "include",
     })
       .then(() => {
         const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
@@ -85,6 +86,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile }) {
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
       body: JSON.stringify(giftData)
     })
       .then(res => res.json())

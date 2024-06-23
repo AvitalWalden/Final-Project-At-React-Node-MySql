@@ -1,11 +1,14 @@
 const express = require("express");
+const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
 const { getShoppingCart,postShoppingCart,deleteShoppingCart,putShoppingCart} = require('../controllers/shoppingCartController');
-
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 router.get("/:user_id", async (req, res) => {

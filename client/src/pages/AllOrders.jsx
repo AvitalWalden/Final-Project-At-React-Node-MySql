@@ -9,7 +9,10 @@ function AllOrders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3000/orders');
+      const response = await fetch('http://localhost:3000/orders', {
+        method: "GET",
+        credentials: "include"
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       }

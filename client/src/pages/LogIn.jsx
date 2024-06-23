@@ -35,10 +35,7 @@ const logIn = () => {
           if (response.status == 401) {
             throw data.message;
           }
-          foundUser = data.user;
-          const userToLS = { ...foundUser };
-          delete userToLS.password;
-          localStorage.setItem('currentUser', JSON.stringify(userToLS));
+          foundUser = data;
           setUser({ ...foundUser });
           setUsername('');
           setPassword('');

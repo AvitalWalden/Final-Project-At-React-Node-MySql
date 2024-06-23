@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -7,6 +8,10 @@ router.use(cors());
 const ROLES_LIST = require('../config/role_list');
 const verifyRoles = require('../middleware/verifyRoles');
 const { getGifts ,getGift ,createGift,deleteGift,getGiftsWithUserDetails,updateWinnerOfGift} = require('../controllers/giftsController');
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
+const verifyJWT = require('../middleware/verifyJWT')
 
 
 router.get("/", async (req, res) => {
@@ -20,7 +25,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get("/winners",verifyRoles(ROLES_LIST.Admin), async (req, res) => {
+router.get("/winners", verifyJWT,verifyRoles(ROLES_LIST.Admin), async (req, res) => {
     try {
         res.send(await getGiftsWithUserDetails());
     } catch (err) {

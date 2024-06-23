@@ -27,7 +27,10 @@ const Profile = () => {
   const fetchUserDetails = async (user_id) => {
     try {
 
-      const response = await fetch(`http://localhost:3000/users/${user_id}`);
+      const response = await fetch(`http://localhost:3000/users/${user_id}`, {
+        method: "GET",
+        credentials: "include"
+      });
       const data = await response.json();
       setUserDetails(data);
     } catch (error) {
@@ -54,6 +57,7 @@ const Profile = () => {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: "include",
       body: JSON.stringify({
         ...userDetails
       })

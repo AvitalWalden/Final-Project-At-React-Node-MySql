@@ -3,9 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const config = require('../config/config.js');
 const jwt = require('jsonwebtoken');
-const { updateToken, creatToken } = require('../models/tokensModel.js');
-
-
+const { creatToken,updateToken } = require('../models/tokensModel.js');
 
 async function createUser(username, password) {
     try {
@@ -36,6 +34,9 @@ async function logIn(userName, password) {
                 token =await creatTokens(user, role);
                 console.log("accessToken      " + token.refreshToken);
                 creatToken(user.user_id, token.refreshToken);
+                console.log("accessToken " + token.refreshToken);
+
+                updateToken(user.user_id, token.refreshToken);
                 const accessToken = token.accessToken
                 const refreshToken = token.refreshToken
                 console.log("accessToken      " +accessToken);

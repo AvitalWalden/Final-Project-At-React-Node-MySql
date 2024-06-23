@@ -51,6 +51,7 @@ export const OrderProvider = ({ children }) => {
       
           await fetch(`http://localhost:3000/shoppingCart/${userId}/${giftId}`, {
             method: 'DELETE',
+            credentials: "include",
           });
       
           setSavedCartItems(savedCartItems.filter(item => item.gift_id !== giftId));

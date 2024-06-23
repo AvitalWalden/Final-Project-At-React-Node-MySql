@@ -9,8 +9,10 @@ function Lotteries() {
 
 
     useEffect(() => {
-        const url = `http://localhost:3000/gifts`;
-        fetch(url)
+        fetch(`http://localhost:3000/gifts`, {
+            method: "GET",
+            credentials: "include"
+        })
             .then(res => res.json())
             .then(data => {
                 setGifts(data);

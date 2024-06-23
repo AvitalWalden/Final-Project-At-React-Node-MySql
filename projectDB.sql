@@ -1,5 +1,6 @@
-CREATE DATABASE IF NOT EXISTS projectDB;
 USE projectDB;
+
+CREATE DATABASE IF NOT EXISTS projectDB;
 
 -- Drop existing tables to avoid conflicts
 DROP TABLE IF EXISTS shopping_cart;
@@ -9,6 +10,7 @@ DROP TABLE IF EXISTS lottery;
 DROP TABLE IF EXISTS donations;
 DROP TABLE IF EXISTS passwords;
 DROP TABLE IF EXISTS gifts;
+DROP TABLE IF EXISTS token;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS addresses;
 
@@ -31,6 +33,13 @@ Bonus INT,
 role VARCHAR(255),
 FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 );
+
+CREATE TABLE token (
+token_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+refreshToken VARCHAR(255),
+FOREIGN KEY (user_id) REFERENCES users(user_id)
+); 
 
 CREATE TABLE passwords (
 user_id INT PRIMARY KEY,
@@ -130,9 +139,9 @@ INSERT INTO passwords (user_id, password) VALUES
 
 -- Insert gifts
 INSERT INTO gifts (winner_id, name, price, image_url) VALUES
-(NULL, 'Tesla', '50', '1.jpg'),
-(NULL, 'Kitchen renovation', '60', '2.jpg'),
-(NULL, 'Living room', '80', '3.jpg'),
+(1, 'Tesla', '50', '1.jpg'),
+(2, 'Kitchen renovation', '60', '2.jpg'),
+(3, 'Living room', '80', '3.jpg'),
 (NULL, 'sofas', '200', '4.jpg'),
 (NULL, '2 nights in the north', '30', '5.jpg'),
 (NULL, 'Three days at the Kiner Galil hotel', '40', '6.jpg'),
@@ -215,6 +224,18 @@ INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
 INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES
 (1, 1, 2),
 (2, 3, 1);
+
+INSERT INTO token (user_id,refreshToken) VALUES
+(1, NULL),
+(2, NULL),
+(3, NULL),
+(4, NULL),
+(5, NULL),
+(6, NULL),
+(7, NULL),
+(8, NULL),
+(9, NULL),
+(10, NULL);
 
 -- Hash the passwords
 UPDATE passwords SET password = SHA2(password, 256) WHERE user_id > 0;
