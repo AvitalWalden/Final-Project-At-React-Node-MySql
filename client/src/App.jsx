@@ -16,34 +16,47 @@ import Winners from "./pages/Winners";
 import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
+import { GoogleLogin } from '@react-oauth/google';
+
+import jwt_decode  from "jwt-decode";
 
 function App() {
   return (
     <div>
-        <UserProvider>
-          <OrderProvider>
-            <BrowserRouter>
-              <Navigates />
-              
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/gifts" element={<Gifts />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/logout" element={<LogOut />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/userDetails" element={<UserDetails />} />
-                <Route path="/orders" element={<UserOrders />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/orderManagement" element={<OrderManagement />} />
-                {/* <Route path="/payment" element={<Payment />} /> */}
-                <Route path="/winners" element={<Winners />} />
-                <Route path="/Lottery" element={<Lotteries />} />
-                <Route path="/allOrders" element={<AllOrders />} />
+  
+      <UserProvider>
+        <OrderProvider>
+          <BrowserRouter>
+            <Navigates />
 
-              </Routes>
-            </BrowserRouter>
-          </OrderProvider>
-        </UserProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/gifts" element={<Gifts />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/logout" element={<LogOut />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/userDetails" element={<UserDetails />} />
+              <Route path="/orders" element={<UserOrders />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/orderManagement" element={<OrderManagement />} />
+              {/* <Route path="/payment" element={<Payment />} /> */}
+              <Route path="/winners" element={<Winners />} />
+              <Route path="/Lottery" element={<Lotteries />} />
+              <Route path="/allOrders" element={<AllOrders />} />
+
+            </Routes>
+          </BrowserRouter>
+        </OrderProvider>
+      </UserProvider>
+      <GoogleLogin 
+        onSuccess={credentialResponse => {
+          const credentialResponseDecoded = jwt_decode(credentialResponse.credential)
+          console.log(credentialResponseDecoded);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
     </div>
   );
 }
@@ -51,4 +64,3 @@ function App() {
 export default App;
 
 
-            
