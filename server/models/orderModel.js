@@ -23,9 +23,13 @@ const pool = require('../DB.js');
 
 async function getOrders() {
     try {
-        const sql = `SELECT * FROM orders`
-        const result = await pool.query(sql);
-        return result[0];
+        const sql = `
+            SELECT orders.order_id, orders.user_id, orders.order_date, users.username 
+            FROM orders 
+            JOIN users ON orders.user_id = users.user_id;
+        `;
+        const [result] = await pool.query(sql);
+        return result;
     } catch (err) {
         console.error(err);
         throw err;
@@ -100,5 +104,54 @@ async function createOrder(user_id, order_date, order) {
         throw err;
     }
 }
+async function getOrderAndUserByOrderId(order_id) {
+    try {
+        const sql = `
+            SELECT 
+                users.user_id,
+                users.name,
+                users.username,
+                users.email,
+                users.phone,
+                users.Bonus,
+                users.role,
+                addresses.city,
+                addresses.street,
+                addresses.zipcode,
+                orders.order_id,
+                orders.order_date,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'gift_id', gifts.gift_id,
+                        'name', gifts.name,
+                        'price', gifts.price,
+                        'image_url', gifts.image_url
+                    )
+                ) AS gifts
+            FROM 
+                orders
+            JOIN 
+                users ON orders.user_id = users.user_id
+            JOIN 
+                addresses ON users.address_id = addresses.address_id
+            JOIN 
+                lotteries_tickets ON orders.order_id = lotteries_tickets.order_id
+            JOIN 
+                gifts ON lotteries_tickets.gift_id = gifts.gift_id
+            WHERE 
+                orders.order_id = ?
+            GROUP BY 
+                orders.order_id;
+        `;
 
-module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders}
+        const result = await pool.query(sql, [order_id]);
+        console.log(";;",result[0][0])
+        return result[0][0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+
+module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders,getOrderAndUserByOrderId}

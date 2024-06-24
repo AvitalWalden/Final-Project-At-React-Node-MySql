@@ -19,7 +19,7 @@ const refreshTokenController = require('../controllers/refreshTokenController');
 
 const verifyRoles = (allowedRoles) => {
     return async (req, res, next) => {
-        let allowedRoleKeys;
+        let allowedRoleKeys;                
 
         if (Array.isArray(allowedRoles)) {
             allowedRoleKeys = allowedRoles.map(role => {

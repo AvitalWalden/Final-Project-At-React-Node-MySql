@@ -122,7 +122,7 @@ INSERT INTO users (name, username, email, address_id, phone, Bonus, role) VALUES
 ('Daniel Katz', 'danielkatz', 'n025711858@gmail.com', 7, '050-7890123', 0, 'user'),
 ('Esther Green', 'esthergreen', 'n025711858@gmail.com', 8, '050-8901234', 0, 'user'),
 ('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345', 0, 'user'),
-('Leah Bar', 'leahbar', 'n025711858@gmail.com', 10, '050-0123456', 0, 'admin');
+('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456', 0, 'admin');
 
 -- Insert passwords
 INSERT INTO passwords (user_id, password) VALUES
@@ -211,7 +211,7 @@ INSERT INTO lottery (start_date, end_date) VALUES
 -- Insert lotteries_tickets
 INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
 (1, 10, 1),
-(2, 20, 1),
+(1, 20, 1),
 (3, 30, 3),
 (4, 40, 4),
 (5, 50, 1),

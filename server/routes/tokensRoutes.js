@@ -5,8 +5,6 @@ const { getTokenAndUserByToken } = require('../controllers/tokensController');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-
-// Configure CORS
 router.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,

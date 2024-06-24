@@ -40,6 +40,10 @@ const Profile = () => {
           await refreshAccessToken();
           return fetchUserDetails(user_id);
         }
+        if (response.status === 402) {
+          console.log('No Acsses...');
+          throw response.error;
+        }
 
         if (response.status === 403) {
           console.log('invalid token you cannot do it...');

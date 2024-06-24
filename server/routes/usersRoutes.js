@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.put("/:id",verifyJWT, async (req, res) => {
+router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {
     try {
         const id = req.params.id;
         const resultUser = await getUser(id);
