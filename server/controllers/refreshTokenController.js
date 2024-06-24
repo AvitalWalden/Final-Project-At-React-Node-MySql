@@ -17,13 +17,17 @@ async function handleRefreshToken  (cookies){
     const users = await getTokensAndUsers();    
     const foundUser = users.find(person => person.refreshToken === refreshToken);
     if (!foundUser) return res.sendStatus(403); //Forbidden 
+    const role = foundUser.role
+
     // evaluate jwt 
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-            const role = Object.values(foundUser.role)
+            // if (err || foundUser.username !== decoded.username) {
+            //     console.log("ךךך",decoded)
+            //     return res.sendStatus(403);
+            // }
             accessToken = jwt.sign(
                 {
                     "UserInf": {
@@ -35,7 +39,7 @@ async function handleRefreshToken  (cookies){
                 { expiresIn: '30s' }
             );
         }
-              
+        
     );
     return accessToken;
     

@@ -27,13 +27,11 @@ async function createUser(username, password,role) {
         const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
         const resultAddress = await pool.query(sqlAddress, ['', '', '']);
         const addressId = resultAddress[0].insertId;
-        console.log("sss",addressId)
         const sqlUser = "INSERT INTO users (username, address_id,role) VALUES (?, ?,?)";
         const resultUser = await pool.query(sqlUser, [username, addressId,role]);
         const userId = resultUser[0].insertId;
         const sqlPassword = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
         await pool.query(sqlPassword, [userId, password]);
-        console.log("uuu",resultUser)
         return resultUser[0];
     } catch (err) {
         console.error('Error creating user:', err);

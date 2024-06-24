@@ -62,6 +62,7 @@ async function deleteGift(id) {
 
 async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
   try {
+   
     const sql = `UPDATE gifts SET winner_id = ? ,name = ?,price = ? ,image_url = ? WHERE gift_id = ?`;
     const result = await pool.query(sql, [winner_id, name, price, image_url, id]);
     return result;
