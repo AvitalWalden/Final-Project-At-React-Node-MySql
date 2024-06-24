@@ -59,9 +59,13 @@ function Gifts() {
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
             await refreshAccessToken();
-            return handleUpload(gift_id); // Retry fetch after token refresh
+            return handleUpload(gift_id); 
           }
+          if (response.status === 401) {
+            console.log('No acsses...');
+            throw response.error;
 
+          }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
             throw response.error;
@@ -80,7 +84,6 @@ function Gifts() {
       })
       .catch(error => {
         console.error('Error uploading file:', error);
-        throw error;
       });
   };
 
@@ -102,7 +105,10 @@ function Gifts() {
               await refreshAccessToken();
               return saveGift(); // Retry fetch after token refresh
             }
-
+            if (response.status === 402) {
+              console.log('NO Acsses...');
+              throw response.error;
+            }
             if (response.status === 403) {
               console.log('invalid token you cannot do it...');
               throw response.error;
@@ -140,7 +146,7 @@ function Gifts() {
           />
           <FaSearch className='shearch' />
         </div>
-        {user && user.role === 'admin' && (
+        {user && user.role=="admin"&&(
           <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
         )}
       </div>

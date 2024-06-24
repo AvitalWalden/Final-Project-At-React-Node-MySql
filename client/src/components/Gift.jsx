@@ -101,6 +101,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
   };
 
   const saveGift = () => {
+    try{
     const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
     const method = 'PUT';
     const giftData = currentGift;
@@ -129,6 +130,9 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         setGifts(updateGift);
         setIsEditGiftModalOpen(false);
       });
+    }catch{
+      console.error('Error adding gift:');
+    }
   };
 
   return (
@@ -139,7 +143,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
-            {user && (
+            {user && user.role=="admin"&&(
               <div className="btn-admin">
                 <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
                 <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>

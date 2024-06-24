@@ -24,7 +24,6 @@ const LogOut = () => {
   };
   const saveToDBShoppingCart = async () => {
     if (order.length > 0) {
-      console.log("hereee:", order)
       const userId = user.user_id;
       const url = `http://localhost:3000/shoppingCart`;
       const requestOptions = {

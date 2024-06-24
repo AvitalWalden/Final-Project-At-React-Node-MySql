@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.put('/:gift_id', verifyRoles(ROLES_LIST.Admin), upload.single('image'), async (req, res) => {
+router.put('/:gift_id', upload.single('image'), async (req, res) => {
     try {
         const image = req.file.filename;
         const gift_id = req.params.gift_id;
