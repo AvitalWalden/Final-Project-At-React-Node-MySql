@@ -18,7 +18,7 @@ import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
 import { GoogleLogin } from '@react-oauth/google';
 
-import jwt_decode  from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   return (
@@ -50,8 +50,7 @@ function App() {
       </UserProvider>
       <GoogleLogin 
         onSuccess={credentialResponse => {
-          const credentialResponseDecoded = jwt_decode(credentialResponse.credential)
-          console.log(credentialResponseDecoded);
+          console.log(credentialResponse);
         }}
         onError={() => {
           console.log('Login Failed');
