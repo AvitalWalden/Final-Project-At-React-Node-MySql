@@ -30,6 +30,7 @@ async function logIn(userName, password) {
         const user = await model.logIn(userName);
         if (user) {
             const role = Object.values(user.role);
+            console.log("ooo",role)
             if (hashedPassword === user.password) {
                 token =await creatTokens(user, role);
                 creatTokens(user.user_id, token.refreshToken);

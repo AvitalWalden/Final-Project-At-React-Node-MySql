@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
 
   const refreshAccessToken = async () => {
     try {
-      console.log('sendRefreshToken');
+
       const response = await fetch('http://localhost:3000/refresh', {
         method: 'GET',
         headers: {
@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log("hhh", data.accessToken)
+    
       return data.accessToken;
 
     } catch (error) {
@@ -52,8 +52,7 @@ export const UserProvider = ({ children }) => {
   
         const data = await response.json();
         setUser(data);
-  
-        console.log("Response data:", data);
+
       } catch (error) {
         console.error('Error during refresh page:', error);
        
