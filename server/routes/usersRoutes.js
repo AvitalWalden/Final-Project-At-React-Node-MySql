@@ -9,8 +9,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const { createUser, getUser, updateUser, getUserForSignup } = require('../controllers/usersController');
 router.use(cors());
-const { getTokenAndUserByToken } = require('../controllers/tokensController');
-const { handleRefreshToken } = require('../controllers/refreshTokenController');
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
