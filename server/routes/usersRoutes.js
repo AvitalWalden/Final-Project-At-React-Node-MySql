@@ -17,26 +17,7 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 
-// router.get("/:refreshToken", async (req, res) => {
-//     try {
-//         const cookies = req.cookies;
-//         if (!cookies?.jwt_refreshToken) {
-//             const error = {
-//                 message: "ERROR, you need log in",
-//                 status: 401
-//             }
-//             return res.status(401).send(error);
-//         }
-//         const refreshToken = req.params.refreshToken;
-//         const user = await getTokenAndUserByToken(refreshToken);
-//         res.send(user);
-//     } catch (err) {
-//         const error = {
-//             message: err.message
-//         }
-//         res.status(500).send(error);
-//     }
-// });
+
 
 router.post("/", async (req, res) => {
     try {

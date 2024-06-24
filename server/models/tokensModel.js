@@ -34,14 +34,19 @@ async function getTokensAndUsers() {
         throw err;
     }
 }
-
 async function getTokenAndUserByToken(token) {
     try {
-        const sql = 'SELECT * FROM token NATURAL JOIN users WHERE refreshToken = ?';
+        const sql = `
+            SELECT * 
+            FROM token 
+            JOIN users 
+            ON token.user_id = users.user_id
+            WHERE token.refreshToken = ?
+        `;
         const [result] = await pool.query(sql, [token]);
-        return result;
+        return result[0];
     } catch (err) {
-        console.log(err);
+        console.error('Error in getTokenAndUserByToken:', err);
         throw err;
     }
 }

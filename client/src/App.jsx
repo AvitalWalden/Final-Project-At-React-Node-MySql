@@ -20,30 +20,31 @@ import Home from "./pages/Home";
 function App() {
   return (
     <div>
+      <BrowserRouter>
         <UserProvider>
           <OrderProvider>
-            <BrowserRouter>
-              <Navigates />
-              
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/gifts" element={<Gifts />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/logout" element={<LogOut />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/userDetails" element={<UserDetails />} />
-                <Route path="/orders" element={<UserOrders />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/orderManagement" element={<OrderManagement />} />
-                {/* <Route path="/payment" element={<Payment />} /> */}
-                <Route path="/winners" element={<Winners />} />
-                <Route path="/Lottery" element={<Lotteries />} />
-                <Route path="/allOrders" element={<AllOrders />} />
+            <Navigates />
 
-              </Routes>
-            </BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/gifts" element={<Gifts />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/logout" element={<LogOut />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/userDetails" element={<UserDetails />} />
+              <Route path="/orders" element={<UserOrders />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/orderManagement" element={<OrderManagement />} />
+              {/* <Route path="/payment" element={<Payment />} /> */}
+              <Route path="/winners" element={<Winners />} />
+              <Route path="/Lottery" element={<Lotteries />} />
+              <Route path="/allOrders" element={<AllOrders />} />
+
+
+            </Routes>
           </OrderProvider>
         </UserProvider>
+      </BrowserRouter>
     </div>
   );
 }
@@ -51,4 +52,3 @@ function App() {
 export default App;
 
 
-            

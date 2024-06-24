@@ -24,10 +24,10 @@ async function handleRefreshToken  (cookies){
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            // if (err || foundUser.username !== decoded.username) {
-            //     console.log("ךךך",decoded)
-            //     return res.sendStatus(403);
-            // }
+            if (err || foundUser.username !== decoded.username) {
+                console.log("ךbךך",decoded)
+                return res.sendStatus(403);
+            }
             accessToken = jwt.sign(
                 {
                     "UserInf": {

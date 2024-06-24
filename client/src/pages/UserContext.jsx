@@ -1,10 +1,12 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  
+  const navigate = useNavigate();
+
   const refreshAccessToken = async () => {
     try {
       console.log('sendRefreshToken');
@@ -19,16 +21,49 @@ export const UserProvider = ({ children }) => {
       if (!response.ok) {
         throw new Error('Failed to refresh token');
       }
-      
+
       const data = await response.json();
-      console.log("hhh",data.accessToken)
-      return data.accessToken; 
+      console.log("hhh", data.accessToken)
+      return data.accessToken;
 
     } catch (error) {
       console.error('Error refreshing token:', error);
-      throw error; 
+      throw error;
     }
   };
+
+  useEffect(() => {
+    const refreshUser = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/refreshment', {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include",
+        });
+  
+        if (response.status === 401) {
+          return;
+        }
+        if (!response.ok) {
+          throw new Error('Failed to refresh user');
+        }
+  
+        const data = await response.json();
+        setUser(data);
+  
+        console.log("Response data:", data);
+      } catch (error) {
+        console.error('Error during refresh page:', error);
+       
+      }
+    };
+  
+    refreshUser();
+  }, []);
+  
+
 
   return (
     <UserContext.Provider value={{ user, setUser, refreshAccessToken }}>
@@ -38,3 +73,6 @@ export const UserProvider = ({ children }) => {
 };
 
 export default UserProvider;
+
+
+

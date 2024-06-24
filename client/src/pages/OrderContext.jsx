@@ -12,6 +12,7 @@ export const OrderProvider = ({ children }) => {
 
   useEffect(() => {
     const storedOrder = localStorage.getItem('currentOrder');
+    console.log("ggg",storedOrder)
     if (storedOrder) {
       setOrder(JSON.parse(storedOrder));
     }

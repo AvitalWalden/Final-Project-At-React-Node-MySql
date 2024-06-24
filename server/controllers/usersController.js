@@ -75,7 +75,6 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
 
 async function creatTokens(user, role) {
     try {
-        console.log("roleeeeeeeeeeeee" +role)
         const accessToken = jwt.sign(
             {
                 "UserInf": {
@@ -88,10 +87,14 @@ async function creatTokens(user, role) {
         );
 
         const refreshToken = jwt.sign(
-            { "username": user.username },
+            { 
+                "username": user.username, 
+                "roles": role 
+            },
             config.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
         );
+        
         const token =  {
             accessToken: accessToken,
             refreshToken: refreshToken
