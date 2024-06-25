@@ -9,7 +9,7 @@ async function handleRefreshToken  (cookies){
             message: "ERROR, you need log in",
             status: 401
         }
-        return res.status(401).send(error);
+        throw error;
     }
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;

@@ -9,8 +9,14 @@ async function createUser(username, password,role) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword,role);
-        const userForName=await getUserForSignup(user.insertId);
-        const token = await creatTokens(userForName.username, role);
+        console.log("ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+        console.log(user.insertId);
+
+        const g =getUserForSignup(user.insertId);
+        const token = await creatTokens(g, role);
+        console.log("user",user);
+
+        console.log(token);
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken
@@ -30,6 +36,7 @@ async function logIn(userName, password) {
         const user = await model.logIn(userName);
         if (user) {
             const role = Object.values(user.role);
+            console.log("ooo",role)
             if (hashedPassword === user.password) {
                 token =await creatTokens(user, role);
                 creatTokens(user.user_id, token.refreshToken);
@@ -73,13 +80,13 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
     }
 }
 
-async function creatTokens(userName, role) {
+async function creatTokens(user, role) {
     try {
         console.log("aaaaaaaaaaaaaaaaaaa"+ user.username)
         const accessToken = jwt.sign(
             {
                 "UserInf": {
-                    "username": userName,
+                    "username": user.username,
                     "roles": role
                 }
             },
@@ -89,7 +96,7 @@ async function creatTokens(userName, role) {
 
         const refreshToken = jwt.sign(
             { 
-                "username": userName, 
+                "username": user.username, 
                 "roles": role 
             },
             config.REFRESH_TOKEN_SECRET,
