@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -69,6 +71,16 @@ const SignUp = () => {
       <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />
       <Link to="/login" className="link">Already have an account? Sign in</Link>
       {signUpError && <p className='error' style={{ color: signUpError == "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+          const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
+          console.log(credentialResponseDecoded);
+          handleRegistration(credentialResponseDecoded)
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
     </div>
   )
 };

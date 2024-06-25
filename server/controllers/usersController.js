@@ -10,7 +10,9 @@ async function createUser(username, password,role) {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword,role);
         const token = await creatTokens(user, role);
-        
+        console.log("user",user);
+
+        console.log(token);
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken
@@ -76,6 +78,7 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
 
 async function creatTokens(user, role) {
     try {
+        console.log("aaaaaaaaaaaaaaaaaaa"+ user.username)
         const accessToken = jwt.sign(
             {
                 "UserInf": {
@@ -100,6 +103,7 @@ async function creatTokens(user, role) {
             accessToken: accessToken,
             refreshToken: refreshToken
         }; 
+        console.log(token);
         return token;
     } catch (err) {
         throw err;

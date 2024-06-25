@@ -61,7 +61,7 @@ function Gifts() {
             await refreshAccessToken();
             return handleUpload(gift_id); 
           }
-          if (response.status === 401) {
+          if (response.status === 402) {
             console.log('No acsses...');
             throw response.error;
 

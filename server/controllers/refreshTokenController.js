@@ -25,7 +25,7 @@ async function handleRefreshToken  (cookies){
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || foundUser.username !== decoded.username) {
-                console.log("ךbךך",decoded)
+                console.log("ךbךך",decoded,"err",err)
                 return res.sendStatus(403);
             }
             accessToken = jwt.sign(

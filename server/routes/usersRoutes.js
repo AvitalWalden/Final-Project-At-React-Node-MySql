@@ -17,7 +17,7 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 
-router.post("/", async (req, res) => {
+router.post("/",async (req, res) => {
     try {
 
         const response = await createUser(req.body.username, req.body.password,req.body.role);
@@ -41,8 +41,11 @@ router.put("/:id",verifyJWT, async (req, res) => {
         await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, addressID);
         const userAfterChange = await getUser(id);
         delete userAfterChange.address_id;
+        console.log(userAfterChange);
         res.send(userAfterChange);
     } catch (err) {
+        console.log("fffffffffffffffffff");
+
         const error = {
             message: err.message
         }

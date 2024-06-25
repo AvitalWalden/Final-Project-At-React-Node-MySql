@@ -20,6 +20,7 @@ const verifyJWT = (req, res, next) => {
             console.log('JWT verified successfully', decoded);
             req.user = decoded.UserInf.username; // Assuming your payload structure is "UserInf"
             req.roles = decoded.UserInf.roles;
+            console.log("jhgggggggggggggggggggggggg");
             next();
         }
     );

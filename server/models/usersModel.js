@@ -22,7 +22,7 @@ async function getUserForSignup(id) {
     }
 }
 
-async function createUser(username, password,role) {
+async function createUser(username, password, role) {
     try {
         const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
         const resultAddress = await pool.query(sqlAddress, ['', '', '']);
@@ -32,6 +32,7 @@ async function createUser(username, password,role) {
         const userId = resultUser[0].insertId;
         const sqlPassword = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
         await pool.query(sqlPassword, [userId, password]);
+        console.log("resultUser"+resultUser);
         return resultUser[0];
     } catch (err) {
         console.error('Error creating user:', err);
