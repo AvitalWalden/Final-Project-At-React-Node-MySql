@@ -6,6 +6,7 @@ router.get('/', async (req, res) => {
     try {
         const cookies = req.cookies;
         const accessToken = await refreshTokenController.handleRefreshToken(cookies);
+        console.log(accessToken);
         res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30 * 1000 });
         res.status(200).send({ accessToken }); 
     } catch (err) {

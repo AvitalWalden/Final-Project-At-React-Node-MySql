@@ -2,13 +2,14 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 const logIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-
   const { user, setUser } = useContext(UserContext);
 
   function handleLogin() {
@@ -57,6 +58,16 @@ const logIn = () => {
       <button className="btnOkLogIn" onClick={handleLogin}>Connect</button><br />
       <Link to="/signup" className="link" >Don't have an account? Create account</Link>
       {loginError && <p className='error' style={{ color: loginError == "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+          const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
+          console.log(credentialResponseDecoded);
+          handleRegistration(credentialResponseDecoded)
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
     </div>
   );
 }

@@ -18,15 +18,8 @@ import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
 import { UserContext } from './pages/UserContext';
-import { GoogleLogin } from '@react-oauth/google';
-// import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-
 
 function App() {
-  // const { setUser } = useContext(UserContext);
-  // const navigate = useNavigate();
-
   function handleRegistration(credentialResponseDecoded) {
     const url = 'http://localhost:3000/signup';
     const newUser = {
@@ -79,16 +72,10 @@ function App() {
           </OrderProvider>
         </UserProvider>
       </BrowserRouter>
-      <GoogleLogin
-        onSuccess={credentialResponse => {
-          const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-          console.log(credentialResponseDecoded);
-          handleRegistration(credentialResponseDecoded)
-        }}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
+      {  
+
+      }
+     
     </div>
   );
 }
