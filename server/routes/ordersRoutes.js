@@ -5,7 +5,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders } = require('../controllers/orderController');
+const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders,getOrderAndUserByOrderId } = require('../controllers/orderController');
 const verifyRoles = require('../middleware/verifyRoles');
 const ROLES_LIST = require('../config/role_list');
 const cookieParser = require('cookie-parser');
@@ -52,7 +52,7 @@ router.get("/gift_id/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (r
         res.status(500).send(error);
     }
 });
-router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin, ROLES_LIST.user]),async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const response = await createOrder(req.body.user_id, req.body.order_date,req.body.order);
         const newOrder = await getOrderByOrderId(response.orderId);

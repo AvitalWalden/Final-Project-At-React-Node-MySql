@@ -37,4 +37,12 @@ async function createOrder(user_id, order_date,order) {
             throw err;
     }
 }
-module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders}
+async function getOrderAndUserByOrderId(order_id) {
+    try {
+        const orderModel = await model.getOrderAndUserByOrderId(order_id);
+        return orderModel;
+    } catch (err) {
+            throw err;
+    }
+}
+module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders,getOrderAndUserByOrderId}

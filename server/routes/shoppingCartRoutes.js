@@ -1,6 +1,8 @@
 const express = require("express");
 const config = require('../config/config')
 const router = express.Router();
+const verifyRoles = require('../middleware/verifyRoles');
+const ROLES_LIST = require('../config/role_list');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
@@ -12,7 +14,7 @@ router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
-router.get("/:user_id", async (req, res) => {
+router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {
     try {
         let shoppingCart;
         const user_id = req.params.user_id;
@@ -25,7 +27,7 @@ router.get("/:user_id", async (req, res) => {
         res.status(500).send(error);
     }
 });
-router.post("/",verifyJWT, async (req, res) => {  
+router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {  
 
     try {
         let shoppingCart;
@@ -39,7 +41,7 @@ router.post("/",verifyJWT, async (req, res) => {
         res.status(500).send(error);
     }
 });
-router.put("/", async (req, res) => {  
+router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {  
 
     try {
         let shoppingCart;
@@ -53,7 +55,7 @@ router.put("/", async (req, res) => {
         res.status(500).send(error);
     }
 });
-router.delete('/:userId/:giftId', async(req, res) => {
+router.delete('/:userId/:giftId',verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async(req, res) => {
     try {
         let shoppingCart;
         const userId= req.params.userId;
