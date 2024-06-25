@@ -145,7 +145,6 @@ async function getOrderAndUserByOrderId(order_id) {
         `;
 
         const result = await pool.query(sql, [order_id]);
-        console.log(";;",result[0][0])
         return result[0][0];
     } catch (err) {
         console.log(err);

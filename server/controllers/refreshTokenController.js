@@ -2,7 +2,6 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { getTokensAndUsers } = require('../models/tokensModel.js');
 
-
 async function handleRefreshToken  (cookies){
     
     if (!cookies?.jwt_refreshToken) {
@@ -24,10 +23,9 @@ async function handleRefreshToken  (cookies){
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            // if (err || foundUser.username !== decoded.username) {
-            //     console.log("ךbךך",decoded)
-            //     return res.sendStatus(403);
-            // }
+            if (err || foundUser.username !== decoded.username) {
+                return res.sendStatus(403);
+            }
             accessToken = jwt.sign(
                 {
                     "UserInf": {

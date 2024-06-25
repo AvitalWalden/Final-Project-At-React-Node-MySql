@@ -1,17 +1,4 @@
-// const verifyRoles = (...allowedRoles) => {
-//     return (req, res, next) => {
-//         console.log(...allowedRoles);
-//         console.log(req.roles);
-//         if (!req?.roles) return res.sendStatus(401);
-//         const rolesArray = [...allowedRoles];
-//         const result = req.roles.map(role => rolesArray.includes(role)).find(val => val === true);
-//         console.log(result);
-//         if (!result) return res.sendStatus(401);
-//         next();
-//     }
-// }
 
-// module.exports = verifyRoles
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const ROLES_LIST = require('../config/role_list'); // Assuming your roles are exported correctly

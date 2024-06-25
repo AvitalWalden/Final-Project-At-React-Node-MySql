@@ -9,8 +9,8 @@ async function createUser(username, password,role) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword,role);
-        const token = await creatTokens(user, role);
-        
+        const userForName=await getUserForSignup(user.insertId);
+        const token = await creatTokens(userForName.username, role);
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken
@@ -30,7 +30,6 @@ async function logIn(userName, password) {
         const user = await model.logIn(userName);
         if (user) {
             const role = Object.values(user.role);
-            console.log("ooo",role)
             if (hashedPassword === user.password) {
                 token =await creatTokens(user, role);
                 creatTokens(user.user_id, token.refreshToken);
@@ -74,12 +73,12 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
     }
 }
 
-async function creatTokens(user, role) {
+async function creatTokens(userName, role) {
     try {
         const accessToken = jwt.sign(
             {
                 "UserInf": {
-                    "username": user.username,
+                    "username": userName,
                     "roles": role
                 }
             },
@@ -89,7 +88,7 @@ async function creatTokens(user, role) {
 
         const refreshToken = jwt.sign(
             { 
-                "username": user.username, 
+                "username": userName, 
                 "roles": role 
             },
             config.REFRESH_TOKEN_SECRET,

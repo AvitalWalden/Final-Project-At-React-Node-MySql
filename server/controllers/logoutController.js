@@ -2,8 +2,6 @@
 const { getTokensAndUsers,deleteToken} = require('../models/tokensModel.js');
 
 const handleLogout = async (req, res) => {
-    console.log("ffff")
-    // On client, also delete the accessToken
 
     const cookies = req.cookies;
     if (!cookies?.jwt_refreshToken) return res.sendStatus(204); //No content

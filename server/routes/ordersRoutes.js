@@ -56,7 +56,6 @@ router.get("/order_id/:order_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async 
     try {
         let order;
         const order_id = req.params.order_id;
-        console.log(order_id,"..")
         order = await getOrderAndUserByOrderId(order_id);
         res.send(order);
     } catch (err) {

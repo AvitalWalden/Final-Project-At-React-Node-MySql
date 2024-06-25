@@ -32,6 +32,7 @@ async function createUser(username, password,role) {
         const userId = resultUser[0].insertId;
         const sqlPassword = "INSERT INTO passwords (user_id, password) VALUES (?, ?)";
         await pool.query(sqlPassword, [userId, password]);
+
         return resultUser[0];
     } catch (err) {
         console.error('Error creating user:', err);
