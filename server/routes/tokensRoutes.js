@@ -1,14 +1,13 @@
+const config = require('../config/config')
 const express = require('express');
 const cors = require('cors');
 const router = express.Router();
 const { getTokenAndUserByToken } = require('../controllers/tokensController');
-
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-router.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 router.get("/", async (req, res) => {
   try {

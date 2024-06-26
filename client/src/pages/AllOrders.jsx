@@ -55,7 +55,6 @@ function AllOrders() {
 
   return (
     <div className="container">
-      <h2>All Orders</h2>
       <table>
         <thead>
           <tr>

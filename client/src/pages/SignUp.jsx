@@ -64,7 +64,6 @@ const SignUp = () => {
       <input type="password" className='input' value={verifyPassword} placeholder="verift-password" onChange={(e) => setverifyPassword(e.target.value)} /><br />
       <select className='input' value={role} onChange={(e) => setRole(e.target.value)}>
         <option value="">Select Role</option>
-        <option value="admin">Admin</option>
         <option value="donate">Donate</option>
         <option value="user">User</option>
       </select><br />

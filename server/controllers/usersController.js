@@ -54,7 +54,7 @@ async function logIn(userName, password) {
 
 async function getUser(id) {
     try {
-        return model.getUser(id);
+        return await model.getUser(id);
     } catch (err) {
         throw err;
     }
@@ -62,7 +62,7 @@ async function getUser(id) {
 
 async function getUserForSignup(id) {
     try {
-        return model.getUserForSignup(id);
+        return await model.getUserForSignup(id);
     } catch (err) {
         throw err;
     }
@@ -71,7 +71,7 @@ async function getUserForSignup(id) {
 
 async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId) {
     try {
-        return model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId);
+        return await model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId);
     } catch (err) {
         throw err;
     }

@@ -7,6 +7,7 @@ import '../css/Navigates.css';
 import { LuChevronDown } from "react-icons/lu";
 import { LuChevronUp } from "react-icons/lu";
 import { FaCartShopping } from "react-icons/fa6";
+import { TbPackages } from "react-icons/tb";
 import { FaRegChartBar } from "react-icons/fa";
 
 
@@ -26,6 +27,7 @@ function Navigates() {
                 {!user && <Link to="/login">LogIn</Link>}
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
+                <Link to="/packages">Our Packages <TbPackages /></Link>
                 <Link to="/giftsChart"> GiftsChart<FaRegChartBar /></Link>
 
                 <Link to="/orderManagement"><FaCartShopping style={{

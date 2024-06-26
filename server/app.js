@@ -40,6 +40,8 @@ const shoppingCartRoutes=require("./routes/shoppingCartRoutes")
 app.use("/shoppingCart",shoppingCartRoutes);
 const tokensRoutes=require("./routes/tokensRoutes")
 app.use("/refreshment",tokensRoutes);
+const packagesRoutes=require("./routes/packagesRoutes")
+app.use("/packages",packagesRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

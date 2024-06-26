@@ -7,13 +7,14 @@ import '../css/OrderManagement.css';
 
 const OrderManagement = () => {
   const navigate = useNavigate();
-  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems } = useContext(OrderContext);
+  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
+
       if (user) {
         try {
           const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
@@ -22,6 +23,9 @@ const OrderManagement = () => {
           });
           const data = await response.json();
           setSavedCartItems(data);
+          savedCartItems.forEach((gift) => {
+            [{ ...gift, isChecked: false }]
+          });
         } catch (error) {
           console.error('Error fetching saved cart items:', error);
         }
@@ -32,20 +36,27 @@ const OrderManagement = () => {
   }, [user, order]);
 
   const calculateTotalPrice = () => {
-    let totalPrice = 0;
-    order.forEach((gift) => {
-      totalPrice += gift.price * gift.quantity;
-    });
-    savedCartItems.forEach((gift) => {
-      totalPrice += gift.price * gift.quantity;
-    });
+    let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
+    if (totalPrice == 0) {
+      order.forEach((gift) => {
+        if (gift.isChecked) {
+          totalPrice += gift.price * gift.quantity;
+        }
+      });
+
+      savedCartItems.forEach((gift) => {
+        if (gift.isChecked) {
+          totalPrice += gift.price * gift.quantity;
+        }
+      });
+    }
 
     return totalPrice.toFixed(2);
   };
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
-  }, [order, savedCartItems]);
+  }, [order, savedCartItems, selectedPackage]);
 
   const handlePaymentClick = async (e) => {
     e.preventDefault();
@@ -68,18 +79,52 @@ const OrderManagement = () => {
   const handleDeleteGift = (giftId, IdentifyString) => {
     removeFromOrder(giftId, IdentifyString);
   };
-
-  const handleQuantityChange = (giftId, newQuantity, IdentifyString) => {
+  const handleCheckboxChange = (giftId, IdentifyString) => {
     if (IdentifyString == "current") {
       const updatedOrder = order.map((item) =>
-        item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
+        item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
       );
       setOrder(updatedOrder);
+    } else {
+      const updatedShoppingCart = savedCartItems.map((item) =>
+        item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
+      );
+      setSavedCartItems(updatedShoppingCart);
     }
-    else {
-      const putToDBShoppingCart = async (giftId, newQuantity) => {
+  };
+  const handleDeletePackage = () => {
+    setSelectedPackage(null)
+  }
+  const handleQuantityChange = (giftId, change, IdentifyString) => {
+    if (IdentifyString === "current") {
+      if (selectedPackage) {
+        let totalSelectedQuantity = 0;
+        order.forEach((gift) => {
+          if (gift.isChecked) {
+            totalSelectedQuantity += gift.quantity;
+          }
+        });
+        if (totalSelectedQuantity + change > selectedPackage.amount) {
+          alert(`You can only select up to ${selectedPackage.amount} gifts.`);
+          return;
+        }
+      }
+      const updatedOrder = order.map((item) =>
+        item.gift_id === giftId ? { ...item, quantity: item.quantity + change } : item
+      );
+      setOrder(updatedOrder);
+    } else {
+      const putToDBShoppingCart = async (giftId, change) => {
         try {
           const userId = user.user_id;
+          const currentItem = savedCartItems.find(item => item.gift_id === giftId);
+          const newQuantity = currentItem.quantity + change;
+
+          if (newQuantity < 1) {
+            alert('Invalid quantity');
+            return;
+          }
+
           await fetch(`http://localhost:3000/shoppingCart`, {
             method: 'PUT',
             headers: {
@@ -88,6 +133,7 @@ const OrderManagement = () => {
             credentials: "include",
             body: JSON.stringify({ userId, giftId, newQuantity }),
           });
+
           const updatedSavingCart = savedCartItems.map((item) =>
             item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
           );
@@ -96,9 +142,10 @@ const OrderManagement = () => {
           console.error('Error saving shopping cart:', error);
         }
       };
-      putToDBShoppingCart(giftId, newQuantity)
+      putToDBShoppingCart(giftId, change);
     }
   };
+
 
   return (
     <div className="order-management">
@@ -108,13 +155,23 @@ const OrderManagement = () => {
           {
             order.map((gift, index) => (
               <div key={index} className="gift-card-cart">
+                <input
+                  type='checkbox'
+                  defaultChecked={gift.isChecked}
+                  onChange={() => handleCheckboxChange(gift.gift_id, "current")}
+                />
                 <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
                 <h1>{gift.name}</h1>
                 <h1>${gift.price}</h1>
                 <input
                   type="number"
+                  min="1"
                   value={gift.quantity}
-                  onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value), "current")}
+                  onChange={(e) => {
+                    const newQuantity = parseInt(e.target.value);
+                    const change = newQuantity > gift.quantity ? 1 : -1;
+                    handleQuantityChange(gift.gift_id, change, "current");
+                  }}
                 />
                 <div className="tooltip">
                   <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "current")}>
@@ -127,19 +184,30 @@ const OrderManagement = () => {
           }
         </div>
       )}
-      {savedCartItems.length > 0 && (
+      {!selectedPackage && savedCartItems.length > 0 && (
         <div className="saved-cart">
           <h2>Saved Shopping Cart</h2>
           {
             savedCartItems.map((gift, index) => (
               <div key={index} className="gift-card-cart">
+                <input
+                  type='checkbox'
+                  defaultChecked={gift.isChecked}
+                  onChange={() => handleCheckboxChange(gift.gift_id, "saved")}
+                />
+
                 <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
                 <h1>{gift.name}</h1>
                 <h1>${gift.price}</h1>
                 <input
                   type="number"
+                  min="1"
                   value={gift.quantity}
-                  onChange={(e) => handleQuantityChange(gift.gift_id, parseInt(e.target.value), "saved")}
+                  onChange={(e) => {
+                    const newQuantity = parseInt(e.target.value);
+                    const change = newQuantity > gift.quantity ? 1 : -1;
+                    handleQuantityChange(gift.gift_id, change, "saved");
+                  }}
                 />
                 <div className="tooltip">
                   <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "saved")}>
@@ -156,6 +224,7 @@ const OrderManagement = () => {
       <div className="order-summary">
         <h2>Order Summary</h2>
         <div className="summary-container">
+        {selectedPackage && <button className="btnDelete-cart" onClick={() => handleDeletePackage()}>delete package</button>}
           <p>Total Price: {totalPrice}$</p>
           <button
             className="btn-buy"

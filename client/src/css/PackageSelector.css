@@ -1,0 +1,45 @@
+.package-selector {
+    margin-top: 50px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .package-card {
+    display: inline-block;
+    width: 300px;
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .package-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .package-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .package-card h1 {
+    font-size: 1.5em;
+    margin: 10px 0;
+  }
+  
+  .package-card p {
+    color: #555;
+    margin: 10px 0;
+    font-size: 1em;
+  }
+  
+  .package-card .price {
+    color: #f00;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
