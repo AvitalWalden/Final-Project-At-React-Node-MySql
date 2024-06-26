@@ -21,6 +21,10 @@ const GiftsChart = () => {
                 }
                 const data = await response.json();
 
+                if (data.length === 0) {
+                    throw new Error('Empty data received');
+                }
+
                 const labels = data.map(item => item.gift_name);
                 const quantities = data.map(item => item.total_quantity_ordered);
 
@@ -43,7 +47,6 @@ const GiftsChart = () => {
 
         fetchData();
     }, []);
-
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
