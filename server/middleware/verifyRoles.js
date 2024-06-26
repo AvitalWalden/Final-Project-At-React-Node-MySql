@@ -22,7 +22,7 @@ const verifyRoles = (allowedRoles) => {
         let userRoles;
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             // if (err) return res.sendStatus(403); // Forbidden if token is invalid
-             userRoles = decoded.UserInf.roles;
+             userRoles = decoded.UserInfo.roles;
            
         });
          let result=false;

@@ -17,8 +17,8 @@ const verifyJWT = (req, res, next) => {
                 console.error('JWT verification error:', err);
                 return res.sendStatus(403); // Invalid token
             }
-            req.user = decoded.UserInf.username; // Assuming your payload structure is "UserInf"
-            req.roles = decoded.UserInf.roles;
+            req.user = decoded.UserInfo.username; // Assuming your payload structure is "UserInfo"
+            req.roles = decoded.UserInfo.roles;
             next();
         }
     );

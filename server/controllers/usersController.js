@@ -85,7 +85,7 @@ async function creatTokens(user, role) {
         console.log("aaaaaaaaaaaaaaaaaaa"+ user.username)
         const accessToken = jwt.sign(
             {
-                "UserInf": {
+                "UserInfo": {
                     "username": user.username,
                     "roles": role
                 }

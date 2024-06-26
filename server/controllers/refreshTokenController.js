@@ -35,7 +35,7 @@ async function handleRefreshToken  (cookies){
             }
             accessToken = jwt.sign(
                 {
-                    "UserInf": {
+                    "UserInfo": {
                         "username": decoded.username,
                         "roles": role
                     }
