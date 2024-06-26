@@ -21,6 +21,7 @@ import { UserContext } from './pages/UserContext';
 import PackageSelector from "./pages/PackageSelector";
 import { OrderContext } from './pages/OrderContext';
 import { Prompt } from './components/Prompt'; // Import Prompt component
+import GiftsChart from "./pages/GiftsChart";
 
 function App() {
 
@@ -71,6 +72,7 @@ function App() {
               <Route path="/Lottery" element={<Lotteries />} />
               <Route path="/allOrders" element={<AllOrders />} />
               <Route path="/packages" element={<PackageSelector />} />
+              <Route path="/giftsChart" element={<GiftsChart />} />
 
 
             </Routes>

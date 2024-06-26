@@ -44,10 +44,8 @@ router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), asy
         const userAfterChange = await getUser(id);
 
         delete userAfterChange.address_id;
-        console.log(userAfterChange);
         res.send(userAfterChange);
     } catch (err) {
-        console.log("fffffffffffffffffff");
 
         const error = {
             message: err.message

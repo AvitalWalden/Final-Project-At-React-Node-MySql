@@ -2,18 +2,24 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { getTokensAndUsers } = require('../models/tokensModel.js');
 
-async function handleRefreshToken  (cookies){
-    
+const handleRefreshToken = async (req, res) => {
+    console.log("handleRefreshToken");
+    // console.log(req);
+
+    const cookies = req.cookies;
+    console.log("cookies");
+    console.log(cookies);
+
     if (!cookies?.jwt_refreshToken) {
         const error = {
             message: "ERROR, you need log in",
             status: 401
-        }
-        throw error;
+        };
+        return res.status(401).send(error);
     }
-    let accessToken;
+
     const refreshToken = cookies.jwt_refreshToken;
-    const users = await getTokensAndUsers();    
+    const users = await getTokensAndUsers();
     const foundUser = users.find(person => person.refreshToken === refreshToken);
     if (!foundUser) { const error = {
         message: "ERROR, you need log in",
@@ -43,12 +49,11 @@ async function handleRefreshToken  (cookies){
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '30s' }
             );
+
+            res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 30 * 1000 });
+            return res.json({ accessToken }); // Return JSON response
         }
-        
     );
-    return accessToken;
-    
 }
 
-
-module.exports = { handleRefreshToken }
+module.exports = { handleRefreshToken };
