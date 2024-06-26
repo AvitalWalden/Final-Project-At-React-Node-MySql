@@ -9,6 +9,14 @@ async function createGift(name, price, image_url) {
         throw err;
     }
 }
+async function getAllGiftsOrderQuantity() {
+     try {
+        const allGiftsOrderQuantity = await model.getAllGiftsOrderQuantity();
+        return allGiftsOrderQuantity;
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function getGifts() {
     try {
@@ -55,4 +63,4 @@ async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
     }
 }
 
-module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails,updateWinnerOfGift }
+module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails,updateWinnerOfGift,getAllGiftsOrderQuantity }

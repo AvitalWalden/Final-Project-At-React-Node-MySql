@@ -18,6 +18,7 @@ import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
 import { UserContext } from './pages/UserContext';
+import GiftsChart from "./pages/GiftsChart";
 
 function App() {
   function handleRegistration(credentialResponseDecoded) {
@@ -66,6 +67,7 @@ function App() {
               <Route path="/winners" element={<Winners />} />
               <Route path="/Lottery" element={<Lotteries />} />
               <Route path="/allOrders" element={<AllOrders />} />
+              <Route path="/giftsChart" element={<GiftsChart />} />
 
 
             </Routes>

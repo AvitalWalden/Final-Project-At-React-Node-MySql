@@ -7,6 +7,8 @@ import '../css/Navigates.css';
 import { LuChevronDown } from "react-icons/lu";
 import { LuChevronUp } from "react-icons/lu";
 import { FaCartShopping } from "react-icons/fa6";
+import { FaRegChartBar } from "react-icons/fa";
+
 
 
 function Navigates() {
@@ -24,6 +26,8 @@ function Navigates() {
                 {!user && <Link to="/login">LogIn</Link>}
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
+                <Link to="/giftsChart"> GiftsChart<FaRegChartBar /></Link>
+
                 <Link to="/orderManagement"><FaCartShopping style={{
                     transition: "transform 0.7s, color 0.7s, text-shadow 0.3s, border 0.7s",
                     textShadow: "0 0 10px black, 0 0 20px black, 0 0 30px black, 0 0 40px black, 0 0 50px black, 0 0 60px black, 0 0 70px black",

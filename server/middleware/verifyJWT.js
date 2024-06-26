@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
     let cookieToken = req.cookies.jwt_accessToken; // Assuming the access token is stored in cookies
-
     if (!cookieToken) {
         console.error('JWT token not found in cookies');
         return res.sendStatus(401);
@@ -17,9 +16,9 @@ const verifyJWT = (req, res, next) => {
                 console.error('JWT verification error:', err);
                 return res.sendStatus(403); // Invalid token
             }
-            req.user = decoded.UserInf.username; // Assuming your payload structure is "UserInf"
-            req.roles = decoded.UserInf.roles;
-            console.log("jhgggggggggggggggggggggggg");
+
+            req.user = decoded.UserInfo.username; // Assuming your payload structure is "UserInf"
+            req.roles = decoded.UserInfo.roles;
             next();
         }
     );

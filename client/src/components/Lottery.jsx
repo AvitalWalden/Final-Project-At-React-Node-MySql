@@ -32,6 +32,7 @@ function Lottery({ gift }) {
                 winner_id: id
             })
         };
+        console.log("updateWinner");
 
         try {
             const response = await fetch(url, requestOptions);
@@ -59,6 +60,7 @@ function Lottery({ gift }) {
     };
 
     const getOrder = async (gift_id) => {
+        console.log("getOrder");
         try {
             const response = await fetch(`http://localhost:3000/orders/gift_id/${gift_id}`, {
                 method: "GET",

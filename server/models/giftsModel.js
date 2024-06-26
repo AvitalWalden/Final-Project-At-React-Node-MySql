@@ -28,7 +28,7 @@ async function getGiftsWithUserDetails() {
 
 async function getGift(id) {
   try {
-    
+
     const sql = 'SELECT * FROM gifts where gift_id=?';
     const result = await pool.query(sql, [id]);
 
@@ -38,6 +38,28 @@ async function getGift(id) {
     throw err;
   }
 }
+
+async function getAllGiftsOrderQuantity() {
+  try {
+    const query = `
+    SELECT 
+        g.gift_id,
+        g.name AS gift_name,
+        SUM(lt.quantity) AS total_quantity_ordered
+    FROM 
+        gifts g
+    JOIN 
+        lotteries_tickets lt ON g.gift_id = lt.gift_id
+    GROUP BY 
+        g.gift_id, g.name;`;
+    const [rows] = await pool.query(query);
+    return rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 
 async function createGift(name, price, image_url) {
   try {
@@ -50,6 +72,8 @@ async function createGift(name, price, image_url) {
   }
 }
 
+
+
 async function deleteGift(id) {
   try {
     const sql = `DELETE FROM gifts WHERE gift_id = ?`;
@@ -60,9 +84,9 @@ async function deleteGift(id) {
   }
 }
 
-async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
+async function updateWinnerOfGift(id, winner_id, name, price, image_url) {
   try {
-   
+
     const sql = `UPDATE gifts SET winner_id = ? ,name = ?,price = ? ,image_url = ? WHERE gift_id = ?`;
     const result = await pool.query(sql, [winner_id, name, price, image_url, id]);
     return result;
@@ -71,4 +95,4 @@ async function updateWinnerOfGift(id,winner_id,name,price, image_url) {
     throw err;
   }
 }
-module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails ,updateWinnerOfGift}
+module.exports = { getGifts, createGift, getGift, deleteGift, getGiftsWithUserDetails, updateWinnerOfGift, getAllGiftsOrderQuantity }
