@@ -45,8 +45,13 @@
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
-
+.order-management .gift-card-cart input[type="checkbox"] {
+  position: absolute; /* כפול פירוט */
+  top: 10px;
+  left: 10px;
+}
 .order-management .gift-card-cart img {
   width: 100%;
   height: auto;
@@ -144,8 +149,7 @@
 
 .order-management .modal {
   position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
@@ -231,3 +235,4 @@
     margin-bottom: 10px;
   }
 }
+

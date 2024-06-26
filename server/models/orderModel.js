@@ -1,26 +1,5 @@
 const pool = require('../DB.js');
 
-// async function getOrder(id) {
-//     try {
-//         const sql =  'SELECT orders.*, FROM orders  gifts ON orders.gift_id = gifts.gift_id JOIN lotteries_tickets ON orders.order_id = lotteries_tickets.order_id WHERE orders.user_id = ?';
-//         const result = await pool.query(sql, [id]);
-//         return result[0][0];
-//     } catch (err) {
-//         console.error(err);
-//         throw err;
-//     }
-// }
-// async function getOrder(userId) {
-//     try {
-//         const sql = 'SELECT * FROM orders NATURAL JOIN lotteries_tickets  NATURAL JOIN gifts WHERE orders.user_id = ?';
-//         const result = await pool.query(sql, [userId]);
-//         return result[0];
-//     } catch (err) {
-//         console.error(err);
-//         throw err;
-//     }
-// }
-
 async function getOrders() {
     try {
         const sql = `

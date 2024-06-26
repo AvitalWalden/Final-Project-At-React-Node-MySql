@@ -10,7 +10,7 @@ import { ImCancelCircle } from "react-icons/im";
 
 
 function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refreshAccessToken }) {
-  const { addToOrder } = useContext(OrderContext);
+  const { addToOrder, selectedPackage, order } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
 
@@ -53,8 +53,8 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
 
   };
 
-  const handleAddGift = () => {
-    addToOrder(gift)
+  const handleAddGift = (checkbox) => {
+    addToOrder(gift, checkbox)
   };
 
   const handleEditGift = () => {
@@ -101,36 +101,36 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
   };
 
   const saveGift = () => {
-    try{
-    const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
-    const method = 'PUT';
-    const giftData = currentGift;
+    try {
+      const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
+      const method = 'PUT';
+      const giftData = currentGift;
 
-    fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      credentials: "include",
-      body: JSON.stringify(giftData)
-    })
-      .then(async response => {
-        if (!response.ok) {
-          if (response.status === 401) {
-            console.log('Refreshing token and retrying...');
-            await refreshAccessToken();
-            return saveGift(); // Retry fetch after token refresh
-          }
+      fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
+        body: JSON.stringify(giftData)
+      })
+        .then(async response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              console.log('Refreshing token and retrying...');
+              await refreshAccessToken();
+              return saveGift(); // Retry fetch after token refresh
+            }
 
-          if (response.status === 403) {
-            console.log('invalid token you cannot do it...');
-            throw response.error;
+            if (response.status === 403) {
+              console.log('invalid token you cannot do it...');
+              throw response.error;
+            }
           }
-        }
-        handleUpload(currentGift.gift_id);
-        const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
-        setGifts(updateGift);
-        setIsEditGiftModalOpen(false);
-      });
-    }catch{
+          handleUpload(currentGift.gift_id);
+          const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
+          setGifts(updateGift);
+          setIsEditGiftModalOpen(false);
+        });
+    } catch {
       console.error('Error adding gift:');
     }
   };
@@ -143,13 +143,13 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1>{highlightSearchTerm(gift.name)}</h1>
           <h1>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
-            {user && user.role=="admin"&&(
+            {user && user.role == "admin" && (
               <div className="btn-admin">
                 <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
                 <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
               </div>
             )}
-            <button className="btnAddGift" onClick={handleAddGift}>Add To Cart</button>
+            <button className="btnAddGift" onClick={() => handleAddGift(true)}>Add To Cart</button>
           </div>
         </div>
       }

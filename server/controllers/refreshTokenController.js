@@ -15,16 +15,23 @@ async function handleRefreshToken  (cookies){
     const refreshToken = cookies.jwt_refreshToken;
     const users = await getTokensAndUsers();    
     const foundUser = users.find(person => person.refreshToken === refreshToken);
-    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    if (!foundUser) { const error = {
+        message: "ERROR, you need log in",
+        status: 401
+    }
+    throw error;}
     const role = foundUser.role
 
-    // evaluate jwt 
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || foundUser.username !== decoded.username) {
-                return res.sendStatus(403);
+                const error = {
+                    message: "ERROR, you need log in",
+                    status: 401
+                }
+                throw error;
             }
             accessToken = jwt.sign(
                 {

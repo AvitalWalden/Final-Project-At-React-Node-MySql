@@ -16,9 +16,10 @@ function Gifts() {
   const [file, setFile] = useState(null);
   const { user, refreshAccessToken } = useContext(UserContext);
 
-  const { order, isOrderListOpen, setIsOrderListOpen } = useContext(OrderContext);
+  const { order, isOrderListOpen, setIsOrderListOpen ,selectedPackage} = useContext(OrderContext);
 
   useEffect(() => {
+    console.log("oio",selectedPackage)
     fetch(`http://localhost:3000/gifts`, {
       method: "GET",
       credentials: "include"
@@ -162,6 +163,7 @@ function Gifts() {
             file={file}
             setFile={setFile}
             refreshAccessToken={refreshAccessToken}
+            selectedPackage={selectedPackage}
           />
         ))}
       </div>
