@@ -53,7 +53,7 @@ async function logIn(userName) {
     }
 }
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
     try {
         const sqlValidateAddress = `SELECT * FROM addresses WHERE address_id = ?`;
         const [addressRows] = await pool.query(sqlValidateAddress, [addressId]);
@@ -63,8 +63,8 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
         }
         const sqlAddress = `UPDATE addresses SET city = ?, street = ?, zipcode = ? WHERE address_id = ?`;
         await pool.query(sqlAddress, [city, street, zipcode, addressId]);
-        const sqlUser = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ?, Bonus = ? WHERE user_id = ?`;
-        const resultUser = await pool.query(sqlUser, [name, username, email, addressId, phone, Bonus, id]);
+        const sqlUser = `UPDATE users SET name = ?, username = ?, email = ?, address_id = ?, phone = ? WHERE user_id = ?`;
+        const resultUser = await pool.query(sqlUser, [name, username, email, addressId, phone, id]);
 
         return resultUser;
     } catch (err) {
@@ -73,6 +73,19 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
     }
 }
 
+async function createNewUser( name, username, email, phone,city,street,zipcode) {
+    try {
+        const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
+        const resultAddress = await pool.query(sqlAddress, [city, street, zipcode]);
+        const addressId = resultAddress[0].insertId;
+        const sqlUser = "INSERT INTO users (name,username,email, address_id,phone,role) VALUES (?, ?,?,?,?,?)";
+        const resultUser = await pool.query(sqlUser, [name,username,email,addressId,phone,'user']);
+        const userId = resultUser[0].insertId;
+        return resultUser[0];
+    } catch (err) {
+        console.error('Error creating user:', err);
+        throw err;
+    }
+}
 
-
-module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup }
+module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser }

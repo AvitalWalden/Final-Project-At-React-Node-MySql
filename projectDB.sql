@@ -3,6 +3,8 @@ USE projectDB;
 CREATE DATABASE IF NOT EXISTS projectDB;
 
 -- Drop existing tables to avoid conflicts
+DROP TABLE IF EXISTS fundraisers;
+DROP TABLE IF EXISTS packages;
 DROP TABLE IF EXISTS shopping_cart;
 DROP TABLE IF EXISTS lotteries_tickets;
 DROP TABLE IF EXISTS orders;
@@ -13,89 +15,107 @@ DROP TABLE IF EXISTS gifts;
 DROP TABLE IF EXISTS token;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS packages;
 
 -- Create tables
 CREATE TABLE addresses (
-address_id INT AUTO_INCREMENT PRIMARY KEY,
-city VARCHAR(255),
-street VARCHAR(255),
-zipcode VARCHAR(255)
+    address_id INT AUTO_INCREMENT PRIMARY KEY,
+    city VARCHAR(255),
+    street VARCHAR(255),
+    zipcode VARCHAR(255)
 );
 
 CREATE TABLE users (
-user_id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(255),
-username VARCHAR(255) NOT NULL UNIQUE,
-email VARCHAR(255),
-address_id INT,
-phone VARCHAR(255),
-Bonus INT,
-role VARCHAR(255),
-FOREIGN KEY (address_id) REFERENCES addresses(address_id)
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255),
+    address_id INT,
+    phone VARCHAR(255),
+    role VARCHAR(255),
+    FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 );
 
 CREATE TABLE token (
-token_id INT AUTO_INCREMENT PRIMARY KEY,
-user_id INT,
-refreshToken VARCHAR(255),
-FOREIGN KEY (user_id) REFERENCES users(user_id)
-); 
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    refreshToken VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 CREATE TABLE passwords (
-user_id INT PRIMARY KEY,
-password VARCHAR(255) NOT NULL,
-FOREIGN KEY (user_id) REFERENCES users(user_id)
+    user_id INT PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE gifts (
-gift_id INT AUTO_INCREMENT PRIMARY KEY,
-winner_id INT,
-name VARCHAR(255) NOT NULL,
-price VARCHAR(255) NOT NULL,
-image_url VARCHAR(500) NOT NULL,
-FOREIGN KEY (winner_id) REFERENCES users(user_id) ON DELETE CASCADE
+    gift_id INT AUTO_INCREMENT PRIMARY KEY,
+    winner_id INT,
+    name VARCHAR(255) NOT NULL,
+    price VARCHAR(255) NOT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    FOREIGN KEY (winner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE donations (
-donation_id INT AUTO_INCREMENT PRIMARY KEY,
-donate_id INT,
-user_id INT,
-gift_id INT,
-description VARCHAR(255),
-FOREIGN KEY (donate_id) REFERENCES users(user_id),
-FOREIGN KEY (user_id) REFERENCES users(user_id),
-FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+    donation_id INT AUTO_INCREMENT PRIMARY KEY,
+    donate_id INT,
+    user_id INT,
+    gift_id INT,
+    description VARCHAR(255),
+    FOREIGN KEY (donate_id) REFERENCES users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
-order_id INT AUTO_INCREMENT PRIMARY KEY,
-user_id INT,
-order_date DATE,
-FOREIGN KEY (user_id) REFERENCES users(user_id)
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    order_date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE lottery (
-lottery_id INT AUTO_INCREMENT PRIMARY KEY,
-start_date DATE,
-end_date DATE
+    lottery_id INT AUTO_INCREMENT PRIMARY KEY,
+    start_date DATE,
+    end_date DATE
 );
 
 CREATE TABLE lotteries_tickets (
-lotteries_tickets_id INT AUTO_INCREMENT PRIMARY KEY,
-order_id INT,
-quantity INT,
-gift_id INT,
-FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+    lotteries_tickets_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    quantity INT,
+    gift_id INT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );
 
 CREATE TABLE shopping_cart (
-cart_id INT AUTO_INCREMENT PRIMARY KEY,
-user_id INT,
-gift_id INT,
-quantity INT,
-FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    gift_id INT,
+    quantity INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
+);
+
+CREATE TABLE packages (
+    package_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+	short_description VARCHAR(255),
+    description VARCHAR(500),
+    price DECIMAL(10, 2) NOT NULL,
+	amount INT,
+    image_url VARCHAR(500)
+);
+CREATE TABLE fundraisers (
+    fundraiser_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    bonus INT,
+    debt DECIMAL(10, 2),
+    people_fundraised INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Insert addresses
@@ -112,17 +132,17 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 ('Ramat Gan', 'Ayalon', '22222');
 
 -- Insert users
-INSERT INTO users (name, username, email, address_id, phone, Bonus, role) VALUES
-('John Doe', 'johndoe', 'A0583295187@gmail.com', 1, '050-1234567', 0, 'user'),
-('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678', 0, 'admin'),
-('David Cohen', 'davidcohen', 'n025711858@gmail.com', 3, '050-3456789', 0, 'user'),
-('Rachel Levi', 'rachellevi', 'n025711858@gmail.com', 4, '050-4567890', 0, 'user'),
-('Michael Rosen', 'michaelrosen', 'n025711858@gmail.com', 5, '050-5678901', 0, 'user'),
-('Sarah Gold', 'sarahgold', 'n025711858@gmail.com', 6, '050-6789012', 0, 'admin'),
-('Daniel Katz', 'danielkatz', 'n025711858@gmail.com', 7, '050-7890123', 0, 'user'),
-('Esther Green', 'esthergreen', 'n025711858@gmail.com', 8, '050-8901234', 0, 'user'),
-('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345', 0, 'user'),
-('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456', 0, 'admin');
+INSERT INTO users (name, username, email, address_id, phone, role) VALUES
+('John Doe', 'johndoe', 'A0583295187@gmail.com', 1, '050-1234567',  'user'),
+('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678',  'admin'),
+('David Cohen', 'davidcohen', 'n025711858@gmail.com', 3, '050-3456789', 'user'),
+('Rachel Levi', 'rachellevi', 'n025711858@gmail.com', 4, '050-4567890',  'user'),
+('Michael Rosen', 'michaelrosen', 'n025711858@gmail.com', 5, '050-5678901',  'user'),
+('Sarah Gold', 'sarahgold', 'n025711858@gmail.com', 6, '050-6789012',  'fundraiser'),
+('Daniel Katz', 'danielkatz', 'n025711858@gmail.com', 7, '050-7890123',  'fundraiser'),
+('Esther Green', 'esthergreen', 'n025711858@gmail.com', 8, '050-8901234',  'user'),
+('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345',  'user'),
+('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456',  'admin');
 
 -- Insert passwords
 INSERT INTO passwords (user_id, password) VALUES
@@ -220,12 +240,13 @@ INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
 (8, 80, 8),
 (9, 90, 9),
 (10, 100, 10);
+
 -- Insert shopping_cart
 INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES
 (1, 1, 2),
 (2, 3, 1);
 
-INSERT INTO token (user_id,refreshToken) VALUES
+INSERT INTO token (user_id, refreshToken) VALUES
 (1, NULL),
 (2, NULL),
 (3, NULL),
@@ -236,6 +257,17 @@ INSERT INTO token (user_id,refreshToken) VALUES
 (8, NULL),
 (9, NULL),
 (10, NULL);
+
+-- Insert packages
+INSERT INTO packages (name,short_description, description, price,amount, image_url) VALUES
+(	'Basic Package',	'A luxurious package containing premium gifts',	'The Basic Package includes a selection of high-quality items ideal for special occasions. It features premium chocolates, gourmet snacks, and a curated assortment of pampering essentials.',	1000.00,	10,	'packages.jpg'),
+(	'Standard Package',	'A value-packed package with a variety of gifts',	'The Standard Package offers a diverse array of gifts suitable for any celebration. It includes artisanal treats, a choice of fine wines or spirits, and deluxe grooming products.',	500.00,	50,	'packages.jpg'),
+(	'Premium Package',	'An exclusive package with exceptional gifts',	'The Premium Package is designed for those seeking luxury and sophistication. It showcases rare delicacies, exclusive wines, designer accessories, and personalized keepsakes.',	750.00,	75,	'packages.jpg');
+
+INSERT INTO fundraisers (user_id, bonus, debt, people_fundraised) VALUES
+(6, 50, 100.00, 10),
+(7, 30, 200.00, 5);
+
 
 -- Hash the passwords
 UPDATE passwords SET password = SHA2(password, 256) WHERE user_id > 0;

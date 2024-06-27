@@ -59,7 +59,7 @@ const UserDetails = () => {
                 }
             }
             setUser(response);
-            localStorage.setItem('currentUser', JSON.stringify(response));
+            orage.setItem('currentUser', JSON.stringify(response));
             setUseDetailsError('User created successfully');
             navigate('/gifts');
         } catch (error) {

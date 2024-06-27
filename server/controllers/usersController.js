@@ -69,9 +69,16 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone,  addressId) {
     try {
-        return await model.updateUser(id, name, username, email, city, street, zipcode, phone, Bonus, addressId);
+        return await model.updateUser(id, name, username, email, city, street, zipcode, phone, addressId);
+    } catch (err) {
+        throw err;
+    }
+}
+async function createNewUser( name, username, email, phone,city,street,zipcode) {
+    try {
+        return await model.createNewUser( name, username, email, phone,city,street,zipcode);
     } catch (err) {
         throw err;
     }
@@ -110,4 +117,4 @@ async function creatTokens(user, role) {
     }
 }
 
-module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup }
+module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup ,createNewUser}

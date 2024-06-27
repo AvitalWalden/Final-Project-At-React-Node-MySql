@@ -62,7 +62,7 @@ export const UserProvider = ({ children }) => {
   }, []);
   
 
-
+console.log("user:",user)
   return (
     <UserContext.Provider value={{ user, setUser, refreshAccessToken }}>
       {children}

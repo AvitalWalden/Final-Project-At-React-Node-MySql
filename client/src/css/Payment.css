@@ -1,19 +1,61 @@
-.step-indicator {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .dot {
-    height: 20px;
-    width: 20px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  
-  .dot.active {
-    background-color: green;
-  }
-  
+/* Payment.css */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin-top: 50px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-label {
+  margin-bottom: 10px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.order-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.order-button {
+  margin-top: 500px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.success-message {
+  text-align: center;
+  color: green;
+  margin-top: 50px;
+}

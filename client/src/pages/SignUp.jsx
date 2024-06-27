@@ -65,6 +65,7 @@ const SignUp = () => {
       <select className='input' value={role} onChange={(e) => setRole(e.target.value)}>
         <option value="">Select Role</option>
         <option value="donate">Donate</option>
+        <option value="fundraiser">Fundraiser</option>
         <option value="user">User</option>
       </select><br />
       <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />

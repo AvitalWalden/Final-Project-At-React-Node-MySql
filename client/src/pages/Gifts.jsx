@@ -19,7 +19,6 @@ function Gifts() {
   const { order, isOrderListOpen, setIsOrderListOpen ,selectedPackage} = useContext(OrderContext);
 
   useEffect(() => {
-    console.log("oio",selectedPackage)
     fetch(`http://localhost:3000/gifts`, {
       method: "GET",
       credentials: "include"

@@ -7,10 +7,9 @@ import '../css/OrderManagement.css';
 
 const OrderManagement = () => {
   const navigate = useNavigate();
-  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage } = useContext(OrderContext);
+  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage,totalPrice,setTotalPrice } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
@@ -86,14 +85,17 @@ const OrderManagement = () => {
       );
       setOrder(updatedOrder);
     } else {
+      console.log("saved")
       const updatedShoppingCart = savedCartItems.map((item) =>
         item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
       );
       setSavedCartItems(updatedShoppingCart);
     }
+    calculateTotalPrice();
   };
   const handleDeletePackage = () => {
     setSelectedPackage(null)
+    calculateTotalPrice();
   }
   const handleQuantityChange = (giftId, change, IdentifyString) => {
     if (IdentifyString === "current") {
@@ -144,6 +146,7 @@ const OrderManagement = () => {
       };
       putToDBShoppingCart(giftId, change);
     }
+    calculateTotalPrice();
   };
 
 

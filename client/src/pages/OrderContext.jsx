@@ -9,6 +9,7 @@ export const OrderProvider = ({ children }) => {
   const [isOrderListOpen, setIsOrderListOpen] = useState(false);
   const [savedCartItems, setSavedCartItems] = useState([]);
   const { user } = useContext(UserContext);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [selectedPackage, setSelectedPackage] = useState(() => {
     const storedPackage = localStorage.getItem('selectedPackage');
     return storedPackage ? JSON.parse(storedPackage) : null;
@@ -108,6 +109,8 @@ export const OrderProvider = ({ children }) => {
         setSavedCartItems,
         selectedPackage,
         setSelectedPackage,
+        totalPrice,
+        setTotalPrice,
       }}
     >
       {children}

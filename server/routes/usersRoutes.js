@@ -7,7 +7,7 @@ const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const { createUser, getUser, updateUser, getUserForSignup } = require('../controllers/usersController');
+const { createUser, getUser, updateUser, getUserForSignup,createNewUser } = require('../controllers/usersController');
 router.use(cors());
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
@@ -40,7 +40,7 @@ router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), asy
         const id = req.params.id;
         const resultUser = await getUser(id);
         const addressID = resultUser.address_id;
-        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, req.body.Bonus, addressID);
+        await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, addressID);
         const userAfterChange = await getUser(id);
 
         delete userAfterChange.address_id;
@@ -68,4 +68,21 @@ router.get("/:user_id",verifyJWT, async (req, res) => {
         res.status(500).send(error);
     }
 });
+router.post("/newUser", async (req, res) => {
+    console.log('heree')
+    try {
+        const { name, username, email, phone,city,street,zipcode } = req.body;
+        const result = await createNewUser( name, username, email, phone,city,street,zipcode);
+        
+        if (result.affectedRows > 0) {
+            res.status(201).send({ message: 'User created successfully'});
+        } else {
+            res.status(400).send({ message: 'Failed to create user' });
+        }
+    } catch (err) {
+        console.error('Error creating user:', err.message);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+});
+
 module.exports = router

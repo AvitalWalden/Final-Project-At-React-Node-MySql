@@ -2,14 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import './App.css';
 import React, { useState, useContext, useEffect } from 'react';
 import Navigates from "./pages/Navigates";
-import LogIn from "./pages/LogIn";  // Adjust the import path if necessary
-import Gifts from "./pages/Gifts";  // Adjust the import path if necessary
-import SignUp from "./pages/SignUp";  // Adjust the import path if necessary
+import LogIn from "./pages/LogIn";  
+import Gifts from "./pages/Gifts";  
+import SignUp from "./pages/SignUp";  
 import UserDetails from "./pages/UserDetails";
 import LogOut from "./pages/LogOut";
 import UserOrders from "./pages/UserOrders";
 import Profile from "./pages/Profile";
-// import Payment from "./pages/Payment";
 import OrderManagement from "./pages/OrderManagement";
 import { OrderProvider } from './pages/OrderContext';
 import { UserProvider } from './pages/UserContext';
@@ -17,11 +16,9 @@ import Winners from "./pages/Winners";
 import Lotteries from "./pages/Lotteries";
 import AllOrders from "./pages/AllOrders";
 import Home from "./pages/Home";
-import { UserContext } from './pages/UserContext';
 import PackageSelector from "./pages/PackageSelector";
-import { OrderContext } from './pages/OrderContext';
-import { Prompt } from './components/Prompt'; // Import Prompt component
 import GiftsChart from "./pages/GiftsChart";
+import Payment from "./pages/Payment";
 
 function App() {
 
@@ -67,7 +64,7 @@ function App() {
               <Route path="/orders" element={<UserOrders />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/orderManagement" element={<OrderManagement />} />
-              {/* <Route path="/payment" element={<Payment />} /> */}
+              <Route path="/payment" element={<Payment />} /> 
               <Route path="/winners" element={<Winners />} />
               <Route path="/Lottery" element={<Lotteries />} />
               <Route path="/allOrders" element={<AllOrders />} />

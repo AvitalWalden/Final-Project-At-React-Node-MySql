@@ -42,6 +42,8 @@ const tokensRoutes=require("./routes/tokensRoutes")
 app.use("/refreshment",tokensRoutes);
 const packagesRoutes=require("./routes/packagesRoutes")
 app.use("/packages",packagesRoutes);
+const fundraisersRoutes=require("./routes/fundraisersRoutes")
+app.use("/fundraisers",fundraisersRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
