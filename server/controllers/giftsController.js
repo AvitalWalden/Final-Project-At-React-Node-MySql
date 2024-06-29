@@ -1,6 +1,7 @@
 const model = require('../models/giftsModel');
 const { getUser} = require('../controllers/usersController');
 const { sendWinnerEmail} = require('../middleware/mailServices');
+const { all } = require('../routes/imagesRoutes');
 
 async function createGift(name, price, image_url) {
     try {
@@ -12,6 +13,7 @@ async function createGift(name, price, image_url) {
 async function getAllGiftsOrderQuantity() {
      try {
         const allGiftsOrderQuantity = await model.getAllGiftsOrderQuantity();
+        console.log(allGiftsOrderQuantity);
         return allGiftsOrderQuantity;
     } catch (err) {
         throw err;
