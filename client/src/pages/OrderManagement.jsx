@@ -7,51 +7,42 @@ import '../css/OrderManagement.css';
 
 const OrderManagement = () => {
   const navigate = useNavigate();
-  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage,totalPrice,setTotalPrice } = useContext(OrderContext);
+  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage,totalPrice,setTotalPrice,calculateTotalPrice } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
-
       if (user) {
         try {
           const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
             method: "GET",
             credentials: "include"
           });
+  
+          if (!response.ok) {
+            if (response.status === 402) {
+              throw new Error('No Acsses');
+            } else {
+              throw new Error('Failed to fetch saved cart items');
+            }
+          }
+  
           const data = await response.json();
           setSavedCartItems(data);
           savedCartItems.forEach((gift) => {
             [{ ...gift, isChecked: false }]
           });
         } catch (error) {
-          console.error('Error fetching saved cart items:', error);
+          console.error('Error fetching saved cart items:', error.message);
         }
       }
     };
-
+  
     fetchSavedCartItems();
   }, [user, order]);
-
-  const calculateTotalPrice = () => {
-    let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
-    if (totalPrice == 0) {
-      order.forEach((gift) => {
-        if (gift.isChecked) {
-          totalPrice += gift.price * gift.quantity;
-        }
-      });
-
-      savedCartItems.forEach((gift) => {
-        if (gift.isChecked) {
-          totalPrice += gift.price * gift.quantity;
-        }
-      });
-    }
-
-    return totalPrice.toFixed(2);
-  };
+  
+  
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
@@ -85,7 +76,6 @@ const OrderManagement = () => {
       );
       setOrder(updatedOrder);
     } else {
-      console.log("saved")
       const updatedShoppingCart = savedCartItems.map((item) =>
         item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
       );

@@ -61,7 +61,6 @@ const logIn = () => {
       <GoogleLogin
         onSuccess={credentialResponse => {
           const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-          console.log(credentialResponseDecoded);
           handleRegistration(credentialResponseDecoded)
         }}
         onError={() => {

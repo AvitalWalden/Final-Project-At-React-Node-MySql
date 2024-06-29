@@ -16,10 +16,10 @@ async function postShoppingCart(userId, temporaryCart) {
     }
 }
 
-async function deleteShoppingCart(userId,giftId) {
+async function deleteShoppingCart(userId,giftIds) {
 
     try {
-        return model.deleteShoppingCart(userId,giftId);
+        return model.deleteShoppingCart(userId,giftIds);
     } catch (err) {
         throw err;
     }

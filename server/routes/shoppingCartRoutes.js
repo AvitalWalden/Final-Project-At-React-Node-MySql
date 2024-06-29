@@ -14,7 +14,7 @@ router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
-router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {
+router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {
     try {
         let shoppingCart;
         const user_id = req.params.user_id;
@@ -27,7 +27,7 @@ router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (r
         res.status(500).send(error);
     }
 });
-router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {  
+router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
 
     try {
         let shoppingCart;
@@ -41,7 +41,7 @@ router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async
         res.status(500).send(error);
     }
 });
-router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {  
+router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
 
     try {
         let shoppingCart;
@@ -55,21 +55,21 @@ router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res)
         res.status(500).send(error);
     }
 });
-router.delete('/:userId/:giftId',verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async(req, res) => {
+router.delete('/:userId', verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
-        let shoppingCart;
-        const userId= req.params.userId;
-        const giftId= req.params.giftId;
-
-        shoppingCart = await deleteShoppingCart(userId,giftId);
-        res.send(shoppingCart);
+      const userId = req.params.userId;
+      const giftIds = req.body.giftIds; 
+  
+      const shoppingCart = await deleteShoppingCart(userId, giftIds);
+      res.send(shoppingCart);
     } catch (err) {
-        const error = {
-            message: err.message
-        }
-        res.status(500).send(error);
+      const error = {
+        message: err.message
+      };
+      res.status(500).send(error);
     }
   });
+  
 
   
 module.exports = router;

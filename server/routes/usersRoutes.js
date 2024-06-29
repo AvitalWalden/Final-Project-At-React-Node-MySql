@@ -35,7 +35,7 @@ router.post("/",async (req, res) => {
     }
 });
 
-router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.user]), async (req, res) => {
+router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {
     try {
         const id = req.params.id;
         const resultUser = await getUser(id);
@@ -69,7 +69,6 @@ router.get("/:user_id",verifyJWT, async (req, res) => {
     }
 });
 router.post("/newUser", async (req, res) => {
-    console.log('heree')
     try {
         const { name, username, email, phone,city,street,zipcode } = req.body;
         const result = await createNewUser( name, username, email, phone,city,street,zipcode);

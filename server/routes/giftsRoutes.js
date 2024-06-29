@@ -50,9 +50,8 @@ router.get("/:id",verifyRoles(ROLES_LIST.admin), async (req, res) => {
     }
 });
 
-router.get("/allGiftsOrderQuantity",verifyRoles([ROLES_LIST.admin, ROLES_LIST.user]), async (req, res) => {
+router.get("/allGiftsOrderQuantity",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
-        console.log("hhh")
         const allGiftsOrderQuantity = await getAllGiftsOrderQuantity();
 
         const labels = allGiftsOrderQuantity.map(item => item.gift_name);

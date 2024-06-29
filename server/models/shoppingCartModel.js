@@ -42,21 +42,23 @@ async function postShoppingCart(userId, temporaryCart) {
         throw err;
     }
 }
-async function deleteShoppingCart(userId, giftId) {
-    try {
-      const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
-  
-      if (existingRows.length > 0) {
-        await pool.query('DELETE FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
-        return { message: 'Gift deleted from shopping cart successfully' };
-      } else {
-        return { message: 'Gift not found in shopping cart' };
-      }
-    } catch (err) {
-      console.error('Error deleting gift from shopping cart:', err);
-      throw err;
+async function deleteShoppingCart(userId, giftIds) {
+  try {
+    const query = 'DELETE FROM shopping_cart WHERE user_id = ? AND gift_id IN (?)';
+    const result = await pool.query(query, [userId, giftIds]);
+
+    if (result.affectedRows > 0) {
+      return { message: 'Gifts deleted from shopping cart successfully' };
+    } else {
+      return { message: 'Gifts not found in shopping cart' };
     }
+  } catch (err) {
+    console.error('Error deleting gifts from shopping cart:', err);
+    throw err;
   }
+}
+
+
   async function putShoppingCart(userId, giftId, newQuantity) {
     try {
       const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
