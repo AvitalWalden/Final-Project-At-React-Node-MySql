@@ -109,6 +109,7 @@ CREATE TABLE packages (
 	amount INT,
     image_url VARCHAR(500)
 );
+
 CREATE TABLE fundraisers (
     fundraiser_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,

@@ -53,6 +53,8 @@ async function getAllGiftsOrderQuantity() {
     GROUP BY 
         g.gift_id, g.name;`;
     const [rows] = await pool.query(query);
+    console.log(rows);
+
     return rows;
   } catch (err) {
     console.log(err);

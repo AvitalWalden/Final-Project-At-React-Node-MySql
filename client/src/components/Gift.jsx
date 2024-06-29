@@ -50,6 +50,9 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
         setGifts(updatedgifts);
       })
+      .catch(err=>{
+        console.log(err);
+      })
 
   };
 

@@ -92,7 +92,6 @@ async function getOrderAndUserByOrderId(order_id) {
                 users.username,
                 users.email,
                 users.phone,
-                users.Bonus,
                 users.role,
                 addresses.city,
                 addresses.street,

@@ -13,7 +13,19 @@ router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 const verifyJWT = require('../middleware/verifyJWT')
 
-
+router.get("/allGiftsOrderQuantity", async (req, res) => {
+    try {
+        console.log("hhhhhhhhhh")
+        const allGiftsOrderQuantity = await getAllGiftsOrderQuantity();
+        
+        res.send(allGiftsOrderQuantity);
+    } catch (err) {
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
+    }
+});
 router.get("/", async (req, res) => {
     try {
         res.send(await getGifts());
@@ -104,7 +116,7 @@ router.post("/",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
 });
 
 router.delete("/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
-    try{
+    try {
         const id = req.params.gift_id;
         await deleteGift(id);
         res.send();
