@@ -31,7 +31,6 @@ async function getGift(id) {
 
     const sql = 'SELECT * FROM gifts where gift_id=?';
     const result = await pool.query(sql, [id]);
-console.log(result);
     return result[0][0];
   } catch (err) {
     console.log(err);
@@ -53,7 +52,6 @@ async function getAllGiftsOrderQuantity() {
     GROUP BY 
         g.gift_id, g.name;`;
     const [rows] = await pool.query(query);
-    console.log(rows);
 
     return rows;
   } catch (err) {

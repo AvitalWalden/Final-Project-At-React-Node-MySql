@@ -13,7 +13,7 @@ const Payment = () => {
     ...savedCartItems.filter(item => item.isChecked)
   ];
     const handleChange = (e) => {
-    const { name, value } = e.target;
+      const { name, value } = e.target;
     setNewUserDetails({
       ...newUserDetails,
       [name]: value,
@@ -24,7 +24,7 @@ const Payment = () => {
     e.preventDefault();
     try {
       const formattedDate = new Date().toISOString().split('T')[0]; 
-  
+      
       if (user.role === 'fundraiser') {
         const newUserResponse = await fetch('http://localhost:3000/users/newUser', {
           method: 'POST',
@@ -38,12 +38,20 @@ const Payment = () => {
           throw new Error('Failed to create new user');
         }
         const newUser = await newUserResponse.json();
-  
+        const fundraiserGetResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
+          method: "GET",
+          credentials: "include"
+        });
+        if (!fundraiserGetResponse.ok) {
+          throw new Error('Failed to get fundraiser');
+        }
+        const currentFundraiser=await fundraiserGetResponse.json();
+        const newDebt = Number(currentFundraiser.debt) + Number(totalPrice);
         const updatedFundraiser = {
-          ...user,
-          debt: user.debt + totalPrice,
-          people_fundraised: user.people_fundraised + 1,
-          bonus: user.bonus + totalPrice * 0.05,
+          ...currentFundraiser,
+          debt: newDebt,
+          people_fundraised: currentFundraiser.people_fundraised+1,
+          bonus: currentFundraiser.bonus + totalPrice * 0.05,
         };
         const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
           method: 'PUT',
@@ -105,8 +113,9 @@ const Payment = () => {
   if (orderCreated) {
     return <h2 className="success-message">Your order has been placed successfully!</h2>;
   }
+      console.log("user",user)
 
-  if (user.role !== 'fundraiser') {
+  if (user&&user.role !== 'fundraiser') {
     return (
       <div className="order-button-container">
         <button className="order-button" onClick={handleSubmit}>Place Order</button>

@@ -83,10 +83,12 @@ router.post("/newUser", async (req, res) => {
         const result = await createNewUser(name, username, email, phone, city, street, zipcode);
 
         if (result.affectedRows > 0) {
-            res.status(201).send({ message: 'User created successfully' });
+            const newUser = await getUserForSignup(result.insertId);
+            res.status(201).send(newUser);
         } else {
             res.status(400).send({ message: 'Failed to create user' });
         }
+
     } catch (err) {
         console.error('Error creating user:', err.message);
         res.status(500).send({ message: 'Internal Server Error' });

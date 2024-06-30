@@ -5,6 +5,7 @@ const { getTokensAndUsers } = require('../models/tokensModel.js');
 async function handleRefreshToken(cookies) {
 
     if (!cookies?.jwt_refreshToken) {
+
         const error = {
             message: "ERROR, you need log in",
             status: 401
@@ -14,6 +15,8 @@ async function handleRefreshToken(cookies) {
 
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;
+    
+
     const users = await getTokensAndUsers();
     const foundUser = users.find(person => person.refreshToken === refreshToken);
 
@@ -52,6 +55,7 @@ async function handleRefreshToken(cookies) {
         }
 
     );
+
 
     return accessToken;
 

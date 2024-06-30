@@ -4,3 +4,9 @@
     padding-right: 15%;
     padding-top: 5%;
 }
+
+button {
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
