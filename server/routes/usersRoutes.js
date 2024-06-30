@@ -21,7 +21,7 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 router.post("/", async (req, res) => {
     try {
         let response;
-        if (!req.body.password) {
+        if (!req.body.password) { 
             response = await createUserLogInWithGoogle(req.body.username, req.body.role, req.body.email)
         }
         else {
@@ -42,13 +42,17 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
+        console.log("userAfterChange");
+
         const id = req.params.id;
         const resultUser = await getUser(id);
         const addressID = resultUser.address_id;
+
         await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, addressID);
         const userAfterChange = await getUser(id);
 
         delete userAfterChange.address_id;
+        console.log(userAfterChange);
         res.send(userAfterChange);
     } catch (err) {
 

@@ -5,25 +5,17 @@ const { getTokensAndUsers } = require('../models/tokensModel.js');
 async function handleRefreshToken(cookies) {
 
     if (!cookies?.jwt_refreshToken) {
-        console.log("cookies")
-
-        console.log(cookies)
         const error = {
             message: "ERROR, you need log in",
             status: 401
         }
         throw error;
     }
-    console.log("cookies")
 
     let accessToken;
     const refreshToken = cookies.jwt_refreshToken;
-    
-    console.log(refreshToken)
-
     const users = await getTokensAndUsers();
     const foundUser = users.find(person => person.refreshToken === refreshToken);
-    console.log(foundUser)
 
     if (!foundUser) {
 
@@ -34,14 +26,12 @@ async function handleRefreshToken(cookies) {
         throw error;
     }
     const role = foundUser.role
-    console.log(role)
 
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || foundUser.username !== decoded.username) {
-                console.log(decoded.username)
 
                 const error = {
                     message: "ERROR, you need log in",
@@ -62,8 +52,6 @@ async function handleRefreshToken(cookies) {
         }
 
     );
-    console.log("cookies")
-    console.log(accessToken)
 
     return accessToken;
 

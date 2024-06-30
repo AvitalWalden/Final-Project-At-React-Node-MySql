@@ -5,7 +5,7 @@ import { UserContext } from '../pages/UserContext';
 
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-
+// import {handleRegistrationWithGoogle} from "../pages/SignUp"
 const logIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -52,29 +52,41 @@ const logIn = () => {
 
   };
 
-  function handleLoginWithGoogle() {
-    const url = 'http://localhost:3000/users';
+
+  function handleRegistrationWithGoogle(user) {
+    const url = 'http://localhost:3000/signup';
     const requestOptions = {
-      method: "GET",
+      method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
+      body: JSON.stringify({ ...user })
     };
     fetch(url, requestOptions)
       .then(response => {
-        return response.json().then(data => {
-          if (response.status == 401) {
-            throw data.message;
+        return response.json().then(user => {
+          if (response.status == 500) {
+            if (user.message == 'You need logIn') {
+              setUser(user);
+              navigate("/gifts");
+            }else if(user.message == 'email is in use'){
+              setUser(user);
+              navigate("/gifts");
+          } else {
+              throw user.message;
+
+            }
           }
-          setUser({ ...user });
-          navigate('/gifts')
+          else {
+            setUser(user);
+            navigate("/userDetails");
+
+          }
         })
       })
       .catch(error => {
-        console.log(error);
-        setLoginError(error);
+        setSignUpError(error);
       });
-
-  };
+  }
   return (
     <div className='form'>
       <h2 className="title">Log in</h2><br />
@@ -89,10 +101,11 @@ const logIn = () => {
           console.log(credentialResponseDecoded);
           const user = {
             username: credentialResponseDecoded.name,
-            email: credentialResponseDecoded.email
+            email: credentialResponseDecoded.email,
+            role: 'user'
           }
-          setUser(user);
-          navigate('/gifts')
+          handleRegistrationWithGoogle(user);
+
         }}
         onError={() => {
           console.log('Login Failed');

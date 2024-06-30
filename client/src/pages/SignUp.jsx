@@ -72,12 +72,15 @@ const SignUp = () => {
             if (user.message == 'You need logIn') {
               setUser(user);
               navigate("/gifts");
+            } else if (user.message == 'email is in use') {
+              setUser(user);
+              navigate("/gifts");
             } else {
               throw user.message;
 
             }
           }
-          else{
+          else {
             setUser(user);
             navigate("/userDetails");
 

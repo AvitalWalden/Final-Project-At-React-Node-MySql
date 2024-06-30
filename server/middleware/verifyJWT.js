@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
     let cookieToken = req.cookies.jwt_accessToken; // Assuming the access token is stored in cookies
-    console.log(cookieToken);
     if (!cookieToken) {
         console.error('JWT token not found in cookies');
         return res.sendStatus(401);

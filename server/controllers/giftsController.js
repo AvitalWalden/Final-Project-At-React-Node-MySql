@@ -12,7 +12,6 @@ async function createGift(name, price, image_url) {
 async function getAllGiftsOrderQuantity() {
      try {
         const allGiftsOrderQuantity = await model.getAllGiftsOrderQuantity();
-        console.log(allGiftsOrderQuantity);
         return allGiftsOrderQuantity;
     } catch (err) {
         throw err;
@@ -30,7 +29,6 @@ async function getGifts() {
 
 async function getGift(id) {
     try {
-        console.log("fhggggggggggggg")
         return await model.getGift(id);
     } catch (err) {
         throw err;
