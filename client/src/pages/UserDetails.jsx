@@ -9,12 +9,12 @@ const UserDetails = () => {
     const [UseDetailsError, setUseDetailsError] = useState('');
     const [userDetails, setUserDetails] = useState({
         name: '',
-        username: user.username,
-        email: "",
-        city: "",
-        street: "",
-        zipcode: "",
-        phone: "",
+        username: user?.username || '',
+        email: user?.email || '',
+        city: '',
+        street: '',
+        zipcode: '',
+        phone: '',
     });
 
     const handleChange = (field, value) => {
@@ -54,33 +54,29 @@ const UserDetails = () => {
                 }
 
                 if (response.status === 403) {
-                    console.log('invalid token you cannot do it...');
-                    throw response.error;
+                    console.log('Invalid token, you cannot do it...');
+                    throw new Error('Invalid token');
                 }
             }
-            setUser(response);
-            orage.setItem('currentUser', JSON.stringify(response));
-            setUseDetailsError('User created successfully');
+            const responseData = await response.json();
+            setUser(responseData);
+            localStorage.setItem('currentUser', JSON.stringify(responseData));
+            setUseDetailsError('User updated successfully');
             navigate('/gifts');
         } catch (error) {
             console.error('Error saving user details:', error);
-            setUseDetailsError('Error creating user');
-
+            setUseDetailsError('Error updating user');
         }
     };
 
     function ValidateEmail(mailAdress) {
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (mailAdress.match(mailformat)) {
-            return true;
-        } else {
-            return false;
-        }
+        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return mailAdress.match(mailformat);
     }
 
     return (
         <div>
-            {user != null ?
+            {user ?
                 <div className='form'>
                     <h2 className="title">User Details</h2><br />
                     <input type="text" className='input' value={user.username} readOnly /><br />
@@ -91,7 +87,7 @@ const UserDetails = () => {
                     <input type="text" className='input' placeholder="zipcode" value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} /><br />
                     <input type="tel" className='input' placeholder="phone" value={userDetails.phone} onChange={(e) => handleChange('phone', e.target.value)} /><br />
                     <button className="btnSaveDetails" onClick={handleSubmit}>Save</button><br />
-                    {UseDetailsError && <p className='error' style={{ color: UseDetailsError === "The details have been filled in successfully" ? 'green' : 'red' }}>{UseDetailsError}</p>}
+                    {UseDetailsError && <p className='error' style={{ color: UseDetailsError === "User updated successfully" ? 'green' : 'red' }}>{UseDetailsError}</p>}
                 </div>
                 : <div></div>
             }

@@ -5,6 +5,7 @@ import { UserContext } from './UserContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
+
 const SignUp = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
@@ -56,6 +57,37 @@ const SignUp = () => {
       });
   }
 
+  function handleRegistrationWithGoogle(user) {
+    const url = 'http://localhost:3000/signup';
+    const requestOptions = {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ ...user })
+    };
+    fetch(url, requestOptions)
+      .then(response => {
+        return response.json().then(user => {
+          if (response.status == 500) {
+            if (user.message == 'You need logIn') {
+              setUser(user);
+              navigate("/gifts");
+            } else {
+              throw user.message;
+
+            }
+          }
+          else{
+            setUser(user);
+            navigate("/userDetails");
+
+          }
+        })
+      })
+      .catch(error => {
+        setSignUpError(error);
+      });
+  }
   return (
     <div className='form'>
       <h2 className="title">Create Account</h2><br />
@@ -72,10 +104,17 @@ const SignUp = () => {
       <Link to="/login" className="link">Already have an account? Sign in</Link>
       {signUpError && <p className='error' style={{ color: signUpError == "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
       <GoogleLogin
+        className="google"
         onSuccess={credentialResponse => {
           const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
           console.log(credentialResponseDecoded);
-          handleRegistration(credentialResponseDecoded)
+          navigate('/gifts')
+          const user = {
+            username: credentialResponseDecoded.name,
+            email: credentialResponseDecoded.email,
+            role: 'user'
+          }
+          handleRegistrationWithGoogle(user);
         }}
         onError={() => {
           console.log('Login Failed');

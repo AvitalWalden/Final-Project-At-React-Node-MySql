@@ -287,3 +287,20 @@ input {
 .modal-content button:hover {
   background-color: #77b0d1;
 }
+
+.google{
+  position: relative;
+    width: 320px;
+    border: 1px solid #c2c8d0;
+    border-radius: 6px;
+    font-size: 16px;
+    align-items: center;
+    background-color: #fff;
+    height: 52px;
+    transition: box-shadow .15 ease-in-out, background-color .15s ease-in-out;
+    cursor: pointer;
+    color: #2d333a;
+    margin-bottom: 8px;
+    display: flex;
+    outline: 0;
+}

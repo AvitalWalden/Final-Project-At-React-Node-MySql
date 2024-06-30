@@ -31,7 +31,7 @@ async function getGift(id) {
 
     const sql = 'SELECT * FROM gifts where gift_id=?';
     const result = await pool.query(sql, [id]);
-
+console.log(result);
     return result[0][0];
   } catch (err) {
     console.log(err);

@@ -40,6 +40,19 @@ async function createUser(username, password, role) {
     }
 }
 
+async function createUserLogInWithGoogle(username, role,email) {
+    try {
+        const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";
+        const resultAddress = await pool.query(sqlAddress, ['', '', '']);
+        const addressId = resultAddress[0].insertId;
+        const sqlUser = "INSERT INTO users (username, address_id,role,email) VALUES (?,?, ?,?)";
+        const resultUser = await pool.query(sqlUser, [username, addressId,role,email]);
+        return resultUser[0];
+    } catch (err) {
+        console.error('Error creating user:', err);
+        throw err;
+    }
+}
 
 async function logIn(userName) {
     try {
@@ -88,4 +101,4 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
     }
 }
 
-module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser }
+module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser,createUserLogInWithGoogle }
