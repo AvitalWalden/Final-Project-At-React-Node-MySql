@@ -106,9 +106,7 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
 
 async function creatTokens(user, role) {
     try {
-        console.log("creatTokens");
-
-        console.log(user);
+ 
         const username = user.username;
         const accessToken = jwt.sign(
             {
