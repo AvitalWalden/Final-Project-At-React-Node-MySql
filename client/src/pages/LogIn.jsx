@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
+
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
@@ -50,6 +51,30 @@ const logIn = () => {
       });
 
   };
+
+  function handleLoginWithGoogle() {
+    const url = 'http://localhost:3000/users';
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    };
+    fetch(url, requestOptions)
+      .then(response => {
+        return response.json().then(data => {
+          if (response.status == 401) {
+            throw data.message;
+          }
+          setUser({ ...user });
+          navigate('/gifts')
+        })
+      })
+      .catch(error => {
+        console.log(error);
+        setLoginError(error);
+      });
+
+  };
   return (
     <div className='form'>
       <h2 className="title">Log in</h2><br />
@@ -61,7 +86,13 @@ const logIn = () => {
       <GoogleLogin
         onSuccess={credentialResponse => {
           const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-          handleRegistration(credentialResponseDecoded)
+          console.log(credentialResponseDecoded);
+          const user = {
+            username: credentialResponseDecoded.name,
+            email: credentialResponseDecoded.email
+          }
+          setUser(user);
+          navigate('/gifts')
         }}
         onError={() => {
           console.log('Login Failed');

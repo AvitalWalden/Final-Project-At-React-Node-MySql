@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import './App.css';
 import React, { useState, useContext, useEffect } from 'react';
 import Navigates from "./pages/Navigates";
-import LogIn from "./pages/LogIn";  
-import Gifts from "./pages/Gifts";  
-import SignUp from "./pages/SignUp";  
+import LogIn from "./pages/LogIn";
+import Gifts from "./pages/Gifts";
+import SignUp from "./pages/SignUp";
 import UserDetails from "./pages/UserDetails";
 import LogOut from "./pages/LogOut";
 import UserOrders from "./pages/UserOrders";
@@ -21,32 +21,6 @@ import GiftsChart from "./pages/GiftsChart";
 import Payment from "./pages/Payment";
 
 function App() {
-
-  function handleRegistration(credentialResponseDecoded) {
-    const url = 'http://localhost:3000/signup';
-    const newUser = {
-      username: "חליחלחי",
-      password: credentialResponseDecoded,
-      role: "user"
-    }
-    const requestOptions = {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ ...newUser })
-    };
-    fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(user => {
-          if (response.status == 500) {
-            throw user.message;
-          }
-          // setUser(user);
-        })
-      })
-      .catch(error => {
-      });
-  }
   return (
     <div>
       <BrowserRouter>
@@ -64,7 +38,7 @@ function App() {
               <Route path="/orders" element={<UserOrders />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/orderManagement" element={<OrderManagement />} />
-              <Route path="/payment" element={<Payment />} /> 
+              <Route path="/payment" element={<Payment />} />
               <Route path="/winners" element={<Winners />} />
               <Route path="/Lottery" element={<Lotteries />} />
               <Route path="/allOrders" element={<AllOrders />} />
@@ -73,14 +47,14 @@ function App() {
 
 
             </Routes>
-           
+
           </OrderProvider>
         </UserProvider>
       </BrowserRouter>
-      {  
+      {
 
       }
-     
+
     </div>
   );
 }

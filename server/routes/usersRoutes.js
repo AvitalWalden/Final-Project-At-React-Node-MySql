@@ -7,7 +7,7 @@ const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const { createUser, getUser, updateUser, getUserForSignup,createNewUser } = require('../controllers/usersController');
+const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
 router.use(cors());
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
@@ -18,11 +18,16 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
 
-router.post("/",async (req, res) => {
+router.post("/", async (req, res) => {
     try {
-
-        const response = await createUser(req.body.username, req.body.password,req.body.role);
-        const  user = await getUserForSignup(response.user.insertId);
+        let response;
+        if (!req.body.password) {
+            response = await createUserLogInWithGoogle(req.body.username, req.body.role, req.body.email)
+        }
+        else {
+            response = await createUser(req.body.username, req.body.password, req.body.role);
+        }
+        const user = await getUserForSignup(response.user.insertId);
 
         res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
         res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 30 * 1000 });
@@ -35,7 +40,7 @@ router.post("/",async (req, res) => {
     }
 });
 
-router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {
+router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
         const id = req.params.id;
         const resultUser = await getUser(id);
@@ -54,14 +59,14 @@ router.put("/:id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,
     }
 });
 
-router.get("/:user_id",verifyJWT, async (req, res) => {
+router.get("/:user_id", verifyJWT, async (req, res) => {
     try {
         const id = req.params.user_id;
         const user = await getUser(id);
 
         res.send(user);
     } catch (err) {
-        console.error('Error fetching user:', err.message); 
+        console.error('Error fetching user:', err.message);
         const error = {
             message: err.message
         }
@@ -70,11 +75,11 @@ router.get("/:user_id",verifyJWT, async (req, res) => {
 });
 router.post("/newUser", async (req, res) => {
     try {
-        const { name, username, email, phone,city,street,zipcode } = req.body;
-        const result = await createNewUser( name, username, email, phone,city,street,zipcode);
-        
+        const { name, username, email, phone, city, street, zipcode } = req.body;
+        const result = await createNewUser(name, username, email, phone, city, street, zipcode);
+
         if (result.affectedRows > 0) {
-            res.status(201).send({ message: 'User created successfully'});
+            res.status(201).send({ message: 'User created successfully' });
         } else {
             res.status(400).send({ message: 'Failed to create user' });
         }

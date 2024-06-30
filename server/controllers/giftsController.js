@@ -1,7 +1,6 @@
 const model = require('../models/giftsModel');
 const { getUser} = require('../controllers/usersController');
 const { sendWinnerEmail} = require('../middleware/mailServices');
-const { all } = require('../routes/imagesRoutes');
 
 async function createGift(name, price, image_url) {
     try {
@@ -31,7 +30,8 @@ async function getGifts() {
 
 async function getGift(id) {
     try {
-        return model.getGift(id);
+        console.log("fhggggggggggggg")
+        return await model.getGift(id);
     } catch (err) {
         throw err;
     }

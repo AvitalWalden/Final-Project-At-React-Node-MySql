@@ -12,6 +12,12 @@ app.use(express.static('public'));
 app.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
+// // Handle unhandled promise rejections
+// process.on('unhandledRejection', (reason, promise) => {
+//     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+//     // Recommended: send the information to sentry.io or another logging service
+// });
+
 const port = 3000;
 
 const loginRoutes=require("./routes/loginRoutes")

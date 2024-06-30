@@ -15,7 +15,6 @@ const verifyJWT = require('../middleware/verifyJWT')
 
 router.get("/allGiftsOrderQuantity", async (req, res) => {
     try {
-        console.log("hhhhhhhhhh")
         const allGiftsOrderQuantity = await getAllGiftsOrderQuantity();
         
         res.send(allGiftsOrderQuantity);

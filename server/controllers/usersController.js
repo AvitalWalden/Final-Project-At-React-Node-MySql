@@ -10,7 +10,7 @@ async function createUser(username, password,role) {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword,role);
 
-        const g =getUserForSignup(user.insertId);
+        const g = await getUserForSignup(user.insertId);
         const token = await creatTokens(g, role);
 
         creatToken(user.insertId, token.refreshToken);
@@ -20,6 +20,26 @@ async function createUser(username, password,role) {
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
             throw new Error('Username is in use')
+        } else {
+            throw err;
+        }
+    }
+}
+
+async function createUserLogInWithGoogle(username,role,email) {
+    try {
+        const user = await model.createUserLogInWithGoogle(username,role,email);
+
+        const newUser =getUserForSignup(user.insertId);
+        const token = await creatTokens(newUser, role);
+
+        creatToken(user.insertId, token.refreshToken);
+        const accessToken = token.accessToken
+        const refreshToken = token.refreshToken
+        return { user, accessToken, refreshToken };
+    } catch (err) {
+        if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
+            throw new Error('You need logIn')
         } else {
             throw err;
         }
@@ -86,6 +106,9 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
 
 async function creatTokens(user, role) {
     try {
+        console.log("creatTokens");
+
+        console.log(user);
         const username = user.username;
         const accessToken = jwt.sign(
             {
@@ -117,4 +140,4 @@ async function creatTokens(user, role) {
     }
 }
 
-module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup ,createNewUser}
+module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup ,createNewUser,createUserLogInWithGoogle}
