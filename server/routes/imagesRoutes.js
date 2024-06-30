@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { updateImage } = require('../controllers/imagesController');
-// const { getGift } = require('../controllers/giftsController'); // ייבוא בלבד אותו פעם אחת
+const { getGift } = require('../controllers/giftsController'); // ייבוא בלבד אותו פעם אחת
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -43,8 +43,8 @@ router.put('/:gift_id', upload.single('image'), async (req, res) => {
         await updateImage(image, gift_id);
         console.log("Image updated successfully.");
 
-        // const giftAfterUpdate = await getGift(gift_id);
-        res.send();
+        const giftAfterUpdate = await getGift(gift_id);
+        res.send(giftAfterUpdate);
     } catch (err) {
         console.error("Error updating image:", err);
         res.status(500).send({ error: err.message });

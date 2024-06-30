@@ -1,7 +1,6 @@
 const model = require('../models/giftsModel');
 const { getUser} = require('../controllers/usersController');
 const { sendWinnerEmail} = require('../middleware/mailServices');
-const { all } = require('../routes/imagesRoutes');
 
 async function createGift(name, price, image_url) {
     try {
