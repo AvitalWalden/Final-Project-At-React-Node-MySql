@@ -31,6 +31,7 @@ export const OrderProvider = ({ children }) => {
       localStorage.setItem('selectedPackage', JSON.stringify(selectedPackage));
     } else {
       localStorage.removeItem('selectedPackage');
+
     }
   }, [selectedPackage]);
 
@@ -71,23 +72,7 @@ export const OrderProvider = ({ children }) => {
       localStorage.setItem('currentOrder', JSON.stringify(updatedOrder));
     }
     else {
-
-      const removeFromSavedShoppingCart = async (giftId) => {
-        try {
-          const userId = user.user_id;
-
-          await fetch(`http://localhost:3000/shoppingCart/${userId}/${giftId}`, {
-            method: 'DELETE',
-            credentials: "include",
-          });
-
-          setSavedCartItems(savedCartItems.filter(item => item.gift_id !== giftId));
-        } catch (error) {
-          console.error('Error deleting item:', error);
-        }
-      };
       removeFromSavedShoppingCart(giftId);
-
     }
     setMessage('Gift removed from the order!');
     setTimeout(() => {
@@ -95,6 +80,52 @@ export const OrderProvider = ({ children }) => {
     }, 3000);
   };
 
+  const removeFromSavedShoppingCart = async (giftIds) => {
+    try {
+      const userId = user.user_id;
+      let idsArray;
+      if (!Array.isArray(giftIds)) {
+        idsArray = [giftIds];
+
+      }
+      else {
+        idsArray = giftIds.map(item => item.gift_id);
+
+      }
+
+      await fetch(`http://localhost:3000/shoppingCart/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        body: JSON.stringify({ giftIds: giftIds })
+      });
+
+      setSavedCartItems(savedCartItems.filter(item => !idsArray.includes(item.gift_id)));
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
+    if (totalPrice == 0) {
+      order.forEach((gift) => {
+        if (gift.isChecked) {
+          totalPrice += gift.price * gift.quantity;
+        }
+      });
+
+      savedCartItems.forEach((gift) => {
+        if (gift.isChecked) {
+          totalPrice += gift.price * gift.quantity;
+        }
+      });
+    }
+
+    return totalPrice.toFixed(2);
+  };
   return (
     <OrderContext.Provider
       value={{
@@ -111,6 +142,8 @@ export const OrderProvider = ({ children }) => {
         setSelectedPackage,
         totalPrice,
         setTotalPrice,
+        removeFromSavedShoppingCart,
+        calculateTotalPrice
       }}
     >
       {children}

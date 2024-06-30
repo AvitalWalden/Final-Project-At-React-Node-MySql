@@ -5,12 +5,14 @@ import '../css/Payment.css';
 
 const Payment = () => {
   const { user } = useContext(UserContext);
-  const { order } = useContext(OrderContext);
-  const [details, setDetails] = useState(user);
+  const { order,savedCartItems,totalPrice,removeFromSavedShoppingCart,setOrder,setSelectedPackage } = useContext(OrderContext);
   const [newUserDetails, setNewUserDetails] = useState({ name: '', username: '', email: '', city: '', street: '', zipcode: '', phone: '' });
   const [orderCreated, setOrderCreated] = useState(false);
-
-  const handleChange = (e) => {
+  const finalOrder = [
+    ...order.filter(item => item.isChecked),
+    ...savedCartItems.filter(item => item.isChecked)
+  ];
+    const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUserDetails({
       ...newUserDetails,
@@ -21,8 +23,8 @@ const Payment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formattedDate = new Date().toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
-
+      const formattedDate = new Date().toISOString().split('T')[0]; 
+  
       if (user.role === 'fundraiser') {
         const newUserResponse = await fetch('http://localhost:3000/users/newUser', {
           method: 'POST',
@@ -36,12 +38,12 @@ const Payment = () => {
           throw new Error('Failed to create new user');
         }
         const newUser = await newUserResponse.json();
-
+  
         const updatedFundraiser = {
           ...user,
-          debt: user.debt + order.total,
+          debt: user.debt + totalPrice,
           people_fundraised: user.people_fundraised + 1,
-          bonus: user.bonus + order.total * 0.05,
+          bonus: user.bonus + totalPrice * 0.05,
         };
         const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
           method: 'PUT',
@@ -54,20 +56,19 @@ const Payment = () => {
         if (!fundraiserResponse.ok) {
           throw new Error('Failed to update fundraiser');
         }
-
+  
         const orderResponse = await fetch('http://localhost:3000/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           credentials: 'include',
-          body: JSON.stringify({ user_id: newUser.user_id, order_date: formattedDate, order: order }),
+          body: JSON.stringify({ user_id: newUser.user_id, order_date: formattedDate, order: finalOrder }),
         });
         if (!orderResponse.ok) {
           throw new Error('Failed to create order');
         }
-        alert('Order created successfully!');
-        setOrderCreated(true);
+       
       } else {
         const orderResponse = await fetch('http://localhost:3000/orders', {
           method: 'POST',
@@ -75,21 +76,32 @@ const Payment = () => {
             'Content-Type': 'application/json',
           },
           credentials: 'include',
-          body: JSON.stringify({ user_id: user.user_id, order_date: formattedDate, order: order }),
+          body: JSON.stringify({ user_id: user.user_id, order_date: formattedDate, order: finalOrder }),
         });
         if (!orderResponse.ok) {
           throw new Error('Failed to create order');
         }
-        localStorage.removeItem('selectedPackage');
-        localStorage.removeItem('currentOrder');
-        alert('Order created successfully!');
-        setOrderCreated(true);
       }
+  
+      if (savedCartItems.some(item => item.isChecked)) {
+        const checkedItems = savedCartItems.filter(item => item.isChecked);
+        const giftIdsToDelete = checkedItems.map(item => item.gift_id); 
+        console.log("popp", giftIdsToDelete);
+        removeFromSavedShoppingCart(giftIdsToDelete);
+      }
+      
+      
+      localStorage.removeItem('selectedPackage');
+      localStorage.removeItem('currentOrder');
+      setOrder([]);
+      alert('Order created successfully!');
+      setOrderCreated(true);
     } catch (error) {
       console.error('Error:', error.message);
     }
   };
-
+  
+  
   if (orderCreated) {
     return <h2 className="success-message">Your order has been placed successfully!</h2>;
   }

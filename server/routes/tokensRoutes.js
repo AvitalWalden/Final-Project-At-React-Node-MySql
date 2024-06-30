@@ -13,9 +13,12 @@ router.get("/", async (req, res) => {
   try {
     const cookies = req.cookies;
     if (!cookies.jwt_refreshToken) {
-      return;
-    }
+      return res.status(401).send({ message: 'No refresh token found' });
+        }
     const user = await getTokenAndUserByToken(cookies.jwt_refreshToken);
+    if (!user) {
+      return res.status(401).send({ message: 'Log in first' });
+    }
     res.send(user);
   } catch (err) {
     const error = {
@@ -24,5 +27,6 @@ router.get("/", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
 
 module.exports = router;

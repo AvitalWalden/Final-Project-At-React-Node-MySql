@@ -25,6 +25,7 @@ const verifyRoles = (allowedRoles) => {
              userRoles = decoded.UserInfo.roles;
            
         });
+
          let result=false;
             if (allowedRoleKeys.length > 1) {
                 result = allowedRoleKeys.includes(userRoles)

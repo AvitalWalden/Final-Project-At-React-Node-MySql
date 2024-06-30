@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 import { OrderContext } from './OrderContext';
 
 const LogOut = () => {
-  const { setOrder, order } = useContext(OrderContext);
+  const { setOrder, order ,setSelectedPackage} = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
   const { refreshAccessToken } = useContext(UserContext);
 
@@ -15,6 +15,7 @@ const LogOut = () => {
       await saveToDBShoppingCart();
       setOrder([]);
       setUser(null);
+      localStorage.removeItem('selectedPackage');
       await deleteToken();
 
       navigate('/');
