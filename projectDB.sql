@@ -29,7 +29,7 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     username VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     address_id INT,
     phone VARCHAR(255),
     role VARCHAR(255),
@@ -136,12 +136,12 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 INSERT INTO users (name, username, email, address_id, phone, role) VALUES
 ('John Doe', 'johndoe', 'A0583295187@gmail.com', 1, '050-1234567',  'user'),
 ('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678',  'admin'),
-('David Cohen', 'davidcohen', 'n025711858@gmail.com', 3, '050-3456789', 'user'),
-('Rachel Levi', 'rachellevi', 'n025711858@gmail.com', 4, '050-4567890',  'user'),
-('Michael Rosen', 'michaelrosen', 'n025711858@gmail.com', 5, '050-5678901',  'user'),
-('Sarah Gold', 'sarahgold', 'n025711858@gmail.com', 6, '050-6789012',  'fundraiser'),
-('Daniel Katz', 'danielkatz', 'n025711858@gmail.com', 7, '050-7890123',  'fundraiser'),
-('Esther Green', 'esthergreen', 'n025711858@gmail.com', 8, '050-8901234',  'user'),
+('David Cohen', 'davidcohen', 'M0583295188@gmail.com', 3, '050-3456789', 'user'),
+('Rachel Levi', 'rachellevi', 'NW0548455073@gmail.com', 4, '050-4567890',  'user'),
+('Michael Rosen', 'michaelrosen', 'chinesesalewe@gmail.com', 5, '050-5678901',  'user'),
+('Sarah Gold', 'sarahgold', 'eletzky1@gmail.com', 6, '050-6789012',  'fundraiser'),
+('Daniel Katz', 'danielkatz', 'efratk354@gmail.com', 7, '050-7890123',  'fundraiser'),
+('Esther Green', 'esthergreen', 'efratmiletzky2@gmail.com', 8, '050-8901234',  'user'),
 ('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345',  'user'),
 ('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456',  'admin');
 

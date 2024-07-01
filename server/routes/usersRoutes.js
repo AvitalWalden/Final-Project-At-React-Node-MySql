@@ -45,13 +45,17 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
+        console.log("userAfterChange");
+
         const id = req.params.id;
         const resultUser = await getUser(id);
         const addressID = resultUser.address_id;
+
         await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, addressID);
         const userAfterChange = await getUser(id);
 
         delete userAfterChange.address_id;
+        console.log(userAfterChange);
         res.send(userAfterChange);
     } catch (err) {
 
@@ -62,8 +66,26 @@ router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundrais
     }
 });
 
+// router.get("/:email", async (req, res) => {
+//     try {
+//         console.log("f");
+
+//         const email = req.params.email;
+//         const user = await getUserByEmail(email);
+
+//         res.send(user);
+//     } catch (err) {
+//         console.error('Error fetching user:', err.message);
+//         const error = {
+//             message: err.message
+//         }
+//         res.status(500).send(error);
+//     }
+// });
+
 router.get("/:user_id", verifyJWT, async (req, res) => {
     try {
+        console.log("fffffffffff");
         const id = req.params.user_id;
         const user = await getUser(id);
 
@@ -76,6 +98,7 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
         res.status(500).send(error);
     }
 });
+
 router.post("/newUser", async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;

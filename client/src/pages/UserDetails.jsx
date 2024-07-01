@@ -51,18 +51,21 @@ const UserDetails = () => {
                     console.log('Refreshing token and retrying...');
                     await refreshAccessToken();
                     return handleSubmit();
-                }
-
-                if (response.status === 403) {
+                } else if (response.status === 403) {
                     console.log('Invalid token, you cannot do it...');
                     throw new Error('Invalid token');
+                } else {
+                    setUseDetailsError('email is in use');
                 }
             }
-            const responseData = await response.json();
-            setUser(responseData);
-            localStorage.setItem('currentUser', JSON.stringify(responseData));
-            setUseDetailsError('User updated successfully');
-            navigate('/gifts');
+            else {
+                const responseData = await response.json();
+                setUser(responseData);
+                localStorage.setItem('currentUser', JSON.stringify(responseData));
+                setUseDetailsError('User updated successfully');
+                navigate('/gifts');
+            }
+
         } catch (error) {
             console.error('Error saving user details:', error);
             setUseDetailsError('Error updating user');

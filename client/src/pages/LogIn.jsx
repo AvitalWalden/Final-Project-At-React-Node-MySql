@@ -2,10 +2,21 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
-
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBRow,
+  MDBInput,
+  MDBCheckbox,
+  MDBIcon
+}
+from 'mdb-react-ui-kit';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-
+// import {handleRegistrationWithGoogle} from "../pages/SignUp"
 const logIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -52,29 +63,67 @@ const logIn = () => {
 
   };
 
-  function handleLoginWithGoogle() {
-    const url = 'http://localhost:3000/users';
+  function handleLogInWithGoogle(user) {
+    const url = `http://localhost:3000/users/${user.email}`;
     const requestOptions = {
-      method: "GET",
+      method: 'GET',
+    };
+    fetch(url, requestOptions)
+      .then(response => {
+        return response.json().then(user => {
+          if (!response.ok) {
+            throw response.error;
+          }
+          else {
+            console.log(user);
+            setUser(user);
+            navigate("/gifts");
+
+          }
+        })
+      })
+      .catch(error => {
+        setLoginError(error);
+      });
+  }
+
+
+  function handleRegistrationWithGoogle(user) {
+    const url = 'http://localhost:3000/signup';
+    const requestOptions = {
+      method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
+      body: JSON.stringify({ ...user })
     };
     fetch(url, requestOptions)
       .then(response => {
         return response.json().then(data => {
-          if (response.status == 401) {
-            throw data.message;
+          if (response.status == 500) {
+            if (data.message == 'You need logIn') {
+              handleLogInWithGoogle(user);
+              navigate("/gifts");
+            } else if (data.message == 'email is in use') {
+              handleLogInWithGoogle(user);
+              navigate("/gifts");
+            } else {
+              throw data.message;
+
+            }
           }
-          setUser({ ...user });
-          navigate('/gifts')
+          else {
+            handleLogInWithGoogle(user);
+            navigate("/userDetails");
+
+          }
         })
       })
       .catch(error => {
-        console.log(error);
         setLoginError(error);
       });
+  }
 
-  };
+
   return (
     <div className='form'>
       <h2 className="title">Log in</h2><br />
@@ -89,10 +138,11 @@ const logIn = () => {
           console.log(credentialResponseDecoded);
           const user = {
             username: credentialResponseDecoded.name,
-            email: credentialResponseDecoded.email
+            email: credentialResponseDecoded.email,
+            role: 'user'
           }
-          setUser(user);
-          navigate('/gifts')
+          handleRegistrationWithGoogle(user);
+
         }}
         onError={() => {
           console.log('Login Failed');
