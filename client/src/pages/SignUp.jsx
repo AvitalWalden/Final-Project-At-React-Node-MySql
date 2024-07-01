@@ -70,12 +70,15 @@ const SignUp = () => {
         return response.json().then(user => {
           if (response.status == 500) {
             if (user.message == 'You need logIn') {
-              setUser(user);
-              navigate("/gifts");
-            } else if (user.message == 'email is in use') {
-              setUser(user);
-              navigate("/gifts");
-            } else {
+          
+              setSignUpError('you need log in');
+ 
+            }
+            else if (user.message == 'email is in use') {
+              setSignUpError('you need log in');
+
+            }
+             else {
               throw user.message;
 
             }
@@ -99,7 +102,7 @@ const SignUp = () => {
       <input type="password" className='input' value={verifyPassword} placeholder="verift-password" onChange={(e) => setverifyPassword(e.target.value)} /><br />
       <select className='input' value={role} onChange={(e) => setRole(e.target.value)}>
         <option value="">Select Role</option>
-        <option value="donate">Donate</option>
+        {/* <option value="donate">Donate</option> */}
         <option value="fundraiser">Fundraiser</option>
         <option value="user">User</option>
       </select><br />
@@ -111,7 +114,6 @@ const SignUp = () => {
         onSuccess={credentialResponse => {
           const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
           console.log(credentialResponseDecoded);
-          navigate('/gifts')
           const user = {
             username: credentialResponseDecoded.name,
             email: credentialResponseDecoded.email,

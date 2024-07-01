@@ -31,7 +31,7 @@ body {
 
 .btn,
 button {
-  margin: 1%;
+  /* margin: 1%; */
   background-color: #e5f0f3;
   color: #000000;
 }

@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const config = require('../config/config.js');
 const jwt = require('jsonwebtoken');
-const { creatToken,updateToken } = require('../models/tokensModel.js');
+const { creatToken, updateToken } = require('../models/tokensModel.js');
 
-async function createUser(username, password,role) {
+async function createUser(username, password, role) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-        const user = await model.createUser(username, hashedPassword,role);
+        const user = await model.createUser(username, hashedPassword, role);
 
         const g = await getUserForSignup(user.insertId);
         const token = await creatTokens(g, role);
@@ -26,21 +26,28 @@ async function createUser(username, password,role) {
     }
 }
 
-async function createUserLogInWithGoogle(username,role,email) {
+async function createUserLogInWithGoogle(username, role, email) {
     try {
-        const user = await model.createUserLogInWithGoogle(username,role,email);
+        console.log(email);
+        const user = await model.createUserLogInWithGoogle(username, role, email);
 
-        const newUser =getUserForSignup(user.insertId);
+        const newUser = await getUserForSignup(user.insertId);
         const token = await creatTokens(newUser, role);
 
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
-        const refreshToken = token.refreshToken
+        const refreshToken = token.refreshToken;
+        // console.log(accessToken);
         return { user, accessToken, refreshToken };
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
             throw new Error('You need logIn')
-        } else {
+        } else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
+            throw new Error('email is in use')
+        }
+
+
+        else {
             throw err;
         }
     }
@@ -54,9 +61,9 @@ async function logIn(userName, password) {
         if (user) {
             const role = Object.values(user.role);
             if (hashedPassword === user.password) {
-                
-                token =await creatTokens(user, role);
-    
+
+                token = await creatTokens(user, role);
+
                 updateToken(user.user_id, token.refreshToken);
                 const accessToken = token.accessToken
                 const refreshToken = token.refreshToken
@@ -79,7 +86,13 @@ async function getUser(id) {
         throw err;
     }
 }
-
+async function getUserByEmail(email) {
+    try {
+        return await model.getUserByEmail(email);
+    } catch (err) {
+        throw err;
+    }
+}
 async function getUserForSignup(id) {
     try {
         return await model.getUserForSignup(id);
@@ -89,16 +102,19 @@ async function getUserForSignup(id) {
 }
 
 
-async function updateUser(id, name, username, email, city, street, zipcode, phone,  addressId) {
+async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
     try {
         return await model.updateUser(id, name, username, email, city, street, zipcode, phone, addressId);
     } catch (err) {
+        if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
+            throw new Error('email is in use')
+        }
         throw err;
     }
 }
-async function createNewUser( name, username, email, phone,city,street,zipcode) {
+async function createNewUser(name, username, email, phone, city, street, zipcode) {
     try {
-        return await model.createNewUser( name, username, email, phone,city,street,zipcode);
+        return await model.createNewUser(name, username, email, phone, city, street, zipcode);
     } catch (err) {
         throw err;
     }
@@ -106,7 +122,7 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
 
 async function creatTokens(user, role) {
     try {
- 
+
         const username = user.username;
         const accessToken = jwt.sign(
             {
@@ -120,22 +136,22 @@ async function creatTokens(user, role) {
         );
 
         const refreshToken = jwt.sign(
-            { 
-                "username": username, 
-                "roles": role 
+            {
+                "username": username,
+                "roles": role
             },
             config.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
         );
-        
-        const token =  {
+
+        const token = {
             accessToken: accessToken,
             refreshToken: refreshToken
-        }; 
+        };
         return token;
     } catch (err) {
         throw err;
     }
 }
 
-module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup ,createNewUser,createUserLogInWithGoogle}
+module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup, createNewUser, createUserLogInWithGoogle ,getUserByEmail}

@@ -10,6 +10,16 @@ async function getUser(id) {
         return err;
     }
 }
+async function getUserByEmail(email) {
+    try {
+        const sql = 'SELECT * FROM users natural join addresses where users.email=?';
+        const result = await pool.query(sql, [email]);
+        return result[0][0];
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
 
 async function getUserForSignup(id) {
     try {
@@ -101,4 +111,4 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
     }
 }
 
-module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser,createUserLogInWithGoogle }
+module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser,createUserLogInWithGoogle ,getUserByEmail}

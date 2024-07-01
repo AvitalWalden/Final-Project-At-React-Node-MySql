@@ -7,16 +7,11 @@ const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
+const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle,getUserByEmail } = require('../controllers/usersController');
 router.use(cors());
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
-
-
-
-
-
 
 router.post("/", async (req, res) => {
     try {
@@ -63,8 +58,26 @@ router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraise
     }
 });
 
+// router.get("/:email", async (req, res) => {
+//     try {
+//         console.log("f");
+
+//         const email = req.params.email;
+//         const user = await getUserByEmail(email);
+
+//         res.send(user);
+//     } catch (err) {
+//         console.error('Error fetching user:', err.message);
+//         const error = {
+//             message: err.message
+//         }
+//         res.status(500).send(error);
+//     }
+// });
+
 router.get("/:user_id", verifyJWT, async (req, res) => {
     try {
+        console.log("fffffffffff");
         const id = req.params.user_id;
         const user = await getUser(id);
 
@@ -77,6 +90,7 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
         res.status(500).send(error);
     }
 });
+
 router.post("/newUser", async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;
