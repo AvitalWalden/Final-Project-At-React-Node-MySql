@@ -114,6 +114,7 @@ CREATE TABLE fundraisers (
     fundraiser_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     bonus INT,
+    approved bool,
     debt DECIMAL(10, 2),
     people_fundraised INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(user_id)

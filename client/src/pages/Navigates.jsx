@@ -49,7 +49,7 @@ const Navigates = ({ enableNav,setEnableNav }) => {
                 )}
                 <Link to="/gifts" className={linkClassName} onClick={handleClick}>Gifts <FaGift /></Link>
                 <Link to="/packages" className={linkClassName} onClick={handleClick}>Our Packages <TbPackages /></Link>
-                <Link to="/giftsChart" className={linkClassName} onClick={handleClick}>GiftsChart <FaRegChartBar /></Link>
+                {user && <Link to="/giftsChart" className={linkClassName} onClick={handleClick}>GiftsChart <FaRegChartBar /></Link>}
                 <Link to="/orderManagement" className={linkClassName} onClick={handleClick}>
                     <FaCartShopping style={{
                         transition: "transform 0.7s, color 0.7s, text-shadow 0.3s, border 0.7s",
