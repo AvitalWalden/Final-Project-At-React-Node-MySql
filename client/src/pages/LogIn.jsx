@@ -2,18 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBRow,
-  MDBInput,
-  MDBCheckbox,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
+
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 // import {handleRegistrationWithGoogle} from "../pages/SignUp"
@@ -63,33 +52,33 @@ const logIn = () => {
 
   };
 
-  function handleLogInWithGoogle(user) {
-    const url = `http://localhost:3000/users/${user.email}`;
-    const requestOptions = {
-      method: 'GET',
-    };
-    fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(user => {
-          if (!response.ok) {
-            throw response.error;
-          }
-          else {
-            console.log(user);
-            setUser(user);
-            navigate("/gifts");
+  // function handleLogInWithGoogle(user) {
+  //   const url = `http://localhost:3000/users/${user.email}`;
+  //   const requestOptions = {
+  //     method: 'GET',
+  //   };
+  //   fetch(url, requestOptions)
+  //     .then(response => {
+  //       return response.json().then(user => {
+  //         if (!response.ok) {
+  //           throw response.error;
+  //         }
+  //         else {
+  //           console.log(user);
+  //           setUser(user);
+  //           navigate("/gifts");
 
-          }
-        })
-      })
-      .catch(error => {
-        setLoginError(error);
-      });
-  }
+  //         }
+  //       })
+  //     })
+  //     .catch(error => {
+  //       setLoginError(error);
+  //     });
+  // }
 
 
   function handleRegistrationWithGoogle(user) {
-    const url = 'http://localhost:3000/signup';
+    const url = 'http://localhost:3000/login';
     const requestOptions = {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -99,22 +88,12 @@ const logIn = () => {
     fetch(url, requestOptions)
       .then(response => {
         return response.json().then(data => {
-          if (response.status == 500) {
-            if (data.message == 'You need logIn') {
-              handleLogInWithGoogle(user);
-              navigate("/gifts");
-            } else if (data.message == 'email is in use') {
-              handleLogInWithGoogle(user);
-              navigate("/gifts");
-            } else {
+          if (response.status == 401) {
               throw data.message;
-
-            }
           }
           else {
-            handleLogInWithGoogle(user);
-            navigate("/userDetails");
-
+            setUser(data);
+            navigate("/gifts");
           }
         })
       })

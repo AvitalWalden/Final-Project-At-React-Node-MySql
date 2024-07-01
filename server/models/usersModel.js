@@ -14,6 +14,7 @@ async function getUserByEmail(email) {
     try {
         const sql = 'SELECT * FROM users natural join addresses where users.email=?';
         const result = await pool.query(sql, [email]);
+        console.log("plpl",email,result[0][0])
         return result[0][0];
     } catch (err) {
         console.log(err);
@@ -63,6 +64,7 @@ async function createUserLogInWithGoogle(username, role,email) {
         throw err;
     }
 }
+
 
 async function logIn(userName) {
     try {

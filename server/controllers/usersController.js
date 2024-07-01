@@ -28,7 +28,7 @@ async function createUser(username, password, role) {
 
 async function createUserLogInWithGoogle(username, role, email) {
     try {
-        console.log(email);
+
         const user = await model.createUserLogInWithGoogle(username, role, email);
 
         const newUser = await getUserForSignup(user.insertId);
@@ -52,7 +52,22 @@ async function createUserLogInWithGoogle(username, role, email) {
         }
     }
 }
+async function getUserLogInWithGoogle(email, role) {
+    try {
 
+        const user = await model.getUserByEmail(email);
+        if (!user) {
+            throw new Error('Email does not exist in the system');
+        }
+        const token = await creatTokens(user, role);
+        creatToken(user.insertId, token.refreshToken);
+        const accessToken = token.accessToken
+        const refreshToken = token.refreshToken;
+        return { user, accessToken, refreshToken };
+    } catch (err) {
+        throw err;
+    }
+}
 async function logIn(userName, password) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
@@ -154,4 +169,4 @@ async function creatTokens(user, role) {
     }
 }
 
-module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup, createNewUser, createUserLogInWithGoogle ,getUserByEmail}
+module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup, createNewUser, createUserLogInWithGoogle, getUserByEmail, getUserLogInWithGoogle }
