@@ -21,12 +21,14 @@ import GiftsChart from "./pages/GiftsChart";
 import Payment from "./pages/Payment";
 
 function App() {
+  const [enableNav, setEnableNav] = useState(true);
+
   return (
     <div>
       <BrowserRouter>
         <UserProvider>
           <OrderProvider>
-            <Navigates />
+            <Navigates enableNav={enableNav} setEnableNav={setEnableNav} />
 
             <Routes>
               <Route path="/" element={<Home />} />
@@ -37,15 +39,13 @@ function App() {
               <Route path="/userDetails" element={<UserDetails />} />
               <Route path="/orders" element={<UserOrders />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/orderManagement" element={<OrderManagement />} />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/orderManagement" element={<OrderManagement setEnableNav={setEnableNav} />} />
+              <Route path="/payment" element={<Payment setEnableNav={setEnableNav} />}/>
               <Route path="/winners" element={<Winners />} />
               <Route path="/Lottery" element={<Lotteries />} />
               <Route path="/allOrders" element={<AllOrders />} />
               <Route path="/packages" element={<PackageSelector />} />
               <Route path="/giftsChart" element={<GiftsChart />} />
-
-
             </Routes>
 
           </OrderProvider>

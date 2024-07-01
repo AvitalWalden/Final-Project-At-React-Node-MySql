@@ -12,7 +12,6 @@ const Profile = () => {
     street: "",
     zipcode: "",
     phone: "",
-    Bonus: 0,
     role: ""
   });
   const [UseDetailsError, setUseDetailsError] = useState('');
@@ -134,7 +133,6 @@ const Profile = () => {
           <input type="text" className='input' placeholder="street" value={userDetails.street} onChange={(e) => handleChange('street', e.target.value)} /><br />
           <input type="text" className='input' placeholder="zipcode" value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} /><br />
           <input type="tel" className='input' placeholder="phone" value={userDetails.phone} onChange={(e) => handleChange('phone', e.target.value)} /><br />
-          <input type="text" className='input' placeholder="Bonus" value={userDetails.Bonus} onChange={(e) => handleChange('Bonus', e.target.value)} readOnly /><br />
           <input type="text" className='input' placeholder="role" value={userDetails.role} onChange={(e) => handleChange('role', e.target.value)} /><br />
           <button className="btnSaveDetails" onClick={handleFormSubmit}>Save</button><br />
 
@@ -149,7 +147,6 @@ const Profile = () => {
           <p className='input'>Street: {userDetails.street}</p>
           <p className='input'>Zipcode: {userDetails.zipcode}</p>
           <p className='input'>Phone: {userDetails.phone}</p>
-          <p className='input'>Bonus: {userDetails.Bonus}</p>
           <p className='input'>Role: {userDetails.role}</p>
           <button onClick={() => setIsEditing(true)}>Edit</button>
         </div>

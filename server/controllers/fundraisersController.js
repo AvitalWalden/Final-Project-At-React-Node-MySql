@@ -21,4 +21,11 @@ async function getFundraiserChartData() {
         throw err;
     }
 }
-module.exports = {updateFundraisers,getFundraiser,getFundraiserChartData}
+async function postFundraiser(userId,bonus,debt,peopleFundraised) {
+    try {
+        return model.postFundraiser(userId,bonus,debt,peopleFundraised);
+    } catch (err) {
+        throw err;
+    }
+}
+module.exports = {updateFundraisers,getFundraiser,getFundraiserChartData,postFundraiser}
