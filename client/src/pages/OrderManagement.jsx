@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrashCan } from "react-icons/fa6";
 import '../css/OrderManagement.css';
 
-const OrderManagement = () => {
+const OrderManagement = ({setEnableNav}) => {
   const navigate = useNavigate();
-  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage,totalPrice,setTotalPrice,calculateTotalPrice } = useContext(OrderContext);
+  const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage, totalPrice, setTotalPrice, calculateTotalPrice } = useContext(OrderContext);
   const { user } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
@@ -19,7 +19,7 @@ const OrderManagement = () => {
             method: "GET",
             credentials: "include"
           });
-  
+
           if (!response.ok) {
             if (response.status === 402) {
               throw new Error('No Acsses');
@@ -27,7 +27,7 @@ const OrderManagement = () => {
               throw new Error('Failed to fetch saved cart items');
             }
           }
-  
+
           const data = await response.json();
           setSavedCartItems(data);
           savedCartItems.forEach((gift) => {
@@ -38,11 +38,11 @@ const OrderManagement = () => {
         }
       }
     };
-  
+
     fetchSavedCartItems();
   }, [user, order]);
-  
-  
+
+
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
@@ -53,6 +53,7 @@ const OrderManagement = () => {
     if (!user) {
       setShowLoginPrompt(true);
     } else {
+      setEnableNav(false);
       navigate('/payment');
     }
   };
@@ -217,7 +218,7 @@ const OrderManagement = () => {
       <div className="order-summary">
         <h2>Order Summary</h2>
         <div className="summary-container">
-        {selectedPackage && <button className="btnDelete-cart" onClick={() => handleDeletePackage()}>delete package</button>}
+          {selectedPackage && <button className="btnDelete-cart" onClick={() => handleDeletePackage()}>delete package</button>}
           <p>Total Price: {totalPrice}$</p>
           <button
             className="btn-buy"

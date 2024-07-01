@@ -1,4 +1,5 @@
 const model = require('../models/orderModel');
+const { sendOrderEmail} = require('../middleware/mailServices');
 
 async function getOrder(id) {
     try {
@@ -29,9 +30,13 @@ async function getOrderByOrderId(order_id) {
         throw err;
     }
 }
-async function createOrder(user_id, order_date,order) {
+async function createOrder(user_id, order_date,order,totalPrice,email) {
     try {
         const orderModel = await model.createOrder(user_id, order_date, order);
+        if(orderModel)
+            {
+               await sendOrderEmail(email,order,totalPrice);
+            }
         return orderModel;
     } catch (err) {
             throw err;

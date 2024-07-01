@@ -30,3 +30,13 @@
   background-color: #f0f0f0;
 }
 
+.enabled {
+  opacity: 1;
+  /* Add any other styling for enabled links */
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  /* Add any other styling for disabled links */
+}

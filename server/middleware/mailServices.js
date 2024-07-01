@@ -24,7 +24,28 @@ async function sendWinnerEmail(winnerEmail, giftName) {
         console.error('Error sending email:', error);
     }
 }
+async function sendOrderEmail(recipientEmail, orderSummary, totalPrice) {
+    const orderItems = orderSummary.map(item => `${item.name}: $${parseFloat(item.price).toFixed(2)}`).join('\n');
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: recipientEmail,
+        subject: 'Order Summary - Your Recent Purchase',
+        text: `Dear Customer,Thank you for your order!
+         Here is a summary of your recent purchase:${orderItems}
+        Total Price: $${parseFloat(totalPrice).toFixed(2)}
+        We appreciate your business and hope you enjoy your new items!
+        Best Regards,
+        Your Company Name`
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Order summary email sent successfully');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
 
 
-
-module.exports = { sendWinnerEmail };
+module.exports = { sendWinnerEmail, sendOrderEmail };

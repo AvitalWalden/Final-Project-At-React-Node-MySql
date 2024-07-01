@@ -7,26 +7,34 @@ const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle,getUserByEmail } = require('../controllers/usersController');
+const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
+const {postFundraiser}=require('../controllers/fundraisersController')
 router.use(cors());
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
+
+
 router.post("/", async (req, res) => {
     try {
         let response;
-        if (!req.body.password) { 
+
+        if (!req.body.password) {
             response = await createUserLogInWithGoogle(req.body.username, req.body.role, req.body.email)
         }
         else {
             response = await createUser(req.body.username, req.body.password, req.body.role);
+        }
+        if (req.body.role == 'fundraiser') {
+           await postFundraiser(response.user.insertId,0,0,0)
         }
         const user = await getUserForSignup(response.user.insertId);
 
         res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
         res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 30 * 1000 });
         res.send(user);
+
     } catch (err) {
         const error = {
             message: err.message
@@ -35,7 +43,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
+router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
         console.log("userAfterChange");
 

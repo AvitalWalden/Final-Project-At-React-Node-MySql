@@ -37,11 +37,21 @@ async function getFundraiserChartData() {
 
         const sql = 'SELECT fundraisers.*, users.name as fundraiser_name FROM fundraisers JOIN users ON fundraisers.user_id = users.user_id';
         const [rows] = await pool.query(sql);
-        console.log("pppp",rows)
         return rows;
     } catch (err) {
         console.log(err);
         throw err;
     }
 }
-module.exports = { updateFundraisers, getFundraiser,getFundraiserChartData }
+async function postFundraiser(userId,bonus,debt,peopleFundraised) {
+    try {
+
+        const sql = "INSERT INTO fundraisers (`user_id`, `bonus`, `debt`,`people_fundraised`) VALUES(?, ?, ?,?)";
+        const result = await pool.query(sql, [userId, bonus, debt,peopleFundraised]);
+        return result[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+module.exports = { updateFundraisers, getFundraiser,getFundraiserChartData,postFundraiser }

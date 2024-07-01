@@ -1,0 +1,48 @@
+.order-summary2 {
+    position: absolute;
+    top: 100px;
+    right: 10px;
+    width: 300px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-summary2 h3 {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+  }
+  
+  .order-summary2 ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .order-summary2 li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .order-summary2 li:last-child {
+    border-bottom: none;
+  }
+  
+  .order-summary2 h4 {
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #333;
+    text-align: center;
+  }
+  .order-summary2 h4 span{
+    color: red;
+  }
+  #giftPrice{
+    color: red;
+  }
