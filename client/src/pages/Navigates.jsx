@@ -28,7 +28,7 @@ function Navigates() {
                 {user && <Link to="/logout">LogOut</Link>}
                 <Link to="/gifts">Gifts <FaGift /></Link>
                 <Link to="/packages">Our Packages <TbPackages /></Link>
-                <Link to="/giftsChart"> GiftsChart <FaRegChartBar /></Link>
+                {user && <Link to="/giftsChart"> GiftsChart <FaRegChartBar /></Link>}
 
                 <Link to="/orderManagement"><FaCartShopping style={{
                     transition: "transform 0.7s, color 0.7s, text-shadow 0.3s, border 0.7s",

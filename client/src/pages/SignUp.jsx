@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-
-
 const SignUp = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
@@ -14,7 +12,6 @@ const SignUp = () => {
   const [role, setRole] = useState('');
   const [signUpError, setSignUpError] = useState('');
   const { setUser } = useContext(UserContext);
-
 
   function handleRegistration() {
     if (!userName || !verifyPassword || !password || !role) {
