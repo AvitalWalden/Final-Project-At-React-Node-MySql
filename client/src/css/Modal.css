@@ -39,18 +39,8 @@
   }
   
   .cancel{
-    background-color: rgb(255, 255, 255);
-    padding: 1%;
-    position: absolute;
-    outline: none;
-    height: 10%;
-    top: 1%;
-    right: 1%;
-    box-shadow: none;
-    width: 10%;
+    background-color: white;
+  border: none;
   }
 
-  .cancel:hover {
-    border: black;
-  
-  }
+ 

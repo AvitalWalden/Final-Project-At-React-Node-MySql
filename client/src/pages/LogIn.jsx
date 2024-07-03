@@ -1,81 +1,61 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
-
+import {
+  MDBContainer,
+  MDBInput,
+  MDBBtn,
+  MDBIcon,
+  MDBCol,
+  MDBRow,
+  MDBCard,
+  MDBCardBody
+} from 'mdb-react-ui-kit';
 import { GoogleLogin } from '@react-oauth/google';
+import '../css/SignUp.css';
+
+import '../App.css';
+
+
 import { jwtDecode } from "jwt-decode";
-// import {handleRegistrationWithGoogle} from "../pages/SignUp"
-const logIn = () => {
+
+const LogIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   function handleLogin() {
-    let foundUser;
     if (!username || !password) {
       setLoginError('Please fill in all fields.');
       return;
     }
-    const newUser = {
-      username: username,
-      password: password
-    }
 
     const url = 'http://localhost:3000/login';
     const requestOptions = {
-      method: "POST",
+      method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ ...newUser })
+      body: JSON.stringify({ username, password })
     };
+
     fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(data => {
-          if (response.status == 401) {
-            throw data.message;
-          }
-          foundUser = data;
-          setUser({ ...foundUser });
-          setUsername('');
-          setPassword('');
-          setLoginError('Registration successful');
-          navigate('/gifts')
-        })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          throw new Error(data.message);
+        }
+        setUser(data);
+        setUsername('');
+        setPassword('');
+        setLoginError('Registration successful');
+        navigate('/gifts');
       })
       .catch(error => {
-        console.log(error);
-        setLoginError(error);
+        setLoginError(error.message);
       });
-
-  };
-
-  // function handleLogInWithGoogle(user) {
-  //   const url = `http://localhost:3000/users/${user.email}`;
-  //   const requestOptions = {
-  //     method: 'GET',
-  //   };
-  //   fetch(url, requestOptions)
-  //     .then(response => {
-  //       return response.json().then(user => {
-  //         if (!response.ok) {
-  //           throw response.error;
-  //         }
-  //         else {
-  //           console.log(user);
-  //           setUser(user);
-  //           navigate("/gifts");
-
-  //         }
-  //       })
-  //     })
-  //     .catch(error => {
-  //       setLoginError(error);
-  //     });
-  // }
-
+  }
 
   function handleRegistrationWithGoogle(user) {
     const url = 'http://localhost:3000/login';
@@ -83,51 +63,89 @@ const logIn = () => {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ ...user })
+      body: JSON.stringify(user)
     };
+
     fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(data => {
-          if (response.status == 401) {
-              throw data.message;
-          }
-          else {
-            setUser(data);
-            navigate("/gifts");
-          }
-        })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          throw new Error(data.message);
+        }
+        setUser(data);
+        navigate('/gifts');
       })
       .catch(error => {
-        setLoginError(error);
+        setLoginError(error.message);
       });
   }
 
-
   return (
-    <div className='form'>
-      <h2 className="title">Log in</h2><br />
-      <input type="userName" className='input' value={username} placeholder="userName" onChange={(e) => setUsername(e.target.value)} /><br />
-      <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
-      <button className="btnOkLogIn" onClick={handleLogin}>Connect</button><br />
-      <Link to="/signup" className="link" >Don't have an account? Create account</Link>
-      {loginError && <p className='error' style={{ color: loginError == "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
-      <GoogleLogin
-        onSuccess={credentialResponse => {
-          const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-          console.log(credentialResponseDecoded);
-          const user = {
-            username: credentialResponseDecoded.name,
-            email: credentialResponseDecoded.email,
-            role: 'user'
-          }
-          handleRegistrationWithGoogle(user);
+    <div className='bigDiv'>
+      <MDBContainer fluid className='sectionS p-4'>
+        <MDBRow>
+          <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center textMe'>
+            <h1 className="my-5 display-3 fw-bold ls-tight px-3">
+              Welcome back <br />
+              <span className="text-primary">to our platform</span>
+            </h1>
+            <p className='px-3' style={{ color: 'hsl(217, 10%, 50.8%)' }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora at cupiditate quis eum maiores libero veritatis? Dicta facilis sint aliquid ipsum atque?
+            </p>
+          </MDBCol>
 
-        }}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
+          <MDBCol md='6' >
+            <MDBCard className='my-5'>
+              <MDBCardBody className='p-5'>
+                <MDBRow>
+                  <MDBCol col='12'>
+                    <MDBInput wrapperClass='mb-4' label='Username' id='form1 Username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
+                  </MDBCol>
+                </MDBRow>
+                <MDBInput wrapperClass='mb-4' label='Password' id='form1 Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <MDBBtn className='w-100 mb-4' size='md' onClick={handleLogin}>Log In</MDBBtn>
+                <div className="text-center">
+                  <p>Not a member? <Link to="/signup" className="link">Sign Up</Link></p>
+                  <div className="divider d-flex align-items-center my-4">
+                    <p className="text-center fw-bold mx-3 mb-0">Or</p>
+                  </div>
+                  {/* <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
+                  <MDBIcon fab icon='google' size="sm"/>
+                  </MDBBtn> */}
+                  <div className='justify-content-center mx-auto' style={{ width: '40%' }}>
+                    <GoogleLogin
+                      onSuccess={credentialResponse => {
+                        const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+                        const user = {
+                          username: credentialResponseDecoded.name,
+                          email: credentialResponseDecoded.email,
+                          role: 'user'
+                        };
+                        handleRegistrationWithGoogle(user);
+                      }}
+                      onError={() => {
+                        console.log('Login Failed');
+                      }}
+                      render={renderProps => (
+                        <button
+                          onClick={renderProps.onClick}
+                          disabled={renderProps.disabled}
+                          className="google-icon-button"
+                        >
+                          <i className="fab fa-google"></i>
+                        </button>
+                      )}
+                    />
+                  </div>
+                </div>
+                {loginError && <p className='error mt-4' style={{ color: loginError === "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
     </div>
   );
-}
-export default logIn
+};
+
+export default LogIn;

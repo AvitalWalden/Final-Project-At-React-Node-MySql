@@ -71,6 +71,7 @@ async function getUserLogInWithGoogle(email, role) {
 async function logIn(userName, password) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+        console.log(userName)
         const user = await model.logIn(userName);
 
         if (user) {
@@ -119,12 +120,19 @@ async function getUserForSignup(id) {
 
 async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
     try {
+        console.log(username);
         return await model.updateUser(id, name, username, email, city, street, zipcode, phone, addressId);
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
             throw new Error('email is in use')
         }
-        throw err;
+        else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
+            throw new Error('email is in use')
+        }
+        else{
+            throw err;
+
+        }
     }
 }
 async function createNewUser(name, username, email, phone, city, street, zipcode) {

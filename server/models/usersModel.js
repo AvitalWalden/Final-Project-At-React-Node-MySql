@@ -80,6 +80,8 @@ async function logIn(userName) {
 
 async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
     try {
+        console.log(username);
+
         const sqlValidateAddress = `SELECT * FROM addresses WHERE address_id = ?`;
         const [addressRows] = await pool.query(sqlValidateAddress, [addressId]);
 
