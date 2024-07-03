@@ -32,7 +32,7 @@ function AllOrders() {
       }
 
       const ordersData = await response.json();
-      console.log("pi",ordersData)
+      console.log("Orders Data:", ordersData)
       setOrders(ordersData);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -55,22 +55,23 @@ function AllOrders() {
 
   return (
     <div className="container">
-      <table>
-        <thead>
+      <h2 className="container-h2">All Orders</h2>
+      <table className="container-table">
+        <thead className="container-thead">
           <tr>
-            <th>Order ID</th>
-            <th>User Name</th>
-            <th>Order Date</th>
-            <th>Order Info</th>
+            <th className="container-th">Order ID</th>
+            <th className="container-th">User Name</th>
+            <th className="container-th">Order Date</th>
+            <th className="container-th">Order Info</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="container-tbody">
           {orders.map((order) => (
             <tr key={order.order_id}>
-              <td>{order.order_id}</td>
-              <td>{order.username}</td>
-              <td>{formatDate(order.order_date)}</td>
-              <td onClick={() => handleOrderClick(order.order_id)} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
+              <td className="container-td">{order.order_id}</td>
+              <td className="container-td">{order.username}</td>
+              <td className="container-td">{formatDate(order.order_date)}</td>
+              <td className="container-td" onClick={() => handleOrderClick(order.order_id)}>
                 See Details👇
               </td>
             </tr>

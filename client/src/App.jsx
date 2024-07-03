@@ -19,10 +19,11 @@ import Home from "./pages/Home";
 import PackageSelector from "./pages/PackageSelector";
 import GiftsChart from "./pages/GiftsChart";
 import Payment from "./pages/Payment";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [enableNav, setEnableNav] = useState(true);
-
+ console.log(enableNav,";;")
   return (
     <div>
       <BrowserRouter>

@@ -1,47 +1,46 @@
-/* Styles for the AllOrders component */
 .container {
   margin-top: 50px;
   max-width: 800px;
   padding: 20px;
 }
 
-h2 {
+.container-h2 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
 }
 
-table {
+.container-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-thead {
+.container-thead {
   background-color: #f2f2f2;
 }
 
-th, td {
+.container-th, .container-td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
-th {
+.container-th {
   background-color: #4CAF50;
   color: white;
 }
 
-tbody tr:hover {
+.container-tbody tr:hover {
   background-color: #f2f2f2;
 }
 
-tbody td {
+.container-tbody td {
   cursor: pointer;
 }
 
-tbody td:hover {
+.container-tbody td:hover {
   color: blue;
   text-decoration: underline;
 }
