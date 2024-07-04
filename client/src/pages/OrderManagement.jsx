@@ -339,22 +339,12 @@ const OrderManagement = ({ setEnableNav }) => {
 
       {/* Login Prompt Modal */}
       {showLoginPrompt && (
-        <div className="modal fade show" style={{ display: 'block', zIndex: '1050' }} id="loginPrompt" tabIndex="-1" role="dialog" aria-labelledby="loginPromptTitle" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="loginPromptTitle">Login Required</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleLoginCancel}>
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <p>You need to login to proceed to payment.</p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={handleLoginRedirect}>Login</button>
-                <button type="button" className="btn btn-primary" onClick={handleLoginCancel}>Cancel</button>
-              </div>
+        <div className='alert d-flex align-items-center justify-content-center' style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+          <div className="alert alert-info p-3 text-center" style={{ maxWidth: '1000px' }}>
+            <h2 className="mb-3">You need to login to proceed to payment.</h2>
+            <div className="d-flex justify-content-center">
+              <button className="btn btn-success me-2" onClick={handleLoginRedirect}>Login</button>
+              <button className="btn btn-danger" onClick={handleLoginCancel}>Cancel</button>
             </div>
           </div>
         </div>

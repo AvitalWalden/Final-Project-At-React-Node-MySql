@@ -64,7 +64,7 @@ const Navigates = ({ enableNav, setEnableNav }) => {
           {dropdownOpen && (
             <div className="dropdown-content">
               <Link to="/profile" className={linkClassName} onClick={handleClick}>My Account</Link>
-              <Link to="/orders" className={linkClassName} onClick={handleClick}>Orders</Link>
+              <Link to="/orders" className={linkClassName} onClick={handleClick}>My Orders</Link>
             </div>
           )}
         </div>

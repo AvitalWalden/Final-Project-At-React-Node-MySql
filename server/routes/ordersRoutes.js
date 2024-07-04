@@ -28,7 +28,9 @@ router.get("/",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
 router.get("/user_id/:user_id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
         let order;
+        
         const user_id = req.params.user_id;
+        console.log(user_id,"cccdsd")
         order = await getOrder(user_id);
         res.send(order);
     } catch (err) {

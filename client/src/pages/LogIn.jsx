@@ -90,8 +90,7 @@ const LogIn = () => {
               <span className="text-primary">to our platform</span>
             </h1>
             <p className='px-3' style={{ color: 'hsl(217, 10%, 50.8%)' }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora at cupiditate quis eum maiores libero veritatis? Dicta facilis sint aliquid ipsum atque?
-            </p>
+            The application was developed and designed in order to help and create a better world, a world where others are taken care of. All site donations and all revenues are donated to charity. Thank you for choosing to take part!            </p>
           </MDBCol>
 
           <MDBCol md='6' >
