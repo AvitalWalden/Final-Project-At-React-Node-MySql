@@ -33,7 +33,7 @@ html {
   display: flex;
   align-items: end;
   border: solid black;
-  font-size: 2em;
+  font-size: 25px;
   color: #ffffff;
   flex-direction: column;
   width: 100%;
@@ -70,6 +70,7 @@ img:active {
 
 .gift-card>h1,
 .grid-container>div>h1 {
+  padding-top: 3%;
   font-size: 65%;
   /* margin: 3% */
   color: black;

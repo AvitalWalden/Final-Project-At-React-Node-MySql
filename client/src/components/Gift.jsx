@@ -21,6 +21,17 @@ import {
   MDBModalFooter,
   MDBInput
 } from "mdb-react-ui-kit";
+import { FaCartPlus } from "react-icons/fa6";
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+// import DeleteIcon from '@mui/icons-material/Delete';
+import { MdDelete } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { AiFillEdit } from "react-icons/ai";
+
+
+
+// ... שאר הקוד של Gift.jsx
 
 
 
@@ -65,7 +76,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
         setGifts(updatedgifts);
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(err);
       })
 
@@ -162,12 +173,22 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
             {user && user.role == "admin" && (
-              <div className="btn-admin">
-                <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
-                <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
-              </div>
+              // <div className="btn-admin">
+              //   <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
+              //   <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
+              // </div>
+               <Stack direction="row" spacing={1}>
+               <IconButton aria-label="Edit"  color="primary" onClick={handleEditGift}>
+               <AiFillEdit />
+               </IconButton>
+               <IconButton aria-label="delete"  color="primary" onClick={() => handleDeleteGift(gift.gift_id)}>
+               <MdDelete />
+               </IconButton>
+             </Stack>
             )}
-            <button className="btnAddGift" onClick={() => handleAddGift(true)}>Add To Cart</button>
+            <IconButton color="primary" aria-label="add to shopping cart" onClick={() => handleAddGift(true)}>
+            <FaCartPlus />
+            </IconButton>
           </div>
         </div>
       }
