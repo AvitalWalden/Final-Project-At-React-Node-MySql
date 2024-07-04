@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 94vh; /* Ensure it covers the entire viewport */
+  background: #eee;
   margin-top: 80px; /* Reset margin-top to 0 */
 }
 
@@ -236,3 +236,85 @@
   }
 }
 
+
+
+
+.order-management h3 {
+  font-size: 16px;
+}
+
+.order-management .text-navy {
+  color: #1ab394;
+  font-size: 30px;
+}
+
+.order-management .cart-product-imitation {  
+  width: 0px;
+}
+
+.order-management .product-desc {
+  padding: 20px;
+  position: relative;
+}
+
+.order-management .table-responsive {
+  margin-bottom: 0;
+}
+
+.order-management .table.shoping-cart-table tr td {
+  border: none;
+  text-align: right;
+}
+
+.order-management .table.shoping-cart-table tr td.desc,
+.order-management .table.shoping-cart-table tr td:first-child {
+  text-align: left;
+}
+
+.order-management .table.shoping-cart-table tr td:last-child {
+  width: 80px;
+}
+
+.order-management .ibox {
+  clear: both;
+  margin-bottom: 25px;
+  margin-top: 0;
+  padding: 0;
+}
+
+.order-management .ibox.collapsed .ibox-content {
+  display: none;
+}
+
+.order-management .ibox-title {
+  background-color: #ffffff;
+  border-color: #e7eaec;
+  border-style: solid solid none;
+  border-width: 3px 0 0;
+  color: inherit;
+  margin-bottom: 0;
+  padding: 14px 15px 7px;
+  min-height: 48px;
+}
+
+.order-management .ibox-content {
+  background-color: #ffffff;
+  color: inherit;
+  padding: 15px 20px 20px 20px;
+  border-color: #e7eaec;
+  border-style: solid solid none;
+  border-width: 1px 0;
+}
+
+.order-management .ibox-footer {
+  color: inherit;
+  border-top: 1px solid #e7eaec;
+  font-size: 90%;
+  background: #ffffff;
+  padding: 10px 15px;
+}
+
+.custom-width {
+  width: 48px !important; /* The !important flag ensures this style takes precedence */
+  height: 30px !important;
+}

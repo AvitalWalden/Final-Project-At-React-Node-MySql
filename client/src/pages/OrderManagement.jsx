@@ -2,10 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { OrderContext } from './OrderContext';
 import { UserContext } from './UserContext';
 import { useNavigate } from 'react-router-dom';
-import { FaTrashCan } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa6";
 import '../css/OrderManagement.css';
 
-const OrderManagement = ({setEnableNav}) => {
+
+const OrderManagement = ({ setEnableNav }) => {
   const navigate = useNavigate();
   const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage, totalPrice, setTotalPrice, calculateTotalPrice } = useContext(OrderContext);
   const { user } = useContext(UserContext);
@@ -70,6 +71,7 @@ const OrderManagement = ({setEnableNav}) => {
   const handleDeleteGift = (giftId, IdentifyString) => {
     removeFromOrder(giftId, IdentifyString);
   };
+
   const handleCheckboxChange = (giftId, IdentifyString) => {
     if (IdentifyString == "current") {
       const updatedOrder = order.map((item) =>
@@ -82,12 +84,14 @@ const OrderManagement = ({setEnableNav}) => {
       );
       setSavedCartItems(updatedShoppingCart);
     }
-    calculateTotalPrice();
+     calculateTotalPrice();
   };
+
   const handleDeletePackage = () => {
     setSelectedPackage(null)
-    calculateTotalPrice();
+    setTotalPrice(calculateTotalPrice());
   }
+
   const handleQuantityChange = (giftId, change, IdentifyString) => {
     if (IdentifyString === "current") {
       if (selectedPackage) {
@@ -137,111 +141,221 @@ const OrderManagement = ({setEnableNav}) => {
       };
       putToDBShoppingCart(giftId, change);
     }
-    calculateTotalPrice();
+    setTotalPrice(calculateTotalPrice());
   };
 
 
   return (
     <div className="order-management">
-      {order.length > 0 && (
-        <div className="gift-list">
-          <h2>Current Gift List</h2>
-          {
-            order.map((gift, index) => (
-              <div key={index} className="gift-card-cart">
-                <input
-                  type='checkbox'
-                  defaultChecked={gift.isChecked}
-                  onChange={() => handleCheckboxChange(gift.gift_id, "current")}
-                />
-                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-                <h1>{gift.name}</h1>
-                <h1>${gift.price}</h1>
-                <input
-                  type="number"
-                  min="1"
-                  value={gift.quantity}
-                  onChange={(e) => {
-                    const newQuantity = parseInt(e.target.value);
-                    const change = newQuantity > gift.quantity ? 1 : -1;
-                    handleQuantityChange(gift.gift_id, change, "current");
-                  }}
-                />
-                <div className="tooltip">
-                  <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "current")}>
-                    <FaTrashCan />
-                  </button>
-                  <span className="tooltiptext">Remove item</span>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-9">
+            {/* Current Gift List */}
+            {order.length > 0 && (
+              <div className="ibox">
+                <div className="ibox-title">
+                  <span className="pull-right">(<strong>{order.length}</strong>) items</span>
+                  <h5>Current Gift List</h5>
+                </div>
+                <div className="ibox-content">
+                  <div className="table-responsive">
+                    {order.map((gift, index) => (
+                      <div key={index} className="shoping-cart-table">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <div className="cart-product-imitation">
+                              <input
+                                type="checkbox"
+                                defaultChecked={gift.isChecked}
+                                onChange={() => handleCheckboxChange(gift.gift_id, "current")}
+                              />
+                            </div>
+                            <div className="cart-product-imitation">
+                              <img
+                                src={`http://localhost:3000/images/${gift.image_url}`}
+                                alt={gift.name}
+                                style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-10">
+                            <div className="product-desc">
+                              <h3>
+                                <a href="#" className="text-navy">
+                                  {gift.name}
+                                </a>
+                              </h3>
+                              <div className="row">
+                                <div className="col-md-10">
+                                  <dl className="small m-b-none">
+                                    <dt className="text-right">Price:</dt>
+                                    <dd className="text-right">${gift.price}</dd>
+                                    <dt className="text-right">Quantity:</dt>
+                                    <dd className="text-right">
+                                      <input
+                                        type="number"
+                                        value={gift.quantity}
+                                        onChange={(e) => {
+                                          const newQuantity = parseInt(e.target.value);
+                                          const change = newQuantity > gift.quantity ? 1 : -1;
+                                          handleQuantityChange(gift.gift_id, change, "current");
+                                        }}
+                                        className="form-control text-right custom-width"
+                                        min="1"
+                                      />
+                                    </dd>
+
+                                  </dl>
+                                  <div className="m-t-sm">
+                                    <a href="#" className="text-muted" onClick={() => handleDeleteGift(gift.gift_id, 'current')}>
+                                      <FaTrash /> Remove item
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            ))
-          }
-        </div>
-      )}
-      {!selectedPackage && savedCartItems.length > 0 && (
-        <div className="saved-cart">
-          <h2>Saved Shopping Cart</h2>
-          {
-            savedCartItems.map((gift, index) => (
-              <div key={index} className="gift-card-cart">
-                <input
-                  type='checkbox'
-                  defaultChecked={gift.isChecked}
-                  onChange={() => handleCheckboxChange(gift.gift_id, "saved")}
-                />
+            )}
 
-                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-                <h1>{gift.name}</h1>
-                <h1>${gift.price}</h1>
-                <input
-                  type="number"
-                  min="1"
-                  value={gift.quantity}
-                  onChange={(e) => {
-                    const newQuantity = parseInt(e.target.value);
-                    const change = newQuantity > gift.quantity ? 1 : -1;
-                    handleQuantityChange(gift.gift_id, change, "saved");
-                  }}
-                />
-                <div className="tooltip">
-                  <button className="btnDelete-cart" onClick={() => handleDeleteGift(gift.gift_id, "saved")}>
-                    <FaTrashCan />
-                  </button>
-                  <span className="tooltiptext">Remove item</span>
+            {/* Saved Shopping Cart */}
+            {!selectedPackage && savedCartItems.length > 0 && (
+              <div className="ibox">
+                <div className="ibox-title">
+                  <span className="pull-right">(<strong>{savedCartItems.length}</strong>) items</span>
+                  <h5>Saved Shopping Cart</h5>
+                </div>
+                <div className="ibox-content">
+                  <div className="table-responsive">
+                    {savedCartItems.map((gift, index) => (
+                      <div key={index} className="shoping-cart-table">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <div className="cart-product-imitation">
+                              <input
+                                type="checkbox"
+                                defaultChecked={gift.isChecked}
+                                onChange={() => handleCheckboxChange(gift.gift_id, "saved")}
+                              />
+                            </div>
+                            <div className="cart-product-imitation">
+                              <img
+                                src={`http://localhost:3000/images/${gift.image_url}`}
+                                alt={gift.name}
+                                style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-10">
+                            <div className="product-desc">
+                              <h3>
+                                <a href="#" className="text-navy">
+                                  {gift.name}
+                                </a>
+                              </h3>
+                              <div className="row">
+                                <div className="col-md-10">
+                                  <dl className="small m-b-none">
+                                    <dt className="text-right" >Price:</dt>
+                                    <dd className="text-right">${gift.price}</dd>
+                                    <dt className="text-right">Quantity:</dt>
+                                    <dd className="text-right">
+                                      <input
+                                        type="number"
+                                        value={gift.quantity}
+                                        onChange={(e) => {
+                                          const newQuantity = parseInt(e.target.value);
+                                          const change = newQuantity > gift.quantity ? 1 : -1;
+                                          handleQuantityChange(gift.gift_id, change, "saved");
+                                        }}
+                                        className="form-control text-right custom-width"
+                                        min="1"
+                                      />
+                                    </dd>
+                                  </dl>
+                                  <div className="m-t-sm">
+                                    <a href="#" className="text-muted" onClick={() => handleDeleteGift(gift.gift_id, 'saved')}>
+                                      <FaTrash /> Remove item
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            ))
-          }
-        </div>
-      )}
+            )}
+          </div>
+          <div className="col-md-3">
+            {/* Selected Package */}
+            {selectedPackage && (
+              <div className="ibox">
+                <div className="ibox-title">
+                  <h5>Selected Package</h5>
+                </div>
+                <div className="ibox-content text-center">
+                  <h2 className="no-margins">${selectedPackage.price}</h2>
+                  <small style={{ marginRight: `4px` }}>{selectedPackage.name}</small>
+                  <button className="btn btn-sm btn-danger m-t-sm" onClick={handleDeletePackage}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            )}
 
-      <div className="order-summary">
-        <h2>Order Summary</h2>
-        <div className="summary-container">
-          {selectedPackage && <button className="btnDelete-cart" onClick={() => handleDeletePackage()}>delete package</button>}
-          <p>Total Price: {totalPrice}$</p>
-          <button
-            className="btn-buy"
-            onClick={handlePaymentClick}
-            disabled={order.length === 0 && savedCartItems.length === 0}
-          >
-            Proceed to Payment
-          </button>
+            {/* Total Price */}
+            <div className="ibox">
+              <div className="ibox-title">
+                <h5>Total Price</h5>
+              </div>
+              <div className="ibox-content text-center">
+                <h1 className="no-margins">${totalPrice}</h1>
+                <small className="text-muted">Shipping costs and taxes will be calculated at checkout</small>
+                <div className="m-t-md">
+                  <button className="btn btn-primary btn-sm" onClick={handlePaymentClick}>
+                    Proceed to Payment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-
+      {/* Login Prompt Modal */}
       {showLoginPrompt && (
-        <div className='modal'>
-          <div className="modal-content">
-            <h2>Please log in first</h2>
-            <button onClick={handleLoginRedirect}>OK</button>
-            <button onClick={handleLoginCancel}>Later</button>
+        <div className="modal fade show" style={{ display: 'block', zIndex: '1050' }} id="loginPrompt" tabIndex="-1" role="dialog" aria-labelledby="loginPromptTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="loginPromptTitle">Login Required</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleLoginCancel}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>You need to login to proceed to payment.</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={handleLoginRedirect}>Login</button>
+                <button type="button" className="btn btn-primary" onClick={handleLoginCancel}>Cancel</button>
+              </div>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
+
 };
 
 export default OrderManagement;
