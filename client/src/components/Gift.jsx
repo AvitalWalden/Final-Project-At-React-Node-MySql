@@ -169,8 +169,8 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
       {(gift.name.toLowerCase().includes(searchCriteria) || gift.name.toUpperCase().includes(searchCriteria) || gift.price.toString().includes(searchCriteria)) &&
         <div className="gift-card">
           <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-          <h1>{highlightSearchTerm(gift.name)}</h1>
-          <h1>{highlightSearchTerm(gift.price)}$</h1>
+          <h1 className='name'>{highlightSearchTerm(gift.name)}</h1>
+          <h1 className='price'>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
             {user && user.role == "admin" && (
               // <div className="btn-admin">

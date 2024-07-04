@@ -33,7 +33,7 @@ html {
   display: flex;
   align-items: end;
   border: solid black;
-  font-size: 25px;
+  /* font-size: 25px; */
   color: #ffffff;
   flex-direction: column;
   width: 100%;
@@ -60,7 +60,7 @@ img:active {
 }
 
 .gift-container>div>p {
-  font-size: 45%;
+  /* font-size: 45%; */
   margin: 2%;
   color: black;
   width: 95%;
@@ -71,7 +71,7 @@ img:active {
 .gift-card>h1,
 .grid-container>div>h1 {
   padding-top: 3%;
-  font-size: 65%;
+  /* font-size: 65%; */
   /* margin: 3% */
   color: black;
   width: 100%;
@@ -169,8 +169,8 @@ img:active {
   border-radius: 10px;
   padding: 10px 10px;
   margin: 3%;
-  width: 600px;
-  height: 30px;
+  width:40%;
+  height: 45px;
   margin-left: auto;
   margin-right: auto;
   background-color: white;
