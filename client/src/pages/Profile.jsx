@@ -140,11 +140,13 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <>
-        <Typography>Please log in to view your profile.</Typography>
-        <br />
-        <Link to="/login">Log here</Link>
-      </>
+      <div className="container mt-5">
+        <div className="alert alert-info text-center" role="alert">
+          <h2>No user found</h2>
+          <p>Please log in to view your profile.</p>
+          <Link to="/login">Log here</Link>
+        </div>
+      </div>
     );
   }
 

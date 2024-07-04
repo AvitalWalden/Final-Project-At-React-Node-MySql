@@ -57,11 +57,13 @@ const UserOrders = () => {
 
   if (!user) {
     return (
-      <>
-        <p>Please log in to view your orders.</p>
-        <br />
-        <Link to='/login'>Log in here</Link>
-      </>
+      <div className="container mt-5">
+        <div className="alert alert-info text-center" role="alert">
+          <h2>No user found</h2>
+          <p>Please log in to view your orders.</p>
+          <Link to="/login">Log here</Link>
+        </div>
+      </div>
     );
   }
 

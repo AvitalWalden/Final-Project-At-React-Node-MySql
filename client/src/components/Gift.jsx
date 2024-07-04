@@ -195,6 +195,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
       {isEditGiftModalOpen && (
         <div className="modal-x-overlay">
           <div className="modal-x">
+              <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />  </button>
             <h2 className='h2'>Edit Gift</h2>
             <label>Name:</label>
             <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
@@ -203,9 +204,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
             <div className="modal-x-buttons">
             <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
-              {/* <button className="save" onClick={saveGift}>Save</button> */}
-              <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />
-              </button>
             </div>
           </div>
         </div>

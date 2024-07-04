@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 import { OrderContext } from './OrderContext';
 
 const LogOut = () => {
-  const { setOrder, order ,setSelectedPackage} = useContext(OrderContext);
+  const { setOrder, order, setSelectedPackage } = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
   const { refreshAccessToken } = useContext(UserContext);
 
@@ -78,15 +78,18 @@ const LogOut = () => {
   };
 
 
+
   return (
-    <div className="form">
-      <p>Are you sure you want to logout?</p>
-      <button className="logOut" onClick={() => handleUserLogout(true)}>
-        Yes
-      </button>
-      <button className="logOut" onClick={() => handleUserLogout(false)}>
-        No
-      </button>
+    <div className="container mt-5">
+      <div className="alert alert-info text-center" role="alert">
+        <h2>Are you sure you want to logout?</h2>
+        <button className="btn btn-primary me-2" onClick={() => handleUserLogout(true)}>
+          Yes
+        </button>
+        <button className="btn btn-primary me-2" onClick={() => handleUserLogout(false)}>
+          No
+        </button>
+      </div>
     </div>
   );
 };
