@@ -14,6 +14,7 @@ export const OrderProvider = ({ children }) => {
     const storedPackage = localStorage.getItem('selectedPackage');
     return storedPackage ? JSON.parse(storedPackage) : null;
   });
+  
   useEffect(() => {
     const storedOrder = localStorage.getItem('currentOrder');
     if (storedOrder) {
@@ -59,10 +60,6 @@ export const OrderProvider = ({ children }) => {
 
     }
     setIsOrderListOpen(true);
-    setMessage(`Gift "${gift.name}" added to the order!`);
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
   const removeFromOrder = (giftId, IdentifyString) => {
@@ -126,6 +123,7 @@ export const OrderProvider = ({ children }) => {
 
     return totalPrice.toFixed(2);
   };
+
   return (
     <OrderContext.Provider
       value={{

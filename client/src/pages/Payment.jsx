@@ -9,7 +9,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap co
 const Payment = ({ setEnableNav }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { order, savedCartItems, totalPrice, removeFromSavedShoppingCart, setOrder } = useContext(OrderContext);
+  const { order, savedCartItems, totalPrice, removeFromSavedShoppingCart, setOrder ,setSelectedPackage} = useContext(OrderContext);
   const [currentStep, setCurrentStep] = useState(1);
   const [newUserDetails, setNewUserDetails] = useState({
     name: '',
@@ -152,6 +152,7 @@ if (orderCreated) {
   localStorage.removeItem('currentOrder');
   setOrder([]);
   setEnableNav(true);
+  setSelectedPackage(false)
   navigate('/gifts')
 }
 
