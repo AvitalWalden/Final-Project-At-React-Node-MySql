@@ -1,49 +1,52 @@
-/* Styles for UserOrders component */
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    margin-top: 10%;
-    text-align: center;
-    color: #333;
-    margin-bottom: 2px;
+.order-card {
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s;
 }
-  
-  p {
-    text-align: center;
-    color: #555;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .order-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .order-card h2 {
-    margin-top: 0;
-    color: #333;
-  }
-  
-  .order-card h3 {
-    margin: 5px 0;
-    color: #666;
-  }
-  
-  @media (max-width: 600px) {
-    .order-card {
-      padding: 15px;
-    }
-  }
-  
+
+.order-card:hover {
+  transform: translateY(-5px);
+}
+
+.order-card h2, .order-card h3 {
+  margin: 0;
+}
+
+.order-card h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.order-card h3 {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.gift-item {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.gift-name, .gift-price {
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.gift-separator {
+  border-top: 1px solid #ccc;
+}
+
+.text-muted {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.gradient-custom {
+  background: #f6d365;
+  background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+  background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+}
