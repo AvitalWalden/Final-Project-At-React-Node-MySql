@@ -29,9 +29,21 @@
   color: black;
   text-decoration: none;
 }
-
+/* 
 .modal-header {
   margin-bottom: 20px;
+} */
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mdb-modal-header-padding);
+  border-bottom: var(--mdb-modal-header-border-width) solid var(--mdb-modal-header-border-color);
+  border-top-left-radius: var(--mdb-modal-inner-border-radius);
+  border-top-right-radius: var(--mdb-modal-inner-border-radius);
+  height: 6%;
+  padding: 10px;
 }
 
 .modal-header h2 {

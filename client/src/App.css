@@ -165,11 +165,15 @@ p {
 
 .h2 {
   font-size: medium;
+  color: #000000;
+
 }
 
 h2 {
   text-align: center;
   margin-bottom: 3px;
+  color: #000000;
+
 }
 
 .error {

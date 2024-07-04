@@ -193,21 +193,39 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         </div>
       }
       {isEditGiftModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>Edit Gift</h2>
+        <div className="modal-x-overlay">
+          <div className="modal-x">
+            <h2 className='h2'>Edit Gift</h2>
             <label>Name:</label>
             <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
             <label>Price:</label>
             <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
-            <div className="modal-buttons">
-              <button className="save" onClick={saveGift}>Save</button>
+            <div className="modal-x-buttons">
+            <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
+              {/* <button className="save" onClick={saveGift}>Save</button> */}
               <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />
               </button>
             </div>
           </div>
         </div>
+        //   <div className="modal-x-overlay">
+        //   <div className="modal-x">
+        //     <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
+        //     {/* <h2>Add Gift</h2>
+        //     <MDBInput wrapperClass='mb-4' label='Name' id='form1 Name' type='text' value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
+        //       <MDBInput wrapperClass='mb-4' label='Price' id='form1 Price' type='text' value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
+        //      */}
+        //     <label>Name:</label>
+        //     <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
+        //     <label>Price:</label>
+        //     <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
+        //     <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
+        //     <div className="modal-x-buttons">
+        //       <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
+        //     </div>
+        //   </div>
+        // </div>
       )}
     </>
   );

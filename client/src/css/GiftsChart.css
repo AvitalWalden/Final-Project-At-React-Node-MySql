@@ -10,3 +10,8 @@ button {
     padding: 10px 20px;
     font-size: 16px;
 }
+
+.h2cot {
+    font-size: calc(1.325rem + 0.9vw);
+    margin-top: 6%;
+}

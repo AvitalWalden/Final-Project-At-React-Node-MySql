@@ -9,6 +9,16 @@
  transition: border-color 0.25s;
   box-sizing: border-box;
 }
+.cancel{
+  margin-top: 0px;
+}
+input{
+  color:black;
+}
+h2,label, .h2{
+  color:black !important;
+
+}
 .name{
   font-size: 22px;
 }

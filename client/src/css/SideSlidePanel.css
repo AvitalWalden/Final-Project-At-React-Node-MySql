@@ -12,6 +12,25 @@
   z-index: 1000;
   overflow-y: auto;
 }
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mdb-modal-header-padding);
+  border-bottom: var(--mdb-modal-header-border-width) solid var(--mdb-modal-header-border-color);
+  border-top-left-radius: var(--mdb-modal-inner-border-radius);
+  border-top-right-radius: var(--mdb-modal-inner-border-radius);
+  height: 6%;
+  padding: 10px !important;
+}
+.btnb{
+  margin-top: 5px;
+  margin-left: auto !important;
+  margin-bottom: 5px;
+  margin-right: auto !important;
+
+}
 
 .order-list.open {
   transform: translateX(0);

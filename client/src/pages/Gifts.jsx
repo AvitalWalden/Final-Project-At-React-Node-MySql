@@ -153,7 +153,7 @@ function Gifts() {
 
         )}
       </div>
-      <div className="gift-container">
+      <div className="gift-containers">
         {Array.isArray(gifts) && gifts.map((gift, index) => (
           <Gift
             key={gift.gift_id}
@@ -175,12 +175,8 @@ function Gifts() {
       {isAddGiftModalOpen && (
         <div className="modal-x-overlay">
           <div className="modal-x">
-
             <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
-            {/* <h2>Add Gift</h2>
-            <MDBInput wrapperClass='mb-4' label='Name' id='form1 Name' type='text' value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
-              <MDBInput wrapperClass='mb-4' label='Price' id='form1 Price' type='text' value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
-             */}
+            <h2>Edit Gift</h2>
             <label>Name:</label>
             <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
             <label>Price:</label>

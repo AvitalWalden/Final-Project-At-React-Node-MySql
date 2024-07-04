@@ -15,7 +15,7 @@ html {
   padding: 0%; */
   }
   
-.gift-container {
+.gift-containers {
   display: grid;
   grid-gap: 35px;
   grid-template-columns: repeat(auto-fit, minmax(300px, auto));
@@ -27,9 +27,11 @@ html {
   font-size: 100%;
  
 }
+.h2{
+  color: black;
+}
 
-
-.gift-container>div {
+.gift-containers>div {
   display: flex;
   align-items: end;
   border: solid black;
@@ -43,7 +45,7 @@ html {
 }
 
 .gift-card img,
-.gift-container>div>img {
+.gift-containers>div>img {
   width: 100%;
   border-radius: 2%;
   height: 50%;
@@ -59,7 +61,7 @@ img:active {
   transform: scale(1.05);
 }
 
-.gift-container>div>p {
+.gift-containers>div>p {
   /* font-size: 45%; */
   margin: 2%;
   color: black;
@@ -79,7 +81,7 @@ img:active {
 }
 
 @media screen and (max-width: 600px) {
-  .gift-container {
+  .gift-containers {
     width: 80%;
     margin-top: 70%;
     margin-left: auto;
