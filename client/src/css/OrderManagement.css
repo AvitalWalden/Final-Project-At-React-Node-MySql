@@ -259,6 +259,7 @@
 
 .order-management .table-responsive {
   margin-bottom: 0;
+  overflow: hidden;
 }
 
 .order-management .table.shoping-cart-table tr td {

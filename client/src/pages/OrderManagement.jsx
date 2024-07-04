@@ -84,7 +84,7 @@ const OrderManagement = ({ setEnableNav }) => {
       );
       setSavedCartItems(updatedShoppingCart);
     }
-     calculateTotalPrice();
+    calculateTotalPrice();
   };
 
   const handleDeletePackage = () => {
@@ -143,6 +143,12 @@ const OrderManagement = ({ setEnableNav }) => {
     }
     setTotalPrice(calculateTotalPrice());
   };
+  const allItemsUnchecked = () => {
+    const orderUnchecked = order.every((item) => !item.isChecked);
+    const savedCartUnchecked = savedCartItems.every((item) => !item.isChecked);
+    return orderUnchecked && savedCartUnchecked;
+  };
+
 
 
   return (
@@ -321,7 +327,7 @@ const OrderManagement = ({ setEnableNav }) => {
                 <h1 className="no-margins">${totalPrice}</h1>
                 <small className="text-muted">Shipping costs and taxes will be calculated at checkout</small>
                 <div className="m-t-md">
-                  <button className="btn btn-primary btn-sm" onClick={handlePaymentClick}>
+                  <button className="btn btn-primary btn-sm" onClick={handlePaymentClick} disabled={allItemsUnchecked()}>
                     Proceed to Payment
                   </button>
                 </div>
