@@ -1,9 +1,21 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBRadio,
+  MDBInput
+} from 'mdb-react-ui-kit';
+import '../css/SignUp.css';
+
+
 const SignUp = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
@@ -19,36 +31,36 @@ const SignUp = () => {
       return;
     }
 
-    if (password != verifyPassword) {
-      setSignUpError('incorect verify password');
+    if (password !== verifyPassword) {
+      setSignUpError('Incorrect verify password');
       return;
     }
+
     const url = 'http://localhost:3000/signup';
     const newUser = {
       username: userName,
       password: password,
       role: role
-    }
+    };
     const requestOptions = {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ ...newUser })
+      body: JSON.stringify(newUser)
     };
+
     fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(user => {
-          if (response.status == 500) {
-            throw user.message;
-          }
-          setUser(user);
-          setverifyPassword("");
-          setUserName("");
-          setPassword("");
-          setRole("");
-          navigate("/userDetails");
-        })
-      })
+      .then(response => response.json().then(user => {
+        if (response.status === 500) {
+          throw user.message;
+        }
+        setUser(user);
+        setverifyPassword("");
+        setUserName("");
+        setPassword("");
+        setRole("");
+        navigate("/userDetails");
+      }))
       .catch(error => {
         setSignUpError(error);
       });
@@ -60,70 +72,97 @@ const SignUp = () => {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ ...user })
+      body: JSON.stringify(user)
     };
+
     fetch(url, requestOptions)
-      .then(response => {
-        return response.json().then(user => {
-          if (response.status == 500) {
-            if (user.message == 'You need logIn') {
-          
-              setSignUpError('you need log in');
- 
-            }
-            else if (user.message == 'email is in use') {
-              setSignUpError('you need log in');
-
-            }
-             else {
-              throw user.message;
-
-            }
+      .then(response => response.json().then(user => {
+        if (response.status === 500) {
+          if (user.message === 'You need logIn' || user.message === 'email is in use') {
+            setSignUpError('You need log in');
+          } else {
+            throw user.message;
           }
-          else {
-            setUser(user);
-            navigate("/userDetails");
-
-          }
-        })
-      })
+        } else {
+          setUser(user);
+          navigate("/userDetails");
+        }
+      }))
       .catch(error => {
         setSignUpError(error);
       });
   }
+
   return (
-    <div className='form'>
-      <h2 className="title">Create Account</h2><br />
-      <input type="text" className='input' value={userName} placeholder="userName" onChange={(e) => setUserName(e.target.value)} /><br />
-      <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
-      <input type="password" className='input' value={verifyPassword} placeholder="verift-password" onChange={(e) => setverifyPassword(e.target.value)} /><br />
-      <select className='input' value={role} onChange={(e) => setRole(e.target.value)}>
-        <option value="">Select Role</option>
-        {/* <option value="donate">Donate</option> */}
-        <option value="fundraiser">Fundraiser</option>
-        <option value="user">User</option>
-      </select><br />
-      <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />
-      <Link to="/login" className="link">Already have an account? Sign in</Link>
-      {signUpError && <p className='error' style={{ color: signUpError == "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
-      <GoogleLogin
-        className="google"
-        onSuccess={credentialResponse => {
-          const credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-          console.log(credentialResponseDecoded);
-          const user = {
-            username: credentialResponseDecoded.name,
-            email: credentialResponseDecoded.email,
-            role: 'user'
-          }
-          handleRegistrationWithGoogle(user);
-        }}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
-    </div>
-  )
+    <MDBContainer fluid className='sectionS p-4'>
+      <MDBRow>
+        <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center textMe'>
+          <h1 className="my-5 display-3 fw-bold ls-tight px-3">
+            The best offer <br />
+            <span className="text-primary">for your business</span>
+          </h1>
+          <p className='px-3' style={{ color: 'hsl(217, 10%, 50.8%)' }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora at cupiditate quis eum maiores libero veritatis? Dicta facilis sint aliquid ipsum atque?
+          </p>
+        </MDBCol>
+
+        <MDBCol md='6' >
+          <MDBCard className='my-5'>
+            <MDBCardBody className='p-5'>
+              <MDBRow>
+                <MDBCol col='6'>
+                  <MDBInput wrapperClass='mb-4' label='Username' id='form1 Username' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} />
+                </MDBCol>
+
+                <MDBCol col='6'>
+                  <div className='mb-4'>
+                    {/* <p className='mb-2'>Role</p> */}
+                    <MDBRadio name='roleRadio' id='roleUser' value='user' label='User' onChange={(e) => setRole(e.target.value)} checked={role === 'user'} inline />
+                    <MDBRadio name='roleRadio' id='roleFundraiser' value='fundraiser' label='Fundraiser' onChange={(e) => setRole(e.target.value)} checked={role === 'fundraiser'} inline />
+                  </div>
+                </MDBCol>
+              </MDBRow>
+              <MDBInput wrapperClass='mb-4' label='Password' id='form1 Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+              <MDBInput wrapperClass='mb-4' label='Verify Password' id='form1 Verify' type='password' value={verifyPassword} onChange={(e) => setverifyPassword(e.target.value)} />
+              <MDBBtn className='w-100 mb-4' size='md' onClick={handleRegistration}>Sign Up</MDBBtn>
+              <div className="text-center">
+                <p>Already have an account? <Link to="/login" className="link">Sign in</Link></p>
+                <div className="divider d-flex align-items-center my-4">
+                  <p className="text-center fw-bold mx-3 mb-0">Or</p>
+                </div>
+                <div className='justify-content-center mx-auto' style={{ width: '40%' }}>
+                  <GoogleLogin
+                    onSuccess={credentialResponse => {
+                      const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+                      const user = {
+                        username: credentialResponseDecoded.name,
+                        email: credentialResponseDecoded.email,
+                        role: 'user'
+                      };
+                      handleRegistrationWithGoogle(user);
+                    }}
+                    onError={() => {
+                      console.log('Login Failed');
+                    }}
+                    render={renderProps => (
+                      <button
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                        className="google-icon-button"
+                      >
+                        <i className="fab fa-google"></i>
+                      </button>
+                    )}
+                  />
+                </div>
+              </div>
+              {signUpError && <p className='error mt-4' style={{ color: signUpError === "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  );
 };
 
 export default SignUp;

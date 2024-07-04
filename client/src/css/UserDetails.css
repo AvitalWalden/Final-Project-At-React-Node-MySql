@@ -1,0 +1,66 @@
+.user-details-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+.custom-shape {
+    width: 80%;
+    height: 80%;
+    /* background-color: white; */
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.left-side {
+    background-color: hsl(186, 20%, 37%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    color: white;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.right-side {
+    padding: 2rem;
+}
+
+.card-custom {
+    box-shadow: none;
+    border: none;
+}
+
+.white-text {
+    color: white;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.back-button {
+    background-color: white;
+    font-weight: 700;
+    color: #3931af;
+}
+
+.save-button {
+    background-color: #3931af;
+}
+
+.container-fluid {
+    margin-top: 5%;
+}
+
+.user-details-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    /* width: 100vh; */
+    background-color: hsl(0, 0%, 96%);
+    overflow: hidden;
+}

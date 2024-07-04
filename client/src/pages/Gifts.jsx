@@ -6,6 +6,7 @@ import { FaSearch } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { OrderContext } from './OrderContext';
 import SideSlidePanel from '../components/SideSlidePanel';
+import { MDBContainer, MDBRow, MDBCol, MDBRipple, MDBBtn } from "mdb-react-ui-kit";
 
 
 function Gifts() {
@@ -16,7 +17,7 @@ function Gifts() {
   const [file, setFile] = useState(null);
   const { user, refreshAccessToken } = useContext(UserContext);
 
-  const { order, isOrderListOpen, setIsOrderListOpen ,selectedPackage} = useContext(OrderContext);
+  const { order, isOrderListOpen, setIsOrderListOpen, selectedPackage } = useContext(OrderContext);
 
   useEffect(() => {
     fetch(`http://localhost:3000/gifts`, {
@@ -59,7 +60,7 @@ function Gifts() {
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
             await refreshAccessToken();
-            return handleUpload(gift_id); 
+            return handleUpload(gift_id);
           }
           if (response.status === 402) {
             console.log('No acsses...');
@@ -146,8 +147,10 @@ function Gifts() {
           />
           <FaSearch className='shearch' />
         </div>
-        {user && user.role=="admin"&&(
-          <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
+        {user && user.role == "admin" && (
+          // <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
+          <MDBBtn className='centerB' onClick={handleAddGift}>Add Gift</MDBBtn>
+
         )}
       </div>
       <div className="gift-container">
@@ -170,17 +173,21 @@ function Gifts() {
       <SideSlidePanel orders={order} isOpen={isOrderListOpen} onClose={() => setIsOrderListOpen(false)} />
 
       {isAddGiftModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>Add Gift</h2>
+        <div className="modal-x-overlay">
+          <div className="modal-x">
+
+            <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
+            {/* <h2>Add Gift</h2>
+            <MDBInput wrapperClass='mb-4' label='Name' id='form1 Name' type='text' value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
+              <MDBInput wrapperClass='mb-4' label='Price' id='form1 Price' type='text' value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
+             */}
             <label>Name:</label>
             <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
             <label>Price:</label>
             <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
-            <div className="modal-buttons">
-              <button onClick={saveGift}>Save</button>
-              <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
+            <div className="modal-x-buttons">
+              <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
             </div>
           </div>
         </div>

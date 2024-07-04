@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
-const {postFundraiser}=require('../controllers/fundraisersController')
+const { postFundraiser } = require('../controllers/fundraisersController')
 router.use(cors());
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
             response = await createUser(req.body.username, req.body.password, req.body.role);
         }
         if (req.body.role == 'fundraiser') {
-           await postFundraiser(response.user.insertId,0,0,0)
+            await postFundraiser(response.user.insertId, 0, 0, 0)
         }
         const user = await getUserForSignup(response.user.insertId);
 
@@ -49,8 +49,11 @@ router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundrais
 
         const id = req.params.id;
         const resultUser = await getUser(id);
-        const addressID = resultUser.address_id;
+        console.log("resultUser");
+        console.log(resultUser);
 
+        const addressID = resultUser.address_id;
+        console.log(req.body.username);
         await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, addressID);
         const userAfterChange = await getUser(id);
 

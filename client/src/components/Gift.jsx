@@ -6,6 +6,21 @@ import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונ
 import '../css/Gift.css';
 import '../css/Gifts.css';
 import { ImCancelCircle } from "react-icons/im";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardImage,
+  MDBBtn,
+  MDBRipple,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
+  MDBInput
+} from "mdb-react-ui-kit";
 
 
 
