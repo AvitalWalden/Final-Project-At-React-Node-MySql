@@ -70,11 +70,13 @@ const Navigates = ({ enableNav, setEnableNav }) => {
         </div>
       </nav>
       {showNavPrompt && (
-        <div className='alert'>
-          <div className="alert-content">
-            <h2>Do you want to cancel order?</h2>
-            <button onClick={handleNavRedirect}>OK</button>
-            <button onClick={handleNavCancel}>NO</button>
+        <div className='alert d-flex align-items-center justify-content-center' style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+          <div className="alert alert-info p-3 text-center" style={{ maxWidth: '400px' }}>
+            <h2 className="mb-3">Do you want to cancel order?</h2>
+            <div className="d-flex justify-content-center">
+              <button className="btn btn-success me-2" onClick={handleNavRedirect}>OK</button>
+              <button className="btn btn-danger" onClick={handleNavCancel}>NO</button>
+            </div>
           </div>
         </div>
       )}

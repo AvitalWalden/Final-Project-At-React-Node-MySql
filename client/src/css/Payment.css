@@ -1,61 +1,49 @@
-/* Payment.css */
-.form-container {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  margin-top: 50px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-title {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.form-label {
-  margin-bottom: 10px;
-}
-
-.form-input {
+.payment-container {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 20px;
 }
 
-.submit-button {
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
+.user-form-container {
+  width: 100%;
 }
 
-.order-button-container {
+.order-summary-container {
+  width: 100%;
+}
+
+.steps-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.order-button {
-  margin-top: 500px;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
+.step-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
 }
 
-.success-message {
-  text-align: center;
-  color: green;
-  margin-top: 50px;
+.step-indicator.active {
+  background-color: lightblue;
+}
+
+.field1 {
+  margin-bottom: 1rem;
+}
+
+.field2 {
+  margin-bottom: 1rem;
+}
+
+.form-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
 }
