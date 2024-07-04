@@ -9,12 +9,12 @@
  transition: border-color 0.25s;
   box-sizing: border-box;
 }
-
-.h1 {
-  margin: 1%;
-
+.name{
+  font-size: 22px;
 }
-
+.price{
+  font-size: 18px;
+}
 .btn-admin {
   display: flex;
   justify-content: flex-start;

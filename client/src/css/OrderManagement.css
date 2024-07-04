@@ -298,6 +298,10 @@
   min-height: 48px;
 }
 
+.table-responsive {
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
 .order-management .ibox-content {
   background-color: #ffffff;
   color: inherit;

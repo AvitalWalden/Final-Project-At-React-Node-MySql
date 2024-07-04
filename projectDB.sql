@@ -166,7 +166,7 @@ INSERT INTO gifts (winner_id, name, price, image_url) VALUES
 (3, 'Living room', '80', '3.jpg'),
 (NULL, 'sofas', '200', '4.jpg'),
 (NULL, '2 nights in the north', '30', '5.jpg'),
-(NULL, 'Three days at the Kiner Galil hotel', '40', '6.jpg'),
+(NULL, 'Three days at the Kiner Galil', '40', '6.jpg'),
 (NULL, 'Flight to Cyprus', '100', '7.jpg'),
 (NULL, 'Flight to Switzerland', '70', '8.jpg'),
 (NULL, 'Children Room', '300', '9.jpg'),
