@@ -52,9 +52,13 @@ const Navigates = ({ enableNav, setEnableNav }) => {
         <Link to="/gifts" className={linkClassName} onClick={handleClick}> <FaGift /> Gifts</Link>
         <Link to="/packages" className={linkClassName} onClick={handleClick}>  <TbPackages /> Our Packages</Link> 
         {user && <Link to="/giftsChart" className={linkClassName} onClick={handleClick}> <FaChartBar /> GiftsChart</Link>}
-        <Link to="/orderManagement" className={linkClassName} onClick={handleClick}>
-         <FaShoppingCart /> Order 
-        </Link>
+        <Link to="/orderManagement" className={linkClassName} onClick={handleClick}><MDBBadge
+          pill
+          color="danger"
+          className="position-absolute top_0 translate-middle"
+        >
+          {3}
+        </MDBBadge>Order <FaShoppingCart /></Link>
         <Link to="/winners" className={linkClassName} onClick={handleClick}><GiPodiumWinner /> Winners</Link>
         {user && user.role === 'admin' && (
           <>
