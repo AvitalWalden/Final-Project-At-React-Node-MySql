@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { OrderContext } from './OrderContext';
 import { UserContext } from './UserContext';
-import { useNavigate } from 'react-router-dom';
 import { FaTrash } from "react-icons/fa6";
 import '../css/OrderManagement.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const OrderManagement = ({ setEnableNav }) => {
@@ -150,7 +150,17 @@ const OrderManagement = ({ setEnableNav }) => {
   };
 
 
-
+  if (order.length === 0 && savedCartItems.length === 0) {
+    return (
+      <div className="container mt-5">
+        <div className="alert alert-info text-center" role="alert">
+          <h2>No orders or saved cart items found.</h2>
+          <p>Please add items to your cart or check your orders.</p>
+          <Link to="/shop" className="btn btn-primary">Go to Shop</Link>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="order-management">
       <div className="container">
