@@ -210,11 +210,12 @@ nav {
   justify-content: space-evenly;
   align-items: flex-end;
   font-size: 0;
-  margin-bottom: 160px;
+  background-color: white;
+  /* margin-bottom: 160px; */
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; 
+  z-index: 1; 
 }
 
 nav a, nav div {

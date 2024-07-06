@@ -141,9 +141,13 @@ const GiftsChart = () => {
     
 
     useEffect(() => {
-        fetchGiftsData();
-        fetchFundraiserData();
-    }, []);
+        if(user)
+        {
+
+            fetchGiftsData();
+            fetchFundraiserData();
+        }
+    }, [user]);
 
     const toggleChart = () => {
         setShowFundraiserChart(!showFundraiserChart);
