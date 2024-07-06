@@ -57,8 +57,12 @@ const UserDetails = () => {
                     return handleSubmit();
                 } else if (response.status === 403) {
                     console.log('Invalid token, you cannot do it...');
-                    throw new Error('Invalid token');
-                } else {
+                    return;
+                } else if (response.status === 400) {
+                    console.log("Fill in the data")
+                    return;
+                }
+                else {
                     const responseData = await response.json();
                     setUseDetailsError(responseData.message);
                 }
@@ -72,7 +76,7 @@ const UserDetails = () => {
             }
 
         } catch (error) {
-            console.error('Error saving user details:', error);
+            console.log('Error saving user details:', error);
             setUseDetailsError('Error updating user');
         }
     };

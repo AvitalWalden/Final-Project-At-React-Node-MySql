@@ -9,6 +9,8 @@ import { LuFerrisWheel } from "react-icons/lu";
 import { BiSolidLogOut } from "react-icons/bi";
 
 import '../css/Navigates.css';
+import { MDBBadge } from "mdb-react-ui-kit";
+
 
 const Navigates = ({ enableNav, setEnableNav }) => {
   const { user } = useContext(UserContext);

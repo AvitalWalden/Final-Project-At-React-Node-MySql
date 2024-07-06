@@ -31,7 +31,8 @@ function AllOrders() {
 
         if (response.status === 403) {
           console.log('Invalid token. You cannot do this.');
-          throw response.error;
+          // throw response.error;
+          return;
         }
       }
 

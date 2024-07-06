@@ -27,7 +27,8 @@ const Winners = () => {
 
         if (response.status === 403) {
           console.log('invalid token you cannot do it...');
-          throw response.error;
+          // throw response.error;
+          return;
         }
       }
       const data = await response.json();
