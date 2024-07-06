@@ -1,22 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../pages/UserContext';
-import {
-  MDBContainer,
-  MDBInput,
-  MDBBtn,
-  MDBIcon,
-  MDBCol,
-  MDBRow,
-  MDBCard,
-  MDBCardBody
-} from 'mdb-react-ui-kit';
+import { MDBContainer, MDBInput, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import { GoogleLogin } from '@react-oauth/google';
 import '../css/SignUp.css';
-
 import '../App.css';
-
-
 import { jwtDecode } from "jwt-decode";
 
 const LogIn = () => {
@@ -90,7 +78,7 @@ const LogIn = () => {
               <span className="text-primary">to our platform</span>
             </h1>
             <p className='px-3' style={{ color: 'hsl(217, 10%, 50.8%)' }}>
-            The application was developed and designed in order to help and create a better world, a world where others are taken care of. All site donations and all revenues are donated to charity. Thank you for choosing to take part!            </p>
+              The application was developed and designed in order to help and create a better world, a world where others are taken care of. All site donations and all revenues are donated to charity. Thank you for choosing to take part!            </p>
           </MDBCol>
 
           <MDBCol md='6' >
@@ -108,9 +96,6 @@ const LogIn = () => {
                   <div className="divider d-flex align-items-center my-4">
                     <p className="text-center fw-bold mx-3 mb-0">Or</p>
                   </div>
-                  {/* <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                  <MDBIcon fab icon='google' size="sm"/>
-                  </MDBBtn> */}
                   <div className='justify-content-center mx-auto' style={{ width: '40%' }}>
                     <GoogleLogin
                       onSuccess={credentialResponse => {

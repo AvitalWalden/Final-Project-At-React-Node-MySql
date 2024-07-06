@@ -34,17 +34,26 @@ const upload = multer({ storage: storage });
 router.put('/:gift_id', upload.single('image'), async (req, res) => {
     try {
         const image = req.file.filename;
-        const gift_id = req.params.gift_id;
+        if (!req.file.filename) {
+            const error = {
+                message: "Fill in the data"
+            }
+            res.status(400).send(error);
+        }
+        else {
+            const gift_id = req.params.gift_id;
 
-        if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-            return res.status(400).send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+            if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+                return res.status(400).send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+            }
+
+            await updateImage(image, gift_id);
+            console.log("Image updated successfully.");
+
+            const giftAfterUpdate = await getGift(gift_id);
+            res.send(giftAfterUpdate);
         }
 
-        await updateImage(image, gift_id);
-        console.log("Image updated successfully.");
-
-        const giftAfterUpdate = await getGift(gift_id);
-        res.send(giftAfterUpdate);
     } catch (err) {
         console.error("Error updating image:", err);
         res.status(500).send({ error: err.message });

@@ -3,16 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBRadio,
-  MDBInput
-} from 'mdb-react-ui-kit';
+import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBRadio,MDBInput } from 'mdb-react-ui-kit';
 import '../css/SignUp.css';
 
 
@@ -52,6 +43,10 @@ const SignUp = () => {
     fetch(url, requestOptions)
       .then(response => response.json().then(user => {
         if (response.status === 500) {
+          throw user.message;
+        }
+        if (response.status === 400) {
+          console.log("Fill in the data")
           throw user.message;
         }
         setUser(user);

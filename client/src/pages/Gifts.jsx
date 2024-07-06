@@ -6,7 +6,7 @@ import { FaSearch } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { OrderContext } from './OrderContext';
 import SideSlidePanel from '../components/SideSlidePanel';
-import { MDBContainer, MDBRow, MDBCol, MDBRipple, MDBBtn } from "mdb-react-ui-kit";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 
 function Gifts() {
@@ -16,6 +16,7 @@ function Gifts() {
   const [newGift, setNewGift] = useState({ name: '', price: '', image_url: '' });
   const [file, setFile] = useState(null);
   const { user, refreshAccessToken } = useContext(UserContext);
+  const [error, setError] = useState('');
 
   const { order, isOrderListOpen, setIsOrderListOpen, selectedPackage } = useContext(OrderContext);
 
@@ -63,13 +64,23 @@ function Gifts() {
             return handleUpload(gift_id);
           }
           if (response.status === 402) {
-            console.log('No acsses...');
-            throw response.error;
+            console.log('NO Acsses...');
+            setError("NO Acsses...");
+            return;
 
           }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
-            throw response.error;
+            setError('invalid token you cannot do it...');
+
+            return;
+
+          }
+          if (response.status === 400) {
+            console.log("Fill in the data")
+            setError("Fill in the data");
+
+            return;
           }
         }
 
@@ -84,11 +95,15 @@ function Gifts() {
         );
       })
       .catch(error => {
-        console.error('Error uploading file:', error);
+        console.log('Error uploading file:', error);
       });
   };
 
   const saveGift = async () => {
+    if (!file || !newGift.price || !newGift.name) {
+      setError('Please fill in all fields.');
+      return;
+    }
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
     const giftData = { ...newGift, image_url: '' };
@@ -108,11 +123,22 @@ function Gifts() {
             }
             if (response.status === 402) {
               console.log('NO Acsses...');
-              throw response.error;
+              setError("NO Acsses...");
+              return;
+
             }
             if (response.status === 403) {
               console.log('invalid token you cannot do it...');
-              throw response.error;
+              setError('invalid token you cannot do it...');
+
+              return;
+
+            }
+            if (response.status === 400) {
+              console.log("Fill in the data")
+              setError("Fill in the data");
+
+              return;
             }
           }
 
@@ -121,16 +147,17 @@ function Gifts() {
           if (data && data.gift_id) {
             await handleUpload(data.gift_id);
             setGifts(prevGifts => [...prevGifts, data]);
+            setError('');
+            setFile(null);
             setIsAddGiftModalOpen(false);
             setNewGift({ name: '', price: '', image_url: '' });
           } else {
-            throw new Error('Invalid response data');
+            setError("Invalid response data'");
           }
 
         })
     } catch (error) {
-      console.error('Error saving gift:', error);
-      alert('There was an error saving the gift. Please try again.');
+      console.log('There was an error saving the gift. Please try again.');
     }
   };
 
@@ -148,7 +175,6 @@ function Gifts() {
           <FaSearch className='shearch' />
         </div>
         {user && user.role == "admin" && (
-          // <button className="btnAdd" onClick={handleAddGift}>Add Gift</button>
           <MDBBtn className='centerB' onClick={handleAddGift}>Add Gift</MDBBtn>
 
         )}
@@ -176,7 +202,7 @@ function Gifts() {
         <div className="modal-x-overlay">
           <div className="modal-x">
             <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
-            <h2>Edit Gift</h2>
+            <h2>Add Gift</h2>
             <label>Name:</label>
             <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
             <label>Price:</label>
@@ -185,6 +211,8 @@ function Gifts() {
             <div className="modal-x-buttons">
               <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
             </div>
+            {error && <p className='error mt-4' style={{ color: "red" }}>{error}</p>}
+
           </div>
         </div>
       )}

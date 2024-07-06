@@ -156,7 +156,7 @@ const OrderManagement = ({ setEnableNav }) => {
         <div className="alert alert-info text-center" role="alert">
           <h2>No orders or saved cart items found.</h2>
           <p>Please add items to your cart or check your orders.</p>
-          <Link to="/shop" className="btn btn-primary">Go to Shop</Link>
+          <Link to="/gifts" className="btn btn-primary">Go to Shop</Link>
         </div>
       </div>
     );

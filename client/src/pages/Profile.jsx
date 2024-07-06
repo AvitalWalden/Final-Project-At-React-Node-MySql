@@ -84,10 +84,14 @@ const Profile = () => {
       fetchUserDetails(user.user_id);
     } else if (response.status === 403) {
       console.log('Invalid token, you cannot do it...');
-      throw response.error;
-    } else {
+      throw response.data.message;
+    } else if (response.status === 400) {
+      console.log("Fill in the data")
+      throw response.data.message;
+    }
+    else {
       console.log('No access...');
-      throw response.error;
+      throw response.data.message;
     }
   };
 

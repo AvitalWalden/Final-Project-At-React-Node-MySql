@@ -1,44 +1,21 @@
 import React, { useState, useContext } from 'react';
-import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { OrderContext } from '../pages/OrderContext';
-import { UserContext } from '../pages/UserContext';
-import '../css/Modal.css'; // תוודא שה-Modal מעוצב לפי התמונה שהעלית
+import '../css/Modal.css'; 
 import '../css/Gift.css';
 import '../css/Gifts.css';
 import { ImCancelCircle } from "react-icons/im";
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
-  MDBRipple,
-  MDBModal,
-  MDBModalDialog,
-  MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
-  MDBModalBody,
-  MDBModalFooter,
-  MDBInput
-} from "mdb-react-ui-kit";
+import {MDBBtn} from "mdb-react-ui-kit";
 import { FaCartPlus } from "react-icons/fa6";
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-// import DeleteIcon from '@mui/icons-material/Delete';
 import { MdDelete } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
 import { AiFillEdit } from "react-icons/ai";
 
-
-
-// ... שאר הקוד של Gift.jsx
-
-
-
 function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refreshAccessToken }) {
-  const { addToOrder, selectedPackage, order } = useContext(OrderContext);
+  const { addToOrder } = useContext(OrderContext);
   const [isEditGiftModalOpen, setIsEditGiftModalOpen] = useState(false);
   const [currentGift, setCurrentGift] = useState(gift);
+  const [error, setError] = useState('');
 
   const highlightSearchTerm = (title) => {
     const index = title.toLowerCase().indexOf(searchCriteria.toLowerCase());
@@ -64,11 +41,11 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
             await refreshAccessToken();
-            return handleDeleteGift(gift_id); // Retry fetch after token refresh
+            return handleDeleteGift(gift_id);
           }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
-            throw response.error;
+            setError("invalid token you cannot do it...");
           }
         }
       })
@@ -110,7 +87,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
-            throw response.error;
+            setError("invalid token you cannot do it...")
           }
         }
         return await response.json();
@@ -124,12 +101,15 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         );
       })
       .catch(error => {
-        console.error('Error uploading file:', error);
-
+        setError('Error uploading file:', error)
       });
   };
 
   const saveGift = () => {
+    if (!file || !currentGift.price || !currentGift.name) {
+      setError('Please fill in all fields.');
+      return;
+    }
     try {
       const url = `http://localhost:3000/gifts/${currentGift.gift_id}`;
       const method = 'PUT';
@@ -151,16 +131,18 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
 
             if (response.status === 403) {
               console.log('invalid token you cannot do it...');
-              throw response.error;
+              setError('invalid token you cannot do it...');
             }
           }
           handleUpload(currentGift.gift_id);
           const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
           setGifts(updateGift);
+          setError('');
+          setFile(null);
           setIsEditGiftModalOpen(false);
         });
     } catch {
-      console.error('Error adding gift:');
+      console.log('Error adding gift:');
     }
   };
 
@@ -177,17 +159,17 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
               //   <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
               //   <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
               // </div>
-               <Stack direction="row" spacing={1}>
-               <IconButton aria-label="Edit"  color="primary" onClick={handleEditGift}>
-               <AiFillEdit />
-               </IconButton>
-               <IconButton aria-label="delete"  color="primary" onClick={() => handleDeleteGift(gift.gift_id)}>
-               <MdDelete />
-               </IconButton>
-             </Stack>
+              <Stack direction="row" spacing={1}>
+                <IconButton aria-label="Edit" color="primary" onClick={handleEditGift}>
+                  <AiFillEdit />
+                </IconButton>
+                <IconButton aria-label="delete" color="primary" onClick={() => handleDeleteGift(gift.gift_id)}>
+                  <MdDelete />
+                </IconButton>
+              </Stack>
             )}
             <IconButton color="primary" aria-label="add to shopping cart" onClick={() => handleAddGift(true)}>
-            <FaCartPlus />
+              <FaCartPlus />
             </IconButton>
           </div>
         </div>
@@ -195,7 +177,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
       {isEditGiftModalOpen && (
         <div className="modal-x-overlay">
           <div className="modal-x">
-              <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />  </button>
+            <button className="cancel" onClick={() => setIsEditGiftModalOpen(false)}><ImCancelCircle />  </button>
             <h2 className='h2'>Edit Gift</h2>
             <label>Name:</label>
             <input type="text" value={currentGift.name} onChange={(e) => setCurrentGift({ ...currentGift, name: e.target.value })} />
@@ -203,27 +185,11 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
             <input type="text" value={currentGift.price} onChange={(e) => setCurrentGift({ ...currentGift, price: e.target.value })} />
             <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
             <div className="modal-x-buttons">
-            <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
+              <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
             </div>
+            {error && <p className='error mt-4' style={{ color: "red" }}>{error}</p>}
           </div>
         </div>
-        //   <div className="modal-x-overlay">
-        //   <div className="modal-x">
-        //     <button className="cancel" onClick={() => setIsAddGiftModalOpen(false)}><ImCancelCircle /></button>
-        //     {/* <h2>Add Gift</h2>
-        //     <MDBInput wrapperClass='mb-4' label='Name' id='form1 Name' type='text' value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
-        //       <MDBInput wrapperClass='mb-4' label='Price' id='form1 Price' type='text' value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
-        //      */}
-        //     <label>Name:</label>
-        //     <input type="text" value={newGift.name} onChange={(e) => setNewGift({ ...newGift, name: e.target.value })} />
-        //     <label>Price:</label>
-        //     <input type="text" value={newGift.price} onChange={(e) => setNewGift({ ...newGift, price: e.target.value })} />
-        //     <input className="file" type="file" onChange={(e) => setFile(e.target.files[0])} />
-        //     <div className="modal-x-buttons">
-        //       <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
-        //     </div>
-        //   </div>
-        // </div>
       )}
     </>
   );

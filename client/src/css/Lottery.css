@@ -145,7 +145,7 @@
 }
 
 .gift-lottery-card.winner {
-  background-color: #000;
+  background-color: hsl(0, 0%, 72%);
 }
 
 .gift-lottery-card.winner h1 {
