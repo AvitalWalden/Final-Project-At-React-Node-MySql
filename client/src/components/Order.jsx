@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../pages/UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import '../css/Order.css'; // Ensure the correct path to the CSS file
 
 const Order = ({ orderId, onClose }) => {
@@ -41,14 +42,16 @@ const Order = ({ orderId, onClose }) => {
 
     if (orderDetails === null) {
         return (
-            <div className="modal">
-                <div className="modal-content">
-                    <span className="close" onClick={onClose}>&times;</span>
-                    <div className="modal-header">
-                        <h2>Order Details</h2>
-                    </div>
-                    <div className="modal-body">
-                        <p>Loading...</p>
+            <div className="modal-container">
+                <div className="modal-dialog">
+                    <div className="modal-content bg-lightblue">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Order Details</h5>
+                            <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>Loading...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,37 +59,39 @@ const Order = ({ orderId, onClose }) => {
     }
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={onClose}>&times;</span>
-                <div className="modal-header">
-                    <h2>Order Details</h2>
-                </div>
-                <div className="modal-body">
-                    <div className="order-info">
-                        <h3>Order Information</h3>
-                        <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
-                        <p><strong>Order Date:</strong> {new Date(orderDetails.order_date).toLocaleDateString()}</p>
+        <div className="modal-container">
+            <div className="modal-dialog">
+                <div className="modal-content bg-lightblue">
+                    <div className="modal-header">
+                       
+                        <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
                     </div>
-                    <div className="user-info">
-                        <h3>User Information</h3>
-                        <p><strong>Name:</strong> {orderDetails.name}</p>
-                        <p><strong>Username:</strong> {orderDetails.username}</p>
-                        <p><strong>Email:</strong> {orderDetails.email}</p>
-                        <p><strong>Phone:</strong> {orderDetails.phone}</p>
-                        <p><strong>City:</strong> {orderDetails.city}</p>
-                        <p><strong>Street:</strong> {orderDetails.street}</p>
-                        <p><strong>Zipcode:</strong> {orderDetails.zipcode}</p>
-                    </div>
-                    <div className="gifts-info">
-                        <h3>Gifts</h3>
-                        {orderDetails.gifts.map((gift, index) => (
-                            <div key={index} className="gift-item">
-                                <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} />
-                                <p><strong>Gift Name:</strong> {gift.name}</p>
-                                <p><strong>Price:</strong> {gift.price}</p>
-                            </div>
-                        ))}
+                    <div className="modal-body">
+                        <div className="order-info mb-3">
+                            <h6>Order Information</h6>
+                            <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
+                            <p><strong>Order Date:</strong> {new Date(orderDetails.order_date).toLocaleDateString()}</p>
+                        </div>
+                        <div className="user-info mb-3">
+                            <h6>User Information</h6>
+                            <p><strong>Name:</strong> {orderDetails.name}</p>
+                            <p><strong>Username:</strong> {orderDetails.username}</p>
+                            <p><strong>Email:</strong> {orderDetails.email}</p>
+                            <p><strong>Phone:</strong> {orderDetails.phone}</p>
+                            <p><strong>City:</strong> {orderDetails.city}</p>
+                            <p><strong>Street:</strong> {orderDetails.street}</p>
+                            <p><strong>Zipcode:</strong> {orderDetails.zipcode}</p>
+                        </div>
+                        <div className="gifts-info">
+                            <h6>Gifts</h6>
+                            {orderDetails.gifts.map((gift, index) => (
+                                <div key={index} className="gift-item mb-3">
+                                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} className="img-thumbnail" />
+                                    <p><strong>Gift Name:</strong> {gift.name}</p>
+                                    <p><strong>Price:</strong> {gift.price}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

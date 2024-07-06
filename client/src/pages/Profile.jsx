@@ -154,6 +154,7 @@ const Profile = () => {
     <div className="ProfileContainer gradient-custom">
       <div className="ProfileDetails">
         <Typography variant="h4" className="SectionTitle">Your Profile</Typography>
+        <br/>
         {isEditing ? (
           <div className="EditForm">
             <div className="ProfileRow">
@@ -167,6 +168,7 @@ const Profile = () => {
                   onChange={(e) => handleChange('name', e.target.value)}
                 />
               </div>
+              
               <div className="ProfileText">
                 <Typography variant="h6">Email:</Typography>
                 <TextField
@@ -223,6 +225,7 @@ const Profile = () => {
                   onChange={(e) => handleChange('phone', e.target.value)}
                 />
               </div>
+
               <div className="ProfileText">
                 <Typography variant="h6">Role:</Typography>
                 <TextField
@@ -233,7 +236,17 @@ const Profile = () => {
                     readOnly: true
                   }}
                 />
-              </div>
+                </div>
+                <hr className="Separator" />
+
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className='ButtonSave'
+                  onClick={handleFormSubmit}
+                >
+                  Save
+                </Button>
             </div>
           </div>
         ) : (
@@ -243,12 +256,14 @@ const Profile = () => {
                 <Typography variant="h6">Name:</Typography>
                 <span>{userDetails.name}</span>
               </div>
+              <hr className="Separator" />
               <div className="ProfileText">
                 <Typography variant="h6">Email:</Typography>
                 <span>{userDetails.email}</span>
               </div>
             </div>
             <hr className="Separator" />
+            
             <div className="ProfileRow">
               <div className="FundraiserText">
                 <Typography variant="h6">Street:</Typography>
@@ -269,6 +284,7 @@ const Profile = () => {
                 <Typography variant="h6">Phone:</Typography>
                 <span>{userDetails.phone}</span>
               </div>
+              <hr className="Separator" />
               <div className="ProfileText">
                 <Typography variant="h6">Role:</Typography>
                 <span>{userDetails.role}</span>

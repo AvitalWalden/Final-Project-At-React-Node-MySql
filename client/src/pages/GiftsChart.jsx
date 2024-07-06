@@ -154,10 +154,15 @@ const GiftsChart = () => {
 
     return (
         <div className='canvas'>
-            <h2 className='h2cot'>Gifts Order Quantity</h2>
-            {user.role=='admin'&&<button onClick={toggleChart}>
-                {showFundraiserChart ? 'Show Gifts Chart' : 'Show Fundraiser Chart'}
-            </button>}
+            {user.role != 'admin' && (
+            <br/>)}
+             {user.role === 'admin' && (
+                <div className='button-container'>
+                    <button className='btn btn-primary' onClick={toggleChart}>
+                        {showFundraiserChart ? 'Show Gifts Chart' : 'Show Fundraiser Chart'}
+                    </button>
+                </div>
+            )}
             {showFundraiserChart ? (
                 <Bar
                     data={fundraiserChartData}

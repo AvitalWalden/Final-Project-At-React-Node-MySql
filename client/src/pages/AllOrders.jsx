@@ -2,6 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import Order from '../components/Order';
 import '../css/AllOrders.css';
+import { MdOutlineReadMore, MdOutlineDateRange ,MdBookmarkBorder } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
+
+import { Link } from 'react-router-dom';
 
 function AllOrders() {
   const [orders, setOrders] = useState([]);
@@ -54,25 +58,24 @@ function AllOrders() {
   };
 
   return (
-    <div className="container">
-      <h2 className="container-h2">All Orders</h2>
-      <table className="container-table">
-        <thead className="container-thead">
+    <div className="payment-container">
+      <table className="payment-container-table">
+        <thead className="payment-container-thead">
           <tr>
-            <th className="container-th">Order ID</th>
-            <th className="container-th">User Name</th>
-            <th className="container-th">Order Date</th>
-            <th className="container-th">Order Info</th>
+            <th className="payment-container-th"><MdBookmarkBorder /> Order ID</th>
+            <th className="payment-container-th"><FaRegUser /> User Name</th>
+            <th className="payment-container-th"><MdOutlineDateRange /> Order Date</th>
+            <th className="payment-container-th"><MdOutlineReadMore /> Order Info</th>
           </tr>
         </thead>
-        <tbody className="container-tbody">
+        <tbody className="payment-container-tbody">
           {orders.map((order) => (
             <tr key={order.order_id}>
-              <td className="container-td">{order.order_id}</td>
-              <td className="container-td">{order.username}</td>
-              <td className="container-td">{formatDate(order.order_date)}</td>
-              <td className="container-td" onClick={() => handleOrderClick(order.order_id)}>
-                See Details👇
+              <td className="payment-container-td">{order.order_id}</td>
+              <td className="payment-container-td">{order.username}</td>
+              <td className="payment-container-td">{formatDate(order.order_date)}</td>
+              <td className="payment-container-td link" onClick={() => handleOrderClick(order.order_id)}>
+                <Link> See Details</Link>
               </td>
             </tr>
           ))}

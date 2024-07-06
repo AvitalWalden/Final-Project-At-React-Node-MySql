@@ -69,7 +69,8 @@ const UserOrders = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Your Orders</h1>
+     <br/>
+     <br/>
       {error ? (
         <p className="text-center">{error}</p>
       ) : (

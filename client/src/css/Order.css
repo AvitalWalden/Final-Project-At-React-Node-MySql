@@ -1,54 +1,63 @@
-/* Removing .modal class */
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  width: 55vw;
+  height: 70vh;
+  z-index: 1050;
+  background-color: white;
+  border-radius: 40px;
+  border-color: #3B71CA;
+
+}
+
+.modal-dialog {
+  max-width: 600px;
+  width: 90%;
+}
 
 .modal-content {
-  background-color: #fff;
-  margin-top: 20px; /* Adjust this value to match the top of the table */
   padding: 20px;
   border: 1px solid #888;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80%; /* Limit the height of the modal */
-  overflow-y: auto; /* Enable scrolling if content is too tall */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  position: relative;
+  max-height: 60vh; /* Smaller height */
+  overflow-y: auto; /* Scrollbar */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  border-radius: 20px; /* Rounded borders */
+  background-color: rgba(255, 255, 255, 0.8) !important; /* Light background with transparency */
+  width: 50vw !important;
+  height: 70vh;
+  color: white; /* White text */
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  color: #aaa;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
+.btn-close {
+  color:black !important;/* White color for close button */
+  background-color: white !important;
+  margin-left: 50px;
 }
 
-.close:hover,
-.close:focus {
+.btn-close:hover,
+.btn-close:focus {
   color: black;
-  text-decoration: none;
 }
-/* 
-.modal-header {
-  margin-bottom: 20px;
-} */
+
 .modal-header {
   display: flex;
-  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  padding: var(--mdb-modal-header-padding);
-  border-bottom: var(--mdb-modal-header-border-width) solid var(--mdb-modal-header-border-color);
-  border-top-left-radius: var(--mdb-modal-inner-border-radius);
-  border-top-right-radius: var(--mdb-modal-inner-border-radius);
-  height: 6%;
   padding: 10px;
+  border-bottom: 1px solid #ddd;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
-.modal-header h2 {
+.modal-header h5 {
   margin: 0;
-  text-align: center;
+  color: #333;
 }
 
 .modal-body {
@@ -61,13 +70,14 @@
   margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 20px;
+  color: #333;
 }
 
-.order-info h3,
-.user-info h3,
-.gifts-info h3 {
+.order-info h6,
+.user-info h6,
+.gifts-info h6 {
   margin-bottom: 10px;
-  color: #333;
+  color: #3B71CA;
 }
 
 .gift-item {

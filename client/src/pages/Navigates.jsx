@@ -4,6 +4,10 @@ import { UserContext } from './UserContext';
 import { FaGift, FaUser, FaShoppingCart, FaChartBar } from 'react-icons/fa';
 import { TbPackages } from "react-icons/tb";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
+import { GiPodiumWinner ,GiFiles} from "react-icons/gi";
+import { LuFerrisWheel } from "react-icons/lu";
+import { BiSolidLogOut } from "react-icons/bi";
+
 import '../css/Navigates.css';
 
 const Navigates = ({ enableNav, setEnableNav }) => {
@@ -41,19 +45,19 @@ const Navigates = ({ enableNav, setEnableNav }) => {
         {!user ? (
           <Link to="/login" className={linkClassName} onClick={handleClick}>LogIn</Link>
         ) : (
-          <Link to="/logout" className={linkClassName} onClick={handleClick}>LogOut</Link>
+          <Link to="/logout" className={linkClassName} onClick={handleClick}><BiSolidLogOut /> LogOut</Link>
         )}
-        <Link to="/gifts" className={linkClassName} onClick={handleClick}>Gifts <FaGift /></Link>
-        <Link to="/packages" className={linkClassName} onClick={handleClick}>Our Packages  <TbPackages /></Link> 
-        {user && <Link to="/giftsChart" className={linkClassName} onClick={handleClick}>GiftsChart <FaChartBar /></Link>}
+        <Link to="/gifts" className={linkClassName} onClick={handleClick}> <FaGift /> Gifts</Link>
+        <Link to="/packages" className={linkClassName} onClick={handleClick}>  <TbPackages /> Our Packages</Link> 
+        {user && <Link to="/giftsChart" className={linkClassName} onClick={handleClick}> <FaChartBar /> GiftsChart</Link>}
         <Link to="/orderManagement" className={linkClassName} onClick={handleClick}>
-          Order <FaShoppingCart />
+         <FaShoppingCart /> Order 
         </Link>
-        <Link to="/winners" className={linkClassName} onClick={handleClick}>Winners</Link>
+        <Link to="/winners" className={linkClassName} onClick={handleClick}><GiPodiumWinner /> Winners</Link>
         {user && user.role === 'admin' && (
           <>
-            <Link to="/Lottery" className={linkClassName} onClick={handleClick}>Lottery</Link>
-            <Link to="/allOrders" className={linkClassName} onClick={handleClick}>All orders</Link>
+            <Link to="/Lottery" className={linkClassName} onClick={handleClick}><LuFerrisWheel /> Lottery</Link>
+            <Link to="/allOrders" className={linkClassName} onClick={handleClick}><GiFiles /> All orders</Link>
           </>
         )}
         <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>

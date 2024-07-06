@@ -46,15 +46,13 @@
 }
 
 .modal-package button.cancel {
-  background-color: #dc3545; /* red cancel button color */
+  background-color: white; /* red cancel button color */
+  color: #c82333;
   position: absolute; /* Add absolute positioning */
-  top: 10px; /* Adjust position to the top */
-  right: 10px; /* Adjust position to the right */
+  top: 0px; /* Adjust position to the top */
+  right: -10px; /* Adjust position to the right */
 }
 
-.modal-package button.cancel:hover {
-  background-color: #c82333; /* darkened red on hover */
-}
 
 .modal-package button:focus {
   outline: none; /* remove focus outline */

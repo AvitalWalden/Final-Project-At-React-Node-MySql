@@ -180,10 +180,7 @@ h2 {
   font-weight: bold;
 }
 
-.link:hover {
-  text-decoration: underline;
-  text-decoration: black;
-}
+
 
 .title {
   font-size: 76px;
@@ -231,9 +228,6 @@ nav a, nav div {
 
 nav a:hover, nav div:hover {
   transform: scale(1.1);
-  color: black !important;
-  text-shadow: 1px 1px 4px black;
- 
 }
 
 .page {
@@ -357,4 +351,7 @@ input {
     margin-bottom: 8px;
     display: flex;
     outline: 0;
+}
+.alert-info{
+  margin-top: 20% !important;
 }

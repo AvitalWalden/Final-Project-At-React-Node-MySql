@@ -14,9 +14,7 @@ nav a {
   transition: all 0.3s;
 }
 
-nav a:hover {
-  color: #007bff;
-}
+
 
 .dropdown {
   position: relative;

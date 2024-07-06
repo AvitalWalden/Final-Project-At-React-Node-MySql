@@ -29,7 +29,7 @@
   
   .winner-card h2 {
     font-size: 16px;
-    color: #333;
+    color: black;
     margin: 10px 0 5px;
     text-align: center;
   }
@@ -62,4 +62,5 @@
   }
   .W-container h1{
     margin-left: 40%;
+    color: black;
   }
