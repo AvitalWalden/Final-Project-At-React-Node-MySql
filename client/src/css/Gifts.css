@@ -31,7 +31,7 @@ html {
   color: black;
 }
 
-.gift-containers>div {
+.gift-containers>div{
   display: flex;
   align-items: end;
   border: solid black;
