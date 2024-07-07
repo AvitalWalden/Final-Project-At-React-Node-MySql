@@ -19,6 +19,7 @@ import Home from "./pages/Home";
 import PackageSelector from "./pages/PackageSelector";
 import GiftsChart from "./pages/GiftsChart";
 import Payment from "./pages/Payment";
+import FundraisersManagement from "./pages/FundraisersManagement";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -47,6 +48,8 @@ function App() {
               <Route path="/allOrders" element={<AllOrders />} />
               <Route path="/packages" element={<PackageSelector />} />
               <Route path="/giftsChart" element={<GiftsChart />} />
+              <Route path="/fundraisersManagement" element={<FundraisersManagement/>} />
+
             </Routes>
 
           </OrderProvider>

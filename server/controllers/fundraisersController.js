@@ -1,8 +1,21 @@
 const model = require('../models/fundraisersModel');
+const { sendFundraiserEmail} = require('../middleware/mailServices');
 
-async function updateFundraisers(updatedFundraiser) {
+async function updateFundraiserForStatus(updatedFundraiser) {
     try {
-        return model.updateFundraisers(updatedFundraiser);
+        const putFundraiser=model.updateFundraiserForStatus(updatedFundraiser);
+        if(putFundraiser)
+        {
+            await sendFundraiserEmail(updatedFundraiser.email,updatedFundraiser.status);
+        }
+        return putFundraiser;
+    } catch (err) {
+        throw err;
+    }
+}
+async function updateFundraiser(updatedFundraiser) {
+    try {
+        return model.updatedFundraiser(updatedFundraiser);
     } catch (err) {
         throw err;
     }
@@ -28,4 +41,11 @@ async function postFundraiser(userId,bonus,debt,peopleFundraised) {
         throw err;
     }
 }
-module.exports = {updateFundraisers,getFundraiser,getFundraiserChartData,postFundraiser}
+async function getFundraisers() {
+    try {
+        return model.getFundraisers();
+    } catch (err) {
+        throw err;
+    }
+}
+module.exports = {updateFundraiser,getFundraiser,getFundraiserChartData,postFundraiser,getFundraisers,updateFundraiserForStatus}

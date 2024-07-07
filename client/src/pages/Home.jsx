@@ -4,8 +4,7 @@ import gift1 from '../images/gift1.jpg';
 import gift2 from '../images/gift2.jpg';
 import gift3 from '../images/gift3.png';
 import { useNavigate } from 'react-router-dom';
-import { MdKeyboardDoubleArrowDown } from "react-icons/md";
-import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 const Home = () => {
   const navigate = useNavigate();
