@@ -9,6 +9,7 @@ import { LuFerrisWheel } from "react-icons/lu";
 import { BiSolidLogOut } from "react-icons/bi";
 import { OrderContext } from './OrderContext';
 import { BiSolidLogIn } from "react-icons/bi";
+import { PiUsersThreeFill } from "react-icons/pi";
 import '../css/Navigates.css';
 import { MDBBadge } from "mdb-react-ui-kit";
 
@@ -66,6 +67,8 @@ const Navigates = ({ enableNav, setEnableNav }) => {
           <>
             <Link to="/Lottery" className={linkClassName} onClick={handleClick}><LuFerrisWheel /> Lottery</Link>
             <Link to="/allOrders" className={linkClassName} onClick={handleClick}><GiFiles /> All orders</Link>
+            <Link to="/fundraisersManagement" className={linkClassName} onClick={handleClick}><PiUsersThreeFill /> Fundraisers</Link>
+
           </>
         )}
         <div className="dropdown" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>

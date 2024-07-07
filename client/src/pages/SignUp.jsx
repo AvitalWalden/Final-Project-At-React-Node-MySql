@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBRadio,MDBInput } from 'mdb-react-ui-kit';
+import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBRadio, MDBInput } from 'mdb-react-ui-kit';
 import '../css/SignUp.css';
 
 
@@ -33,6 +33,7 @@ const SignUp = () => {
       password: password,
       role: role
     };
+
     const requestOptions = {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -49,6 +50,7 @@ const SignUp = () => {
           console.log("Fill in the data")
           throw user.message;
         }
+      
         setUser(user);
         setverifyPassword("");
         setUserName("");
@@ -79,6 +81,7 @@ const SignUp = () => {
             throw user.message;
           }
         } else {
+
           setUser(user);
           navigate("/userDetails");
         }
@@ -93,17 +96,19 @@ const SignUp = () => {
       <MDBRow>
         <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center textMe'>
           <h1 className="my-5 display-3 fw-bold ls-tight px-3">
-          Welcome <br />
+            Welcome <br />
             <span className="text-primary">to our platform</span>
           </h1>
           <p className='px-3' style={{ color: 'hsl(217, 10%, 50.8%)' }}>
-          The application was developed and designed in order to help and create a better world, a world where others are taken care of. All site donations and all revenues are donated to charity. Thank you for choosing to take part!          </p>
+            The application was developed and designed in order to help and create a better world, a world where others are taken care of. All site donations and all revenues are donated to charity. Thank you for choosing to take part!          </p>
         </MDBCol>
 
         <MDBCol md='6' >
+
           <MDBCard className='my-5'>
             <MDBCardBody className='p-5'>
               <MDBRow>
+                {signUpError && <p className='error mt-4' style={{ color: signUpError === "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
                 <MDBCol col='6'>
                   <MDBInput wrapperClass='mb-4' label='Username' id='form1 Username' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} />
                 </MDBCol>
@@ -150,7 +155,6 @@ const SignUp = () => {
                   />
                 </div>
               </div>
-              {signUpError && <p className='error mt-4' style={{ color: signUpError === "Registration successful" ? 'green' : "red" }}>{signUpError}</p>}
             </MDBCardBody>
           </MDBCard>
         </MDBCol>

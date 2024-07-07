@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
             }
         }
         res.cookie('jwt_refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
-        res.cookie('jwt_accessToken', accessToken, { httpOnly: true, secure: true, maxAge: 30 * 1000 });
+        res.cookie('jwt_accessToken', accessToken, { httpOnly: true, secure: true, maxAge: 5*60 * 1000 });
         const userLogIn = await getUser(user.user_id);
         delete userLogIn.address_id;
         res.send(userLogIn);

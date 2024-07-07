@@ -50,7 +50,7 @@ async function handleRefreshToken(cookies) {
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '30s' }
+                { expiresIn: '5m' }
             );
         }
 

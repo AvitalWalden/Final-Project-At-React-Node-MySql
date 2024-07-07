@@ -1,7 +1,31 @@
 const pool = require('../DB.js');
 
-async function updateFundraisers(updatedFundraiser) {
+async function updateFundraiserForStatus(updatedFundraiser) {
     try {
+
+        const sql = `
+            UPDATE fundraisers
+            SET debt = ?, people_fundraised = ?, bonus = ?, status=?
+            WHERE user_id = ?
+        `;
+        const values = [
+            updatedFundraiser.debt,
+            updatedFundraiser.people_fundraised,
+            updatedFundraiser.bonus,
+            updatedFundraiser.status,
+            updatedFundraiser.user_id,
+        ];
+
+        const result = await pool.query(sql, values); 
+        return result;
+    } catch (error) {
+        console.error('Error updating fundraiser:', error.message);
+        throw error;
+    }
+}
+async function updatedFundraiser(updatedFundraiser) {
+    try {
+
         const sql = `
             UPDATE fundraisers
             SET debt = ?, people_fundraised = ?, bonus = ?
@@ -11,10 +35,10 @@ async function updateFundraisers(updatedFundraiser) {
             updatedFundraiser.debt,
             updatedFundraiser.people_fundraised,
             updatedFundraiser.bonus,
-            updatedFundraiser.user_id
+            updatedFundraiser.user_id,
         ];
 
-        const result = await pool.query(sql, values);
+        const result = await pool.query(sql, values); 
         return result;
     } catch (error) {
         console.error('Error updating fundraiser:', error.message);
@@ -24,7 +48,7 @@ async function updateFundraisers(updatedFundraiser) {
 async function getFundraiser(fundraiserId) {
     try {
 
-        const sql = 'SELECT * FROM fundraisers where user_id=?';
+        const sql = 'SELECT * FROM fundraisers natural join users where user_id=?';
         const result = await pool.query(sql, [fundraiserId]);
         return result[0][0];
     } catch (err) {
@@ -45,7 +69,7 @@ async function getFundraiserChartData() {
 }
 async function postFundraiser(userId,bonus,debt,peopleFundraised) {
     try {
-
+        
         const sql = "INSERT INTO fundraisers (`user_id`, `bonus`, `debt`,`people_fundraised`) VALUES(?, ?, ?,?)";
         const result = await pool.query(sql, [userId, bonus, debt,peopleFundraised]);
         return result[0];
@@ -54,4 +78,15 @@ async function postFundraiser(userId,bonus,debt,peopleFundraised) {
         throw err;
     }
 }
-module.exports = { updateFundraisers, getFundraiser,getFundraiserChartData,postFundraiser }
+async function getFundraisers() {
+    try {
+
+        const sql = 'SELECT * FROM fundraisers natural join users';
+        const result = await pool.query(sql);
+        return result[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+module.exports = { updatedFundraiser, getFundraiser,getFundraiserChartData,postFundraiser ,getFundraisers,updateFundraiserForStatus}

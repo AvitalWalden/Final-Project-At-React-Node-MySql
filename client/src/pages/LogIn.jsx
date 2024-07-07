@@ -14,12 +14,12 @@ const LogIn = () => {
   const [loginError, setLoginError] = useState('');
   const { setUser } = useContext(UserContext);
 
-  function handleLogin() {
+  const handleLogin = async () => {
     if (!username || !password) {
       setLoginError('Please fill in all fields.');
       return;
     }
-
+  
     const url = 'http://localhost:3000/login';
     const requestOptions = {
       method: 'POST',
@@ -27,23 +27,56 @@ const LogIn = () => {
       credentials: "include",
       body: JSON.stringify({ username, password })
     };
-
-    fetch(url, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        if (data.message) {
-          throw new Error(data.message);
+  
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+  
+      if (response.ok) {
+        if (data.role === 'fundraiser') {
+          const fundraiserUrl = `http://localhost:3000/fundraisers/${data.user_id}`;
+          const fundraiserRequestOptions = {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          };
+  
+          const fundraiserResponse = await fetch(fundraiserUrl, fundraiserRequestOptions);
+          const fundraiserData = await fundraiserResponse.json();
+  
+          if (fundraiserResponse.ok) {
+            if (fundraiserData.status === 'pending') {
+              setLoginError('Waiting for admin approval');
+              return;
+            } else if (fundraiserData.status === 'blocked') {
+              setLoginError('You have been blocked by the admin!');
+              return;
+            }
+  
+            setUser(data);
+            setUsername('');
+            setPassword('');
+            setLoginError('Login successful');
+            navigate('/gifts');
+          } else {
+            throw new Error(fundraiserData.message || 'Failed to fetch fundraiser data');
+          }
+        } else {
+          // Handle other roles if necessary
+          setUser(data);
+          setUsername('');
+          setPassword('');
+          setLoginError('Login successful');
+          navigate('/gifts');
         }
-        setUser(data);
-        setUsername('');
-        setPassword('');
-        setLoginError('Registration successful');
-        navigate('/gifts');
-      })
-      .catch(error => {
-        setLoginError(error.message);
-      });
-  }
+      } else {
+        throw new Error(data.message || 'Login failed');
+      }
+    } catch (error) {
+      setLoginError(error.message);
+    }
+  };
+  
 
   function handleRegistrationWithGoogle(user) {
     const url = 'http://localhost:3000/login';
@@ -84,6 +117,7 @@ const LogIn = () => {
           <MDBCol md='6' >
             <MDBCard className='my-5'>
               <MDBCardBody className='p-5'>
+            {loginError && <p className='error mt-4' style={{ color: loginError === "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
                 <MDBRow>
                   <MDBCol col='12'>
                     <MDBInput wrapperClass='mb-4' label='Username' id='form1 Username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -122,7 +156,6 @@ const LogIn = () => {
                     />
                   </div>
                 </div>
-                {loginError && <p className='error mt-4' style={{ color: loginError === "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
               </MDBCardBody>
             </MDBCard>
           </MDBCol>

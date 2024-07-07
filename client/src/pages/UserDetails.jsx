@@ -10,6 +10,8 @@ const UserDetails = () => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [UseDetailsError, setUseDetailsError] = useState('');
+    const [saveButton, setSaveButton] = useState(true);
+
     const [userDetails, setUserDetails] = useState({
         name: '',
         username: user?.username || '',
@@ -68,6 +70,15 @@ const UserDetails = () => {
                 }
             }
             else {
+                if (user.role === "fundraiser") {
+                    setUseDetailsError('Your detailes have been saved successfully! Waiting to admin approval...')
+                    setSaveButton(false)
+                    setTimeout(() => {
+                        setUser(null);
+                        navigate('/login')
+                    }, 3000);
+                    return;
+                }
                 const responseData = await response.json();
                 setUser(responseData);
                 localStorage.setItem('currentUser', JSON.stringify(responseData));
@@ -98,6 +109,7 @@ const UserDetails = () => {
                                     <MDBTypography tag="h4" style={{ color: '#495057' }}>User Details</MDBTypography>
                                 </div>
                                 <MDBContainer fluid className='sectionS p-4'>
+                                    {UseDetailsError && <MDBInputGroup className='error' style={{ color: UseDetailsError === "User updated successfully" ? 'green' : 'red' }}>{UseDetailsError}</MDBInputGroup>}
                                     <MDBRow className="mb-4">
                                         <MDBCol>
                                             <MDBInput label='Name' type='text' value={userDetails.name} onChange={(e) => handleChange('name', e.target.value)} />
@@ -127,9 +139,8 @@ const UserDetails = () => {
                                             <MDBInput label='Phone' type='tel' value={userDetails.phone} onChange={(e) => handleChange('phone', e.target.value)} />
                                         </MDBCol>
                                     </MDBRow>
-                                    {UseDetailsError && <MDBInputGroup className='error' style={{ color: UseDetailsError === "User updated successfully" ? 'green' : 'red' }}>{UseDetailsError}</MDBInputGroup>}
                                     <div className="text-end">
-                                        <MDBBtn className='w-100 mb-4' size='md' onClick={handleSubmit}>Save Details</MDBBtn>
+                                        <MDBBtn className='w-100 mb-4' size='md' onClick={handleSubmit} disabled={!saveButton}>Save Details</MDBBtn>
                                     </div>
                                 </MDBContainer>
                             </MDBCardBody>

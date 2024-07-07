@@ -14,7 +14,7 @@ async function sendWinnerEmail(winnerEmail, giftName) {
         from: process.env.EMAIL_USER,
         to: winnerEmail.email,
         subject: 'Congratulations🥳🎉! You have won a gift!',
-        text: `Dear Winner,\n\nCongratulations! You have won the gift: ${giftName}.\n\nBest Regards,\nYour Company Name`
+        text: `Dear Winner,\n\nCongratulations! You have won the gift: ${giftName}.\n\nBest Regards,\nChinese sale website`
     };
 
     try {
@@ -46,6 +46,20 @@ async function sendOrderEmail(recipientEmail, orderSummary, totalPrice) {
         console.error('Error sending email:', error);
     }
 }
+async function sendFundraiserEmail(email, status) {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Status changed❗',
+        text: `Dear Fundraiser,\n\ You status have been change to: ${status}.\n\nBest Regards,\nChinese sale website`
+    };
 
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
 
-module.exports = { sendWinnerEmail, sendOrderEmail };
+module.exports = { sendWinnerEmail, sendOrderEmail,sendFundraiserEmail };
