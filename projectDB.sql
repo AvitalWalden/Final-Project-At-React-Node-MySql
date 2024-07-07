@@ -114,7 +114,7 @@ CREATE TABLE fundraisers (
     fundraiser_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     bonus INT,
-    approved bool,
+    status ENUM('pending', 'approved', 'blocked') DEFAULT 'pending',
     debt DECIMAL(10, 2),
     people_fundraised INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -140,7 +140,7 @@ INSERT INTO users (name, username, email, address_id, phone, role) VALUES
 ('David Cohen', 'davidcohen', 'M0583295188@gmail.com', 3, '050-3456789', 'user'),
 ('Rachel Levi', 'rachellevi', 'NW0548455073@gmail.com', 4, '050-4567890',  'user'),
 ('Michael Rosen', 'michaelrosen', 'chinesesalewe@gmail.com', 5, '050-5678901',  'user'),
-('Sarah Gold', 'sarahgold', 'eletzky1@gmail.com', 6, '050-6789012',  'fundraiser'),
+('Sarah Gold', 'sarahgold', 'hadassa26162@gmail.com', 6, '050-6789012',  'fundraiser'),
 ('Daniel Katz', 'danielkatz', 'efratk354@gmail.com', 7, '050-7890123',  'fundraiser'),
 ('Esther Green', 'esthergreen', 'efratmiletzky2@gmail.com', 8, '050-8901234',  'user'),
 ('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345',  'user'),
