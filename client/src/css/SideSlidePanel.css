@@ -12,6 +12,16 @@
   z-index: 1000;
   overflow-y: auto;
 }
+.emptyCart{
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: 55px;
+
+
+}
+h1{
+  padding: 10px;
+}
 .modal-header {
   display: flex;
   flex-shrink: 0;

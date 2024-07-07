@@ -100,7 +100,7 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
 router.post("/newUser", async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;
-        if (!req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone  || !req.body.email) {
+        if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone  || !req.body.email) {
             const error = {
                 message: "Fill in the data"
             }
