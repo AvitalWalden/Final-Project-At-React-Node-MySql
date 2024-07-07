@@ -10,7 +10,7 @@ async function createUser(username, password, role) {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword, role);
 
-        const g = await getUserForSignup(user.insertId);
+        const g = await getUser(user.insertId);
         const token = await creatTokens(g, role);
 
         creatToken(user.insertId, token.refreshToken);
@@ -31,7 +31,7 @@ async function createUserLogInWithGoogle(username, role, email) {
 
         const user = await model.createUserLogInWithGoogle(username, role, email);
 
-        const newUser = await getUserForSignup(user.insertId);
+        const newUser = await getUser(user.insertId);
         const token = await creatTokens(newUser, role);
 
         creatToken(user.insertId, token.refreshToken);
@@ -109,13 +109,13 @@ async function getUserByEmail(email) {
         throw err;
     }
 }
-async function getUserForSignup(id) {
-    try {
-        return await model.getUserForSignup(id);
-    } catch (err) {
-        throw err;
-    }
-}
+// async function getUser(id) {
+//     try {
+//         return await model.getUser(id);
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
 
 async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
@@ -177,4 +177,4 @@ async function creatTokens(user, role) {
     }
 }
 
-module.exports = { createUser, getUser, updateUser, logIn, getUserForSignup, createNewUser, createUserLogInWithGoogle, getUserByEmail, getUserLogInWithGoogle }
+module.exports = { createUser, getUser, updateUser, logIn, createNewUser, createUserLogInWithGoogle, getUserByEmail, getUserLogInWithGoogle }

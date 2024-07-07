@@ -38,9 +38,7 @@ async function getTokenAndUserByToken(token) {
     try {
         const sql = `
             SELECT * 
-            FROM token 
-            JOIN users 
-            ON token.user_id = users.user_id
+            FROM token  natural join users natural join addresses
             WHERE token.refreshToken = ?
         `;
         const [result] = await pool.query(sql, [token]);

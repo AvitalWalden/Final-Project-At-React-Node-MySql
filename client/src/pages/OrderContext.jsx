@@ -36,6 +36,11 @@ export const OrderProvider = ({ children }) => {
     }
   }, [selectedPackage]);
 
+  useEffect(() => {
+   setTotalPrice(calculateTotalPrice());
+   
+  }, [user]);
+
   const addToOrder = (gift, checkbox) => {
     if (selectedPackage) {
       let totalSelectedQuantity = 0;
@@ -106,7 +111,9 @@ export const OrderProvider = ({ children }) => {
   };
 
   const calculateTotalPrice = () => {
-    let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
+
+      let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
+  
     if (totalPrice == 0) {
       order.forEach((gift) => {
         if (gift.isChecked) {
@@ -119,9 +126,10 @@ export const OrderProvider = ({ children }) => {
           totalPrice += gift.price * gift.quantity;
         }
       });
+    
     }
-
     return totalPrice.toFixed(2);
+
   };
 
   return (

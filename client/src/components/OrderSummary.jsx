@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   MDBContainer,
   MDBCard,
@@ -12,11 +11,58 @@ import {
   MDBTable,
   MDBTableHead,
   MDBTableBody,
+  MDBInput,
 } from 'mdb-react-ui-kit';
-import '../css/OrderSummary.css'; // Import your CSS file here if needed
+import '../css/OrderSummary.css';
+import { UserContext } from '../pages/UserContext';
+import React, { useContext, useEffect } from 'react';
 
-const OrderSummary = ({ finalOrder, totalPrice, handleSubmit, handlePrevSubmit }) => {
+const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, handlePrevSubmit, checkboxChecked,setBonusChecked,bonusChecked }) => {
   const orderDate = new Date().toLocaleDateString();
+  const { user, setUser, refreshAccessToken } = useContext(UserContext);
+
+  useEffect(() => {
+    if (checkboxChecked) {
+      const getFundraiser = async () => {
+        try {
+          const fundraiserGetResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
+            method: "GET",
+            credentials: "include"
+          });
+
+          if (!fundraiserGetResponse.ok) {
+            if (!response.ok) {
+              if (response.status === 401) {
+                console.log('Refreshing token and retrying...');
+                await refreshAccessToken();
+                return getFundraiser();
+              }
+              throw new Error('Failed to fetch fundraiser.');
+            }
+          }
+
+          const data = await fundraiserGetResponse.json();
+          setUser({ ...user, ...data });
+        } catch (error) {
+          console.error('Error during fetching fundraiser:', error);
+
+        }
+      };
+
+      getFundraiser();
+    }
+  }, [checkboxChecked]);
+
+  const handleBonusClick = async () => {
+    if (  user.bonus === 0) 
+    {
+        alert('No bonus to applay')
+        setBonusChecked(false);
+       return;
+    }
+    setTotalPrice(totalPrice-user.bonus)
+    setBonusChecked(true);
+  }
 
   return (
     <MDBContainer fluid className="p-0 m-0 h-100">
@@ -55,22 +101,34 @@ const OrderSummary = ({ finalOrder, totalPrice, handleSubmit, handlePrevSubmit }
               <MDBTypography listUnStyled>
                 <li className="text-muted ms-3">
                   <span className="text-black me-4">SubTotal</span>
-                  ${parseFloat(totalPrice).toFixed(2)}
+                  {<span>${parseFloat(totalPrice).toFixed(2)}</span>}
                 </li>
                 <li className="text-muted ms-3 mt-2">
                   <span className="text-black me-4">Tax (15%)</span>
-                  ${parseFloat(totalPrice * 0.15).toFixed(2)}
+                  {<span>${parseFloat(totalPrice * 0.15).toFixed(2)}</span>}
                 </li>
               </MDBTypography>
             </MDBCol>
             <MDBCol xl="6">
               <p className="text-black float-end">
                 <span className="text-black me-3">Total Amount</span>
-                <span style={{ fontSize: "25px" }}>
+                {<span style={{ fontSize: "25px" }}>
                   ${(parseFloat(totalPrice) + parseFloat(totalPrice * 0.15)).toFixed(2)}
-                </span>
+                </span>}
               </p>
             </MDBCol>
+            {(checkboxChecked &&
+              <MDBInput
+                wrapperClass='mb-4'
+                label='Bonus'
+                id='form1'
+                type='readOnly'
+                style={{ textAlign: 'center' }}
+                value={!bonusChecked&&user.bonus || 0}  
+              />
+
+            )}
+           {(checkboxChecked && <MDBBtn onClick={handleBonusClick}>Applay Bonus</MDBBtn>)}
           </MDBRow>
         </MDBCardBody>
         <MDBCardFooter

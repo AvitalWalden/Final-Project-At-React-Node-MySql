@@ -7,20 +7,27 @@ const verifyJWT = (req, res, next) => {
         console.error('JWT token not found in cookies');
         return res.sendStatus(401);
     }
+    try {
+        jwt.verify(
+            cookieToken, // Use the token from cookies here
+            process.env.ACCESS_TOKEN_SECRET,
+            (err, decoded) => {
+                if (err) {
+                    console.error('JWT verification error:', err);
+                    throw err;
+                }
+                else {
+                    req.user = decoded.UserInfo.username; // Assuming your payload structure is "UserInfo"
+                    req.roles = decoded.UserInfo.roles;
+                    next();
+                }
 
-    jwt.verify(
-        cookieToken, // Use the token from cookies here
-        process.env.ACCESS_TOKEN_SECRET,
-        (err, decoded) => {
-            if (err) {
-                console.error('JWT verification error:', err);
-                return res.sendStatus(403); // Invalid token
             }
-            req.user = decoded.UserInfo.username; // Assuming your payload structure is "UserInfo"
-            req.roles = decoded.UserInfo.roles;
-            next();
-        }
-    );
+        );
+    } catch {
+        console.error('JWT token not found in cookies');
+        return res.sendStatus(401);
+    }
 }
 
 module.exports = verifyJWT;

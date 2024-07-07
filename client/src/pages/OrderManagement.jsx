@@ -47,7 +47,7 @@ const OrderManagement = ({ setEnableNav }) => {
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
-  }, [order, savedCartItems, selectedPackage]);
+  }, [order, savedCartItems, selectedPackage,user]);
 
   const handlePaymentClick = async (e) => {
     e.preventDefault();

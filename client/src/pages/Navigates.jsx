@@ -7,7 +7,8 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import { GiPodiumWinner ,GiFiles} from "react-icons/gi";
 import { LuFerrisWheel } from "react-icons/lu";
 import { BiSolidLogOut } from "react-icons/bi";
-
+import { OrderContext } from './OrderContext';
+import { BiSolidLogIn } from "react-icons/bi";
 import '../css/Navigates.css';
 import { MDBBadge } from "mdb-react-ui-kit";
 
@@ -16,6 +17,7 @@ const Navigates = ({ enableNav, setEnableNav }) => {
   const { user } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showNavPrompt, setShowNavPrompt] = useState(false);
+  const { order,savedCartItems } = useContext(OrderContext);
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -45,7 +47,7 @@ const Navigates = ({ enableNav, setEnableNav }) => {
     <div>
       <nav>
         {!user ? (
-          <Link to="/login" className={linkClassName} onClick={handleClick}>LogIn</Link>
+          <Link to="/login" className={linkClassName} onClick={handleClick}><BiSolidLogIn />LogIn</Link>
         ) : (
           <Link to="/logout" className={linkClassName} onClick={handleClick}><BiSolidLogOut /> LogOut</Link>
         )}
@@ -57,8 +59,8 @@ const Navigates = ({ enableNav, setEnableNav }) => {
           color="danger"
           className="position-absolute top_0 translate-middle"
         >
-          {3}
-        </MDBBadge>Order <FaShoppingCart /></Link>
+          {savedCartItems.length+order.length}
+        </MDBBadge> <FaShoppingCart /> Order</Link>
         <Link to="/winners" className={linkClassName} onClick={handleClick}><GiPodiumWinner /> Winners</Link>
         {user && user.role === 'admin' && (
           <>

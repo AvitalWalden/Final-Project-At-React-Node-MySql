@@ -115,4 +115,4 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
     }
 }
 
-module.exports = { updateUser, createUser, getUser, logIn, getUserForSignup,createNewUser,createUserLogInWithGoogle ,getUserByEmail}
+module.exports = { updateUser, createUser, getUser, logIn,createNewUser,createUserLogInWithGoogle ,getUserByEmail}

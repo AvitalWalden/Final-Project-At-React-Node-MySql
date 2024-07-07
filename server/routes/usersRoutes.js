@@ -7,7 +7,7 @@ const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const { createUser, getUser, updateUser, getUserForSignup, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
+const { createUser, getUser, updateUser, createNewUser, createUserLogInWithGoogle } = require('../controllers/usersController');
 const { postFundraiser } = require('../controllers/fundraisersController')
 router.use(cors());
 const cookieParser = require('cookie-parser');
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
             if (req.body.role == 'fundraiser') {
                 await postFundraiser(response.user.insertId, 0, 0, 0)
             }
-            const user = await getUserForSignup(response.user.insertId);
+            const user = await getUser(response.user.insertId);
     
             res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
             res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 30 * 1000 });
@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
-        if (!req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone) {
+        if ( !ValidateEmail(req.body.email)||!req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone) {
             const error = {
                 message: "Fill in the data"
             }
@@ -100,14 +100,23 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
 router.post("/newUser", async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;
-        const result = await createNewUser(name, username, email, phone, city, street, zipcode);
-
-        if (result.affectedRows > 0) {
-            const newUser = await getUserForSignup(result.insertId);
-            res.status(201).send(newUser);
-        } else {
-            res.status(400).send({ message: 'Failed to create user' });
+        if (!req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone  || !req.body.email) {
+            const error = {
+                message: "Fill in the data"
+            }
+            res.status(400).send(error);
         }
+        else{
+            const result = await createNewUser(name, username, email, phone, city, street, zipcode);
+
+            if (result.affectedRows > 0) {
+                const newUser = await getUser(result.insertId);
+                res.status(201).send(newUser);
+            } else {
+                res.status(400).send({ message: 'Failed to create user' });
+            }
+        }
+       
 
     } catch (err) {
         console.error('Error creating user:', err.message);
@@ -118,6 +127,7 @@ router.post("/newUser", async (req, res) => {
 
 function ValidateEmail(mailAdress) {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    console.log(mailAdress);
     return mailAdress.match(mailformat);
 }
 module.exports = router
