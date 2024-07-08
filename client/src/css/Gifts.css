@@ -65,13 +65,13 @@ img:active {
   width: 100%;
 }
 
-/* @media screen and (max-width: 600px) {
+ @media screen and (max-width: 600px) {
   .gift-containers {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller columns for mobile */
     grid-auto-rows: 350px; /* Smaller rows for mobile */
     margin: 5%;
   }
-} */
+} 
 
 .modal-x-overlay {
   position: fixed;

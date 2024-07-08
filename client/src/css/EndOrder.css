@@ -1,45 +1,54 @@
 .thank-you-modal-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.thank-you-modal-dialog {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.bg-lightblue {
-  background-color: #e3f2fd;
-}
-
-.animation-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.animation-box {
-  animation: bounce 1s infinite;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: transparent; /* Remove background */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .thank-you-modal-dialog {
+    animation: fadeIn 0.5s ease-in-out;
+    border-radius: 15px; /* Add rounded border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add shadow for better visibility */
+    width: 90%; /* Ensure the dialog takes up most of the container */
+    max-width: 600px; /* Optionally, limit the max width */
   }
-}
+  
+  .bg-lightblue {
+    background-color: white;
+    border-radius: 15px; /* Ensure content inside has the same rounded corners */
+    padding: 30px;
+    
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
   }
-  50% {
-    transform: translateY(-10px);
+  
+  .animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-}
+  
+  .animation-box {
+    animation: bounce 1s infinite;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
