@@ -68,9 +68,8 @@ img:active {
 
  @media screen and (max-width: 600px) {
   .gift-containers {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller columns for mobile 
-    grid-auto-rows: 350px; 
-    margin: 5%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+   
   }
 } 
 
