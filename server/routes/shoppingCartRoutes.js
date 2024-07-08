@@ -45,8 +45,9 @@ router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.us
 
     try {
         let shoppingCart;
-        const { userId, giftId,newQuantity } = req.body;
-        shoppingCart = await putShoppingCart(userId, giftId,newQuantity);
+        const { userId, giftId,quantity,isChecked } = req.body;
+        console.log("erer",userId,giftId,quantity,isChecked)
+        shoppingCart = await putShoppingCart(userId, giftId,quantity,isChecked);
         res.send(shoppingCart);
     } catch (err) {
         const error = {

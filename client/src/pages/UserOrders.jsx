@@ -99,7 +99,12 @@ const UserOrders = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center">You have no orders.</p>
+            <div className="container mt-5">
+            <div className="alert alert-info text-center" role="alert">
+              <h2>You have no orders.</h2>
+              <Link to="/gifts">Go shopping!</Link>
+            </div>
+          </div>
           )}
         </>
       )}

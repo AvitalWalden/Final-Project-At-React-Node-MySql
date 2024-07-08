@@ -1,0 +1,45 @@
+.thank-you-modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.thank-you-modal-dialog {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.bg-lightblue {
+  background-color: #e3f2fd;
+}
+
+.animation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animation-box {
+  animation: bounce 1s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

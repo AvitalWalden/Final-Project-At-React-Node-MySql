@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 import { OrderContext } from './OrderContext';
 
 const LogOut = () => {
-  const { setOrder, order, setSelectedPackage } = useContext(OrderContext);
+  const { setOrder, order, setSelectedPackage,setSavedCartItems } = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
   const { refreshAccessToken } = useContext(UserContext);
 
@@ -14,10 +14,10 @@ const LogOut = () => {
     if (logout) {
       await saveToDBShoppingCart();
       setOrder([]);
-      setUser(null);
+      setSavedCartItems([]);
       localStorage.removeItem('selectedPackage');
       await deleteToken();
-
+      setUser(null);
       navigate('/');
     } else {
       navigate('/gifts');
@@ -51,6 +51,8 @@ const LogOut = () => {
             return;
           }
         }
+        localStorage.removeItem('currentOrder');
+        
         const data = await response.json();
       } catch (error) {
         console.error('Error saving to shopping cart:', error);

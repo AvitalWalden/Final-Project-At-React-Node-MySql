@@ -3,57 +3,46 @@ html {
   scroll-padding-top: var(--top-spacing);
 }
 
-/* body {
-
-  margin: 0 !important;
-  text-align: center;
-} */
 #root {
   background-color: white;
-  /* height: 100%;
-  width: 100%;
-  padding: 0%; */
-  }
-  
+}
+
 .gift-containers {
   display: grid;
   grid-gap: 35px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
-  grid-auto-rows: 300px;
-  margin: 5% 5% 5% 5%;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Decrease min-width for smaller containers */
+  grid-auto-rows: 500px; /* Increase row height for larger containers */
+  margin: 5%;
 }
 
-.shearch{
+.shearch {
   font-size: 100%;
- 
 }
-.h2{
+
+.h2 {
   color: black;
 }
 
-.gift-containers>div{
+.gift-containers > div {
   display: flex;
   align-items: end;
   border: solid black;
-  /* font-size: 25px; */
   color: #ffffff;
   flex-direction: column;
   width: 100%;
   height: 100%;
   justify-content: space-between;
   border-radius: 2%;
-  /* box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px; */
 }
 
 .gift-card img,
-.gift-containers>div>img {
+.gift-containers > div > img {
   width: 100%;
   border-radius: 2%;
-  height: 50%;
+  height: 60%; /* Adjust height to match new container height */
   object-fit: cover;
   align-items: flex-end;
   transition: all 0.5s linear;
-
 }
 
 img:hover,
@@ -62,32 +51,25 @@ img:active {
   transform: scale(1.05);
 }
 
-.gift-containers>div>p {
-  /* font-size: 45%; */
+.gift-containers > div > p {
   margin: 2%;
   color: black;
   width: 95%;
   align-items: flex-start;
 }
 
-
-.gift-card>h1,
-.grid-container>div>h1 {
+.gift-card > h1,
+.grid-container > div > h1 {
   padding-top: 3%;
-  /* font-size: 65%; */
-  /* margin: 3% */
   color: black;
   width: 100%;
-
 }
 
 @media screen and (max-width: 600px) {
   .gift-containers {
-    width: 80%;
-    margin-top: 70%;
-    margin-left: auto;
-    margin-right: auto;
-
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller columns for mobile */
+    grid-auto-rows: 350px; /* Smaller rows for mobile */
+    margin: 5%;
   }
 }
 
@@ -98,32 +80,29 @@ img:active {
   width: 100%;
   height: 100%;
   background-color: rgba(211, 211, 211, 0.8);
-  /* צבע רקע אפור בהיר עם שקיפות */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   z-index: 1000;
-  /* לוודא שהמודל מעל לכל תוכן אחר */
 }
+
 .ripple-surface {
   position: relative;
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
   width: 20%;
+  
 }
-.centerB{
-  margin-left: 40% !important;
-  margin-left: auto;
+
+.centerB {
+  margin-left: 40%;
   margin-right: auto;
 }
+
 .modal-x {
   background-color: white;
   padding: 5px;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
   width: 400px;
-  /* height: 70%; */
   text-align: left;
   display: flex;
   justify-content: center;
@@ -141,16 +120,16 @@ img:active {
 .modal-x label,
 .modal-x input,
 .modal-x-buttons {
-  /* display: block; */
   width: 90%;
   margin-bottom: 10px;
 }
 
-.file{
+.file {
   background-color: white;
   font-size: medium;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
 .modal-x input {
   padding: 5px;
 }
@@ -173,13 +152,14 @@ img:active {
   border-radius: 10px;
   padding: 10px 10px;
   margin: 3%;
-  width:40%;
+  width: 40%;
   height: 45px;
   margin-left: auto;
   margin-right: auto;
   background-color: white;
   margin-top: 90px;
 }
+
 .gift-lottery-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -187,6 +167,7 @@ img:active {
   margin-top: 8%;
   padding: 20px;
 }
+
 .dropzone {
   border: 2px dashed #cccccc;
   border-radius: 4px;

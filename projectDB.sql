@@ -96,6 +96,7 @@ CREATE TABLE shopping_cart (
     user_id INT,
     gift_id INT,
     quantity INT,
+    isChecked bool DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (gift_id) REFERENCES gifts(gift_id) ON DELETE CASCADE
 );

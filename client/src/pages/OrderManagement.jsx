@@ -9,45 +9,50 @@ import { Link, useNavigate } from 'react-router-dom';
 const OrderManagement = ({ setEnableNav }) => {
   const navigate = useNavigate();
   const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage, totalPrice, setTotalPrice, calculateTotalPrice } = useContext(OrderContext);
-  const { user } = useContext(UserContext);
+  const { user,refreshAccessToken } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
-      if (user) {
-        try {
-          const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
-            method: "GET",
-            credentials: "include"
-          });
+      console.log(order,"l;l")
 
-          if (!response.ok) {
-            if (response.status === 402) {
-              throw new Error('No Acsses');
-            } else {
-              throw new Error('Failed to fetch saved cart items');
-            }
+      if (!user) {
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
+          method: "GET",
+          credentials: "include",
+        });
+    
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return fetchSavedCartItems();
           }
 
-          const data = await response.json();
-          setSavedCartItems(data);
-          savedCartItems.forEach((gift) => {
-            [{ ...gift, isChecked: false }]
-          });
-        } catch (error) {
-          console.error('Error fetching saved cart items:', error.message);
+          if (response.status === 402) {
+            throw new Error('No Access');
+          } else {
+            throw new Error('Failed to fetch saved cart items');
+          }
         }
+    
+        const data = await response.json();
+        setSavedCartItems(data);
+    
+      } catch (error) {
+        console.error('Error fetching saved cart items:', error.message);
       }
     };
-
     fetchSavedCartItems();
-  }, [user, order]);
-
-
+  }, [user]);
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
-  }, [order, savedCartItems, selectedPackage,user]);
+  }, [order, savedCartItems, selectedPackage, user]);
 
   const handlePaymentClick = async (e) => {
     e.preventDefault();
@@ -72,6 +77,11 @@ const OrderManagement = ({ setEnableNav }) => {
     removeFromOrder(giftId, IdentifyString);
   };
 
+  const handleDeletePackage = () => {
+    setSelectedPackage(null)
+    setTotalPrice(calculateTotalPrice());
+  }
+
   const handleCheckboxChange = (giftId, IdentifyString) => {
     if (IdentifyString == "current") {
       const updatedOrder = order.map((item) =>
@@ -79,18 +89,36 @@ const OrderManagement = ({ setEnableNav }) => {
       );
       setOrder(updatedOrder);
     } else {
-      const updatedShoppingCart = savedCartItems.map((item) =>
-        item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
-      );
-      setSavedCartItems(updatedShoppingCart);
+      const putToDBShoppingCart = async (giftId) => {
+        try {
+          const userId = user.user_id;
+          const currentItem = savedCartItems.find(item => item.gift_id === giftId);
+          const isChecked = currentItem.isChecked?0:1;
+         const quantity=currentItem.quantity;
+         console.log("erer",giftId,userId,currentItem,isChecked,quantity)
+          await fetch(`http://localhost:3000/shoppingCart`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: "include",
+            body: JSON.stringify({ userId, giftId,quantity, isChecked }),
+          });
+          const updatedShoppingCart = savedCartItems.map((item) =>
+            item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
+          );
+          setSavedCartItems(updatedShoppingCart);
+        } catch (error) {
+          console.error('Error saving shopping cart:', error);
+        }
+      };
+      putToDBShoppingCart(giftId);
     }
-    calculateTotalPrice();
+    setTotalPrice(calculateTotalPrice());
   };
 
-  const handleDeletePackage = () => {
-    setSelectedPackage(null)
-    setTotalPrice(calculateTotalPrice());
-  }
+
+
 
   const handleQuantityChange = (giftId, change, IdentifyString) => {
     if (IdentifyString === "current") {
@@ -115,9 +143,9 @@ const OrderManagement = ({ setEnableNav }) => {
         try {
           const userId = user.user_id;
           const currentItem = savedCartItems.find(item => item.gift_id === giftId);
-          const newQuantity = currentItem.quantity + change;
-
-          if (newQuantity < 1) {
+          const quantity = currentItem.quantity + change;
+          const isChecked = currentItem.isChecked;
+          if (quantity < 1) {
             alert('Invalid quantity');
             return;
           }
@@ -128,11 +156,11 @@ const OrderManagement = ({ setEnableNav }) => {
               'Content-Type': 'application/json',
             },
             credentials: "include",
-            body: JSON.stringify({ userId, giftId, newQuantity }),
+            body: JSON.stringify({ userId, giftId, quantity,isChecked }),
           });
 
           const updatedSavingCart = savedCartItems.map((item) =>
-            item.gift_id === giftId ? { ...item, quantity: newQuantity } : item
+            item.gift_id === giftId ? { ...item, quantity: quantity } : item
           );
           setSavedCartItems(updatedSavingCart);
         } catch (error) {
@@ -143,6 +171,7 @@ const OrderManagement = ({ setEnableNav }) => {
     }
     setTotalPrice(calculateTotalPrice());
   };
+
   const allItemsUnchecked = () => {
     const orderUnchecked = order.every((item) => !item.isChecked);
     const savedCartUnchecked = savedCartItems.every((item) => !item.isChecked);

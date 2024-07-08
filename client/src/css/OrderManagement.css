@@ -320,6 +320,6 @@
 }
 
 .custom-width {
-  width: 48px !important; /* The !important flag ensures this style takes precedence */
+  width: 65px !important; /* The !important flag ensures this style takes precedence */
   height: 30px !important;
 }

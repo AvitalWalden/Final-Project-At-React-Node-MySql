@@ -42,6 +42,7 @@ const Order = ({ orderId, onClose }) => {
 
     if (orderDetails === null) {
         return (
+            
             <div className="modal-container">
                 <div className="modal-dialog">
                     <div className="modal-content bg-lightblue">

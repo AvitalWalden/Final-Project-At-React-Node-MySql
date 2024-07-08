@@ -21,10 +21,9 @@ import GiftsChart from "./pages/GiftsChart";
 import Payment from "./pages/Payment";
 import FundraisersManagement from "./pages/FundraisersManagement";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import EndOrder from "./pages/EndOrder";
 function App() {
   const [enableNav, setEnableNav] = useState(true);
- console.log(enableNav,";;")
   return (
     <div>
       <BrowserRouter>
@@ -49,7 +48,7 @@ function App() {
               <Route path="/packages" element={<PackageSelector />} />
               <Route path="/giftsChart" element={<GiftsChart />} />
               <Route path="/fundraisersManagement" element={<FundraisersManagement/>} />
-
+              <Route path="/endOrder" element={<EndOrder/>} />
             </Routes>
 
           </OrderProvider>

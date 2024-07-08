@@ -10,7 +10,7 @@ import { MDBBtn, MDBCheckbox } from "mdb-react-ui-kit";
 const Payment = ({ setEnableNav }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { order, savedCartItems, totalPrice, removeFromSavedShoppingCart, setOrder, setSelectedPackage,setTotalPrice } = useContext(OrderContext);
+  const { order, savedCartItems, totalPrice, removeFromSavedShoppingCart, setOrder, setSelectedPackage, setTotalPrice } = useContext(OrderContext);
   const [currentStep, setCurrentStep] = useState(1);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [bonusChecked, setBonusChecked] = useState(false);
@@ -24,7 +24,9 @@ const Payment = ({ setEnableNav }) => {
     zipcode: '',
     phone: ''
   });
-
+  useEffect(() => {
+    setEnableNav(false)
+  }, [0]);
   useEffect(() => {
     if (checkboxChecked && user) {
       setNewUserDetails({
@@ -114,7 +116,7 @@ const Payment = ({ setEnableNav }) => {
         const giftIdsToDelete = checkedItems.map(item => item.gift_id);
         removeFromSavedShoppingCart(giftIdsToDelete);
       }
-      alert('Order created successfully!');
+      
       setOrderCreated(true);
 
     } catch (error) {
@@ -218,153 +220,154 @@ const Payment = ({ setEnableNav }) => {
       }
       else {
         handleUserOrder();
-      }}
-      catch{
-        console.error('Error:', error.message);
       }
     }
+    catch {
+      console.error('Error:', error.message);
+    }
+  }
   useEffect(() => {
-      if (user && orderCreated) {
-        localStorage.removeItem('selectedPackage');
-        localStorage.removeItem('currentOrder');
-        setOrder([]);
-        setEnableNav(true);
-        setSelectedPackage(false);
-        navigate('/gifts');
-      }
-    }, [orderCreated, setOrder, setEnableNav, setSelectedPackage, navigate, user]);
+    if (user && orderCreated) {
+      localStorage.removeItem('selectedPackage');
+      localStorage.removeItem('currentOrder');
+      setOrder([]);
+      setEnableNav(true);
+      setSelectedPackage(false);
+      navigate('/endOrder');
+    }
+  }, [orderCreated, setOrder, setEnableNav, setSelectedPackage, navigate, user]);
 
 
-    return (
-      <div className="payment-container d-flex flex-column align-items-center justify-content-center">
-        {user && user.role === "fundraiser" && (
-          <>
-            <div className="steps-container mb-3">
-              <div className={`step-indicator ${currentStep === 1 ? 'active' : ''}`}>
-                <span>1</span>
-              </div>
-              <div className={`step-indicator ${currentStep === 2 ? 'active' : ''}`}>
-                <span>2</span>
-              </div>
+  return (
+    <div className="payment-container d-flex flex-column align-items-center justify-content-center">
+      {user && user.role === "fundraiser" && (
+        <>
+          <div className="steps-container mb-3">
+            <div className={`step-indicator ${currentStep === 1 ? 'active' : ''}`}>
+              <span>1</span>
             </div>
-            {currentStep === 1 && (
-              <div className="user-form-container">
-                <h2>Add Donor</h2>
-                <MDBCheckbox label="My order" v-model="checkbox1" checked={checkboxChecked} onChange={handleCheckboxChange} />
-                <Form onSubmit={handleFormSubmit} className="user-form">
-                  <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridName">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="name"
-                        value={newUserDetails.name}
-                        onChange={handleChange}
-                        className="field1"
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formGridUsername">
-                      <Form.Label>Username</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="username"
-                        value={newUserDetails.username}
-                        onChange={handleChange}
-                        className="field1"
-                      />
-                    </Form.Group>
-                  </Row>
-                  <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridEmail">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        name="email"
-                        value={newUserDetails.email}
-                        onChange={handleChange}
-                        className="field1"
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formGridPhone">
-                      <Form.Label>Phone</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="phone"
-                        value={newUserDetails.phone}
-                        onChange={handleChange}
-                        className="field1"
-                      />
-                    </Form.Group>
-                  </Row>
-                  <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridCity">
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="city"
-                        value={newUserDetails.city}
-                        onChange={handleChange}
-                        className="field2"
-                      />
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formGridStreet">
-                      <Form.Label>Street</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="street"
-                        value={newUserDetails.street}
-                        onChange={handleChange}
-                        className="field2"
-                      />
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formGridZip">
-                      <Form.Label>Zip</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="zipcode"
-                        value={newUserDetails.zipcode}
-                        onChange={handleChange}
-                        className="field2"
-                      />
-                    </Form.Group>
-                  </Row>
-                  <Button variant="primary" type="submit" className="form-button" style={{ backgroundColor: "#60bdf3" }} >
-                    Next
-                  </Button>
-                </Form>
-              </div>
-            )}
-            {currentStep === 2 && (
-              <div className="order-summary-container">
-                {user && <OrderSummary
-                  finalOrder={finalOrder}
-                  totalPrice={totalPrice}
-                  setTotalPrice={setTotalPrice}
-                  checkboxChecked={checkboxChecked}
-                  handleSubmit={handleSubmit}
-                  handlePrevSubmit={handlePrevSubmit}
-                  setBonusChecked={setBonusChecked}
-                  bonusChecked={bonusChecked}
-                />}
-              </div>
-            )}
-          </>
-        )}
-        {user && user.role !== "fundraiser" && (
-          <div className="order-summary-container">
-            {user && <OrderSummary
-              finalOrder={finalOrder}
-              totalPrice={totalPrice}
-              setTotalPrice={setTotalPrice}
-              handleSubmit={handleSubmit}
-              handlePrevSubmit={false}
-            />}
+            <div className={`step-indicator ${currentStep === 2 ? 'active' : ''}`}>
+              <span>2</span>
+            </div>
           </div>
-        )}
-      </div>
-    );
-  };
+          {currentStep === 1 && (
+            <div className="user-form-container">
+              <h2>Add Donor</h2>
+              <MDBCheckbox label="My order" v-model="checkbox1" checked={checkboxChecked} onChange={handleCheckboxChange} />
+              <Form onSubmit={handleFormSubmit} className="user-form">
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="formGridName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={newUserDetails.name}
+                      onChange={handleChange}
+                      className="field1"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="formGridUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="username"
+                      value={newUserDetails.username}
+                      onChange={handleChange}
+                      className="field1"
+                    />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="formGridEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={newUserDetails.email}
+                      onChange={handleChange}
+                      className="field1"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="formGridPhone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="phone"
+                      value={newUserDetails.phone}
+                      onChange={handleChange}
+                      className="field1"
+                    />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="formGridCity">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="city"
+                      value={newUserDetails.city}
+                      onChange={handleChange}
+                      className="field2"
+                    />
+                  </Form.Group>
 
-  export default Payment;
+                  <Form.Group as={Col} controlId="formGridStreet">
+                    <Form.Label>Street</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="street"
+                      value={newUserDetails.street}
+                      onChange={handleChange}
+                      className="field2"
+                    />
+                  </Form.Group>
+
+                  <Form.Group as={Col} controlId="formGridZip">
+                    <Form.Label>Zip</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="zipcode"
+                      value={newUserDetails.zipcode}
+                      onChange={handleChange}
+                      className="field2"
+                    />
+                  </Form.Group>
+                </Row>
+                <Button variant="primary" type="submit" className="form-button" style={{ backgroundColor: "#60bdf3" }} >
+                  Next
+                </Button>
+              </Form>
+            </div>
+          )}
+          {currentStep === 2 && (
+            <div className="order-summary-container">
+              {user && <OrderSummary
+                finalOrder={finalOrder}
+                totalPrice={totalPrice}
+                setTotalPrice={setTotalPrice}
+                checkboxChecked={checkboxChecked}
+                handleSubmit={handleSubmit}
+                handlePrevSubmit={handlePrevSubmit}
+                setBonusChecked={setBonusChecked}
+                bonusChecked={bonusChecked}
+              />}
+            </div>
+          )}
+        </>
+      )}
+      {user && user.role !== "fundraiser" && (
+        <div className="order-summary-container">
+          {user && <OrderSummary
+            finalOrder={finalOrder}
+            totalPrice={totalPrice}
+            setTotalPrice={setTotalPrice}
+            handleSubmit={handleSubmit}
+            handlePrevSubmit={false}
+          />}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Payment;

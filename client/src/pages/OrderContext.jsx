@@ -32,14 +32,12 @@ export const OrderProvider = ({ children }) => {
       localStorage.setItem('selectedPackage', JSON.stringify(selectedPackage));
     } else {
       localStorage.removeItem('selectedPackage');
-
     }
   }, [selectedPackage]);
 
   useEffect(() => {
-   setTotalPrice(calculateTotalPrice());
-   
-  }, [user]);
+    setTotalPrice(calculateTotalPrice());
+  }, [user, order, savedCartItems, selectedPackage]);
 
   const addToOrder = (gift, checkbox) => {
     if (selectedPackage) {
@@ -65,6 +63,7 @@ export const OrderProvider = ({ children }) => {
 
     }
     setIsOrderListOpen(true);
+    setTotalPrice(calculateTotalPrice());
   };
 
   const removeFromOrder = (giftId, IdentifyString) => {
@@ -80,6 +79,7 @@ export const OrderProvider = ({ children }) => {
     setTimeout(() => {
       setMessage('');
     }, 3000);
+    setTotalPrice(calculateTotalPrice());
   };
 
   const removeFromSavedShoppingCart = async (giftIds) => {
@@ -108,15 +108,17 @@ export const OrderProvider = ({ children }) => {
     } catch (error) {
       console.error('Error deleting item:', error);
     }
+    setTotalPrice(calculateTotalPrice());
+
   };
 
   const calculateTotalPrice = () => {
 
       let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
   
-    if (totalPrice == 0) {
       order.forEach((gift) => {
         if (gift.isChecked) {
+       
           totalPrice += gift.price * gift.quantity;
         }
       });
@@ -127,7 +129,7 @@ export const OrderProvider = ({ children }) => {
         }
       });
     
-    }
+    
     return totalPrice.toFixed(2);
 
   };

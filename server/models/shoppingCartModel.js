@@ -8,7 +8,8 @@ async function getShoppingCart(userId) {
                 g.name,
                 g.price,
                 g.image_url,
-                sc.quantity
+                sc.quantity,
+                sc.isChecked
             FROM 
                 shopping_cart sc
             JOIN 
@@ -28,12 +29,12 @@ async function postShoppingCart(userId, temporaryCart) {
 
   for (const item of temporaryCart) {
     try {
-      const { gift_id, quantity } = item;
+      const { gift_id, quantity,isChecked } = item;
       const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, gift_id]);
       if (existingRows.length > 0) {
-        await pool.query('UPDATE shopping_cart SET quantity = quantity + ? WHERE user_id = ? AND gift_id = ?', [quantity, userId, gift_id]);
+        await pool.query('UPDATE shopping_cart SET quantity = quantity + ?,isChecked= ? WHERE user_id = ? AND gift_id = ?', [quantity,isChecked, userId, gift_id]);
       } else {
-        await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES (?, ?, ?)', [userId, gift_id, quantity]);
+        await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity,isChecked) VALUES (?, ?, ?,?)', [userId, gift_id, quantity,isChecked]);
       }
     } catch (err) {
       console.error('Error saving shopping cart:', err);
@@ -61,15 +62,15 @@ async function deleteShoppingCart(userId, giftIds) {
 }
 
 
-async function putShoppingCart(userId, giftId, newQuantity) {
+async function putShoppingCart(userId, giftId, quantity,isChecked) {
   try {
     const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, giftId]);
 
     if (existingRows.length > 0) {
-      await pool.query('UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND gift_id = ?', [newQuantity, userId, giftId]);
+      await pool.query('UPDATE shopping_cart SET quantity = ?,isChecked=? WHERE user_id = ? AND gift_id = ?', [quantity, isChecked,userId, giftId]);
       return { message: 'Gift quantity updated in shopping cart successfully' };
     } else {
-      await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES (?, ?, ?)', [userId, giftId, newQuantity]);
+      await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity,isChecked) VALUES (?, ?, ?,?)', [userId, giftId, quantity,isChecked]);
       return { message: 'Gift added to shopping cart successfully' };
     }
   } catch (err) {

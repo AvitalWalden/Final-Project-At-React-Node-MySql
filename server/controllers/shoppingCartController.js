@@ -24,10 +24,10 @@ async function deleteShoppingCart(userId,giftIds) {
         throw err;
     }
 }
-async function putShoppingCart(userId,giftId,newQuantity) {
+async function putShoppingCart(userId,giftId,quantity,isChecked) {
 
     try {
-        return model.putShoppingCart(userId,giftId,newQuantity);
+        return model.putShoppingCart(userId,giftId,quantity,isChecked);
     } catch (err) {
         throw err;
     }
