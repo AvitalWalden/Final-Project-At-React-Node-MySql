@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import user from '../images/user.png';
+import user1 from '../images/user1.png';
+
 
 function FundraiserCard({ fundraiser, setFundraisers, fundraisers }) {
     const [loading, setLoading] = useState(false);
@@ -38,7 +41,7 @@ function FundraiserCard({ fundraiser, setFundraisers, fundraisers }) {
                 <div className="d-flex">
                     <div className="flex-shrink-0">
                         <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                            src={user1}
                             alt="Generic placeholder image"
                             className="img-fluid"
                             style={{ width: '180px', borderRadius: '10px' }}
@@ -47,7 +50,7 @@ function FundraiserCard({ fundraiser, setFundraisers, fundraisers }) {
                     <div className="flex-grow-1 ms-3">
                         <h5 className="mb-1">{fundraiser.user_id}</h5>
                         <h5 className="mb-1">{fundraiser.name}</h5>
-                        <p className="mb-2 pb-1" style={{ color:'#3B71CA' }}>{fundraiser.status}</p>
+                        <p className="mb-2 pb-1" style={{ color: '#3B71CA' }}>{fundraiser.status}</p>
                         <div className="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
                             <div>
                                 <p className="small text-muted mb-1">Bonus</p>

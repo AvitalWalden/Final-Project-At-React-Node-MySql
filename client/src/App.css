@@ -330,16 +330,13 @@ input {
   margin-bottom: 20px;
 }
 
-.modal-content button {
-  background-color: #99D9EA;
+ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.modal-content button:hover {
-  background-color: #77b0d1;
-}
+
 .alert-info{
   margin-top: 2%;
 }
