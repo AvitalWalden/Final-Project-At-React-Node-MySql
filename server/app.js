@@ -1,6 +1,8 @@
 const config = require('./config/config')
 const express = require('express');
 const app = express();
+const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 app.use(express.json());
@@ -11,6 +13,17 @@ app.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 const port = 3000;
 
+const logger = (req, res, next)=>{
+    const url = req.url;
+    const date = new Date();
+    const msg = `Date: ${date}, Url:${url} \n`;
+    fs.appendFile(path.join(__dirname, 'log.txt'), msg, ()=>{
+        console.log('success!!');
+        next();
+    });
+
+}
+app.use(logger);
 const loginRoutes = require("./routes/loginRoutes")
 app.use("/login", loginRoutes);
 const giftsRoutes = require("./routes/giftsRoutes")
