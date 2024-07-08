@@ -54,7 +54,7 @@ app.listen(port, () => {
 });
 
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-    // Application specific logging, throwing an error, or other logic here
-});
+// process.on('unhandledRejection', (reason, promise) => {
+//     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+//     // Application specific logging, throwing an error, or other logic here
+// });
