@@ -14,7 +14,7 @@ export const OrderProvider = ({ children }) => {
     const storedPackage = localStorage.getItem('selectedPackage');
     return storedPackage ? JSON.parse(storedPackage) : null;
   });
-  
+
   useEffect(() => {
     const storedOrder = localStorage.getItem('currentOrder');
     if (storedOrder) {
@@ -114,11 +114,11 @@ export const OrderProvider = ({ children }) => {
 
   const calculateTotalPrice = () => {
 
-      let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
-  
+    let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
+    if (totalPrice === 0) {
       order.forEach((gift) => {
         if (gift.isChecked) {
-       
+
           totalPrice += gift.price * gift.quantity;
         }
       });
@@ -128,8 +128,8 @@ export const OrderProvider = ({ children }) => {
           totalPrice += gift.price * gift.quantity;
         }
       });
-    
-    
+
+    }
     return totalPrice.toFixed(2);
 
   };
