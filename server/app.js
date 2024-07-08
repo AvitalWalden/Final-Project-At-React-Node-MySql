@@ -1,50 +1,47 @@
 const config = require('./config/config')
 const express = require('express');
-const path = require('path');
 const app = express();
 const cors = require('cors');
-const verifyJWT = require('./middleware/verifyJWT')
 const cookieParser = require('cookie-parser')
-app.use(express.json( ));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
-
-// // Handle unhandled promise rejections
-// process.on('unhandledRejection', (reason, promise) => {
-//     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-//     // Recommended: send the information to sentry.io or another logging service
-// });
-
 const port = 3000;
 
-const loginRoutes=require("./routes/loginRoutes")
-app.use("/login",loginRoutes);
-const giftsRoutes=require("./routes/giftsRoutes")
-app.use("/gifts",giftsRoutes);
-const signupRoutes=require("./routes/usersRoutes")
-app.use("/signup",signupRoutes);
-const refreshRoutes=require("./routes/refreshTokenRoutes")
-app.use("/refresh",refreshRoutes);
-const logoutRoutes=require("./routes/logoutRoutes")
-app.use("/logout",logoutRoutes);
+const loginRoutes = require("./routes/loginRoutes")
+app.use("/login", loginRoutes);
+const giftsRoutes = require("./routes/giftsRoutes")
+app.use("/gifts", giftsRoutes);
+const signupRoutes = require("./routes/usersRoutes")
+app.use("/signup", signupRoutes);
+const refreshRoutes = require("./routes/refreshTokenRoutes")
+app.use("/refresh", refreshRoutes);
+const logoutRoutes = require("./routes/logoutRoutes")
+app.use("/logout", logoutRoutes);
 const imageRoutes = require("./routes/imagesRoutes")
-app.use("/upload",imageRoutes)
-const usersRoutes=require("./routes/usersRoutes")
-app.use("/users",usersRoutes);
-const ordersRoutes=require("./routes/ordersRoutes")
-app.use("/orders",ordersRoutes);
-const shoppingCartRoutes=require("./routes/shoppingCartRoutes")
-app.use("/shoppingCart",shoppingCartRoutes);
-const tokensRoutes=require("./routes/tokensRoutes")
-app.use("/refreshment",tokensRoutes);
-const packagesRoutes=require("./routes/packagesRoutes")
-app.use("/packages",packagesRoutes);
-const fundraisersRoutes=require("./routes/fundraisersRoutes")
-app.use("/fundraisers",fundraisersRoutes);
+app.use("/upload", imageRoutes)
+const usersRoutes = require("./routes/usersRoutes")
+app.use("/users", usersRoutes);
+const ordersRoutes = require("./routes/ordersRoutes")
+app.use("/orders", ordersRoutes);
+const shoppingCartRoutes = require("./routes/shoppingCartRoutes")
+app.use("/shoppingCart", shoppingCartRoutes);
+const tokensRoutes = require("./routes/tokensRoutes")
+app.use("/refreshment", tokensRoutes);
+const packagesRoutes = require("./routes/packagesRoutes")
+app.use("/packages", packagesRoutes);
+const fundraisersRoutes = require("./routes/fundraisersRoutes")
+app.use("/fundraisers", fundraisersRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
+});
+
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Application specific logging, throwing an error, or other logic here
 });

@@ -27,8 +27,8 @@ router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES
         res.status(500).send(error);
     }
 });
-router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
 
+router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
     try {
         let shoppingCart;
         const { userId, order } = req.body;
@@ -55,6 +55,7 @@ router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.us
         res.status(500).send(error);
     }
 });
+
 router.delete('/:userId', verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
       const userId = req.params.userId;

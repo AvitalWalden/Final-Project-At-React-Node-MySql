@@ -42,11 +42,11 @@ router.get("/:fundraiser_id",async (req, res) => {
         res.status(500).send(error);
     }
 });
+
 router.put("/:user_id", async (req, res) => {
     const userId = req.params.user_id;
     const updatedFundraiser = req.body; 
     updatedFundraiser.user_id = userId;
-
     try {
         const result = await updateFundraiser(updatedFundraiser);
        

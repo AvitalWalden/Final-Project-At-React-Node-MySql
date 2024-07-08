@@ -198,8 +198,7 @@ h2 {
 }
 
 
-nav {
-  /* background-color: transparent !important; */
+ nav {
   padding: 0;
   border: 2px solid black;
   display: flex;
@@ -207,28 +206,34 @@ nav {
   align-items: flex-end;
   font-size: 0;
   background-color: white;
-  /* margin-bottom: 160px; */
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 20; 
 }
+.navbar>.container, .navbar>.container-fluid, .navbar>.container-sm, .navbar>.container-md, .navbar>.container-lg, .navbar>.container-xl, .navbar>.container-xxl{
+  margin-top: 0% !important;
+}
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+  margin-right: auto;
+  margin-left: auto;
 
+}
 nav a, nav div {
   font-size: 22px;
   text-decoration: none;
   text-align: center;
   color: black;
   cursor: pointer;
-  padding: 10px 20px 13px 20px;
+  padding: 5px ;
   font-weight: bold;
   transition: transform 0.7s, color 0.7s, text-shadow 0.3s, border 0.7s;
-  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white, 0 0 50px white, 0 0 60px white, 0 0 70px white; /* Adjust shadow values */
+  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white, 0 0 50px white, 0 0 60px white, 0 0 70px white; 
 }
-
+/* 
 nav a:hover, nav div:hover {
   transform: scale(1.1);
-}
+}  */
 
 .page {
   display: grid;
@@ -336,7 +341,7 @@ input {
   background-color: #77b0d1;
 }
 .alert-info{
-  margin-top: 5%;
+  margin-top: 2%;
 }
 .google{
   position: relative;
@@ -354,22 +359,16 @@ input {
     display: flex;
     outline: 0;
 }
-.alert-info{
-  margin-top: 20% !important;
-}
+
 
 @media (max-width: 768px) {
   nav {
+    
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the start */
-    margin-bottom: 10%;
+    /* margin-bottom: 10%; */
   }
-.winners-container{
-  margin-top: 70%;
-}
-  nav a {
-    margin: 5px 0; /* Adjust margin for vertical stacking */
-  }
+
   #logo {
     display: none;
     order: -1;

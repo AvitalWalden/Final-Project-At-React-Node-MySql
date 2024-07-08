@@ -5,9 +5,7 @@ const refreshTokenController = require('../controllers/refreshTokenController');
 router.get('/', async (req, res) => {
     try {
         const cookies = req.cookies;
-
         const accessToken = await refreshTokenController.handleRefreshToken(cookies);
-
         res.cookie('jwt_accessToken', accessToken, { httpOnly: true, maxAge: 5*60 * 1000 });
         res.status(200).send({ accessToken });
     } catch (err) {

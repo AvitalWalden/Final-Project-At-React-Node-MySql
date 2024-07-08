@@ -13,7 +13,7 @@ router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 const {getPackages } = require('../controllers/packagesController');
 
-router.get("/",async (req, res) => {
+router.get("/",verifyJWT, async (req, res) => {
     try {
         const packages = await getPackages();
         res.send(packages);

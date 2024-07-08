@@ -23,25 +23,28 @@ async function getShoppingCart(userId) {
     throw err;
   }
 }
+
 async function postShoppingCart(userId, temporaryCart) {
-
-
-  for (const item of temporaryCart) {
-    try {
-      const { gift_id, quantity } = item;
-      const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, gift_id]);
-      if (existingRows.length > 0) {
-        await pool.query('UPDATE shopping_cart SET quantity = quantity + ? WHERE user_id = ? AND gift_id = ?', [quantity, userId, gift_id]);
-      } else {
-        await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES (?, ?, ?)', [userId, gift_id, quantity]);
+  try {
+    for (const item of temporaryCart) {
+      try {
+        const { gift_id, quantity } = item;
+        const [existingRows] = await pool.query('SELECT * FROM shopping_cart WHERE user_id = ? AND gift_id = ?', [userId, gift_id]);
+        if (existingRows.length > 0) {
+          await pool.query('UPDATE shopping_cart SET quantity = quantity + ? WHERE user_id = ? AND gift_id = ?', [quantity, userId, gift_id]);
+        } else {
+          await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES (?, ?, ?)', [userId, gift_id, quantity]);
+        }
+      } catch (err) {
+        console.error('Error saving shopping cart:', err);
+        throw err;
       }
-    } catch (err) {
-      console.error('Error saving shopping cart:', err);
-      throw err;
     }
+    return { message: 'Shopping cart saved successfully' };
+  } catch (err) {
+    console.error('Error creating gifts from shopping cart:', err);
+    throw err;
   }
-
-  return { message: 'Shopping cart saved successfully' };
 }
 
 async function deleteShoppingCart(userId, giftIds) {

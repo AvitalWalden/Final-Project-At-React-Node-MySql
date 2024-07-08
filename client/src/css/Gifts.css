@@ -20,6 +20,7 @@ html {
   grid-gap: 35px;
   grid-template-columns: repeat(auto-fit, minmax(300px, auto));
   grid-auto-rows: 300px;
+  padding-bottom: 30px;
   margin: 5% 5% 5% 5%;
 }
 
@@ -81,7 +82,7 @@ img:active {
 
 }
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .gift-containers {
     width: 80%;
     margin-top: 70%;
@@ -89,7 +90,7 @@ img:active {
     margin-right: auto;
 
   }
-}
+} */
 
 .modal-x-overlay {
   position: fixed;
@@ -178,7 +179,7 @@ img:active {
   margin-left: auto;
   margin-right: auto;
   background-color: white;
-  margin-top: 90px;
+  /* margin-top: 90px; */
 }
 .gift-lottery-container {
   display: grid;
