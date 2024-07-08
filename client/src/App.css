@@ -151,7 +151,9 @@ button {
 .text {
   text-align: center;
 }
-
+i{
+  color: black ;
+}
 .link {
   color: #000000;
   text-decoration: none;
@@ -159,6 +161,7 @@ button {
 }
 
 p {
+  color:black;
   margin-top: 0;
 }
 
