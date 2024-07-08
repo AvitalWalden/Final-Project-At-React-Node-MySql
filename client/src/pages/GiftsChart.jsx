@@ -125,12 +125,12 @@ const GiftsChart = () => {
         }
     };
     useEffect(() => {
-        if (user) {
+     
 
             fetchGiftsData();
             fetchFundraiserData();
-        }
-    }, [user]);
+        
+    }, []);
 
     const toggleChart = () => {
         setShowFundraiserChart(!showFundraiserChart);
@@ -141,9 +141,9 @@ const GiftsChart = () => {
 
     return (
         <div className='canvas'>
-            {user.role != 'admin' && (
+            {user&&user.role != 'admin' && (
                 <br />)}
-            {user.role === 'admin' && (
+            {user&&user.role === 'admin' && (
                 <div className='button-container'>
                     <button className='btn btn-primary' onClick={toggleChart}>
                         {showFundraiserChart ? 'Show Gifts Chart' : 'Show Fundraiser Chart'}
