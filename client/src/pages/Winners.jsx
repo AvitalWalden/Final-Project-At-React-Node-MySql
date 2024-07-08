@@ -41,7 +41,7 @@ const Winners = () => {
 
   return (
     <div className="W-container">
-      <h1>Winners List</h1>
+      <h1 className='W-containerH1'>Winners List</h1>
       <div className="winners-container">
         {winners.length > 0 ? (
           winners.map((winner, key) => (

@@ -22,17 +22,6 @@ async function getUserByEmail(email) {
     }
 }
 
-async function getUserForSignup(id) {
-    try {
-        const sql = 'SELECT * FROM users where user_id=?';
-        const result = await pool.query(sql, [id]);
-        return result[0][0];
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
-
 async function createUser(username, password, role) {
     try {
         const sqlAddress = "INSERT INTO addresses (city, street, zipcode) VALUES (?, ?, ?)";

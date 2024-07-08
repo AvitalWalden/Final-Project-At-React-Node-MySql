@@ -28,33 +28,26 @@ async function createUser(username, password, role) {
 
 async function createUserLogInWithGoogle(username, role, email) {
     try {
-
         const user = await model.createUserLogInWithGoogle(username, role, email);
-
         const newUser = await getUser(user.insertId);
         const token = await creatTokens(newUser, role);
-
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken;
-        // console.log(accessToken);
         return { user, accessToken, refreshToken };
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
             throw new Error('You need logIn')
         } else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
             throw new Error('email is in use')
-        }
-
-
-        else {
+        }else {
             throw err;
         }
     }
 }
+
 async function getUserLogInWithGoogle(email, role) {
     try {
-
         const user = await model.getUserByEmail(email);
         if (!user) {
             throw new Error('Email does not exist in the system');
@@ -73,13 +66,10 @@ async function logIn(userName, password) {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         console.log(userName)
         const user = await model.logIn(userName);
-
         if (user) {
             const role = Object.values(user.role);
             if (hashedPassword === user.password) {
-
                 token = await creatTokens(user, role);
-
                 updateToken(user.user_id, token.refreshToken);
                 const accessToken = token.accessToken
                 const refreshToken = token.refreshToken
@@ -102,6 +92,7 @@ async function getUser(id) {
         throw err;
     }
 }
+
 async function getUserByEmail(email) {
     try {
         return await model.getUserByEmail(email);
@@ -109,18 +100,9 @@ async function getUserByEmail(email) {
         throw err;
     }
 }
-// async function getUser(id) {
-//     try {
-//         return await model.getUser(id);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
 
 async function updateUser(id, name, username, email, city, street, zipcode, phone, addressId) {
     try {
-        console.log(username);
         return await model.updateUser(id, name, username, email, city, street, zipcode, phone, addressId);
     } catch (err) {
         if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
@@ -131,10 +113,10 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
         }
         else{
             throw err;
-
         }
     }
 }
+
 async function createNewUser(name, username, email, phone, city, street, zipcode) {
     try {
         return await model.createNewUser(name, username, email, phone, city, street, zipcode);
@@ -145,7 +127,6 @@ async function createNewUser(name, username, email, phone, city, street, zipcode
 
 async function creatTokens(user, role) {
     try {
-
         const username = user.username;
         const accessToken = jwt.sign(
             {

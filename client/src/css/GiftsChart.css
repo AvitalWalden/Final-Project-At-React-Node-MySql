@@ -16,6 +16,26 @@ button {
     margin-top: 6%;
 }
 .button-container{
-    margin-top: 30px;
-    margin-left: 40%;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.canvas {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.button-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .canvas {
+        padding: 10px;
+    }
 }

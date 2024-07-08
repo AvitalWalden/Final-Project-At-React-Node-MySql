@@ -8,7 +8,6 @@ async function getShoppingCart(id) {
     }
 }
 async function postShoppingCart(userId, temporaryCart) {
-
     try {
         return model.postShoppingCart(userId, temporaryCart);
     } catch (err) {
@@ -17,7 +16,6 @@ async function postShoppingCart(userId, temporaryCart) {
 }
 
 async function deleteShoppingCart(userId,giftIds) {
-
     try {
         return model.deleteShoppingCart(userId,giftIds);
     } catch (err) {

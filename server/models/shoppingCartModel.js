@@ -24,6 +24,7 @@ async function getShoppingCart(userId) {
     throw err;
   }
 }
+
 async function postShoppingCart(userId, temporaryCart) {
 
 

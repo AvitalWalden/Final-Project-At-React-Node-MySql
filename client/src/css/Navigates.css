@@ -1,4 +1,3 @@
-/* Navigates.css */
 nav {
   display: flex;
   justify-content: space-around;
@@ -14,7 +13,13 @@ nav a {
   transition: all 0.3s;
 }
 
-
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-collapse {
+      display: flex !important;
+      flex-basis: auto;
+      justify-content: center;
+  }
+}
 
 .dropdown {
   position: relative;
@@ -34,7 +39,7 @@ nav a {
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
-  z-index: 1; /* Keep dropdown content below alert */
+  z-index: 1; 
 }
 
 .dropdown-content a {
@@ -49,6 +54,8 @@ nav a {
 
 .enabled {
   opacity: 1;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .disabled {

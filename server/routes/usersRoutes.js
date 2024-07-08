@@ -14,8 +14,6 @@ const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
-
-
 router.post("/", async (req, res) => {
     try {
         let response;
@@ -25,7 +23,7 @@ router.post("/", async (req, res) => {
             }
             res.status(400).send(error);
         }
-        else{
+        else {
             if (!req.body.password) {
 
                 response = await createUserLogInWithGoogle(req.body.username, req.body.role, req.body.email)
@@ -37,13 +35,11 @@ router.post("/", async (req, res) => {
                 await postFundraiser(response.user.insertId, 0, 0, 0)
             }
             const user = await getUser(response.user.insertId);
-    
+
             res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
-            res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 5*60 * 1000 });
+            res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 5 * 60 * 1000 });
             res.send(user);
         }
-       
-
     } catch (err) {
         const error = {
             message: err.message
@@ -54,7 +50,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
     try {
-        if ( !ValidateEmail(req.body.email)||!req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone) {
+        if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone) {
             const error = {
                 message: "Fill in the data"
             }
@@ -63,11 +59,9 @@ router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundrais
         else {
             const id = req.params.id;
             const resultUser = await getUser(id);
-
             const addressID = resultUser.address_id;
             await updateUser(id, req.body.name, req.body.username, req.body.email, req.body.city, req.body.street, req.body.zipcode, req.body.phone, addressID);
             const userAfterChange = await getUser(id);
-
             delete userAfterChange.address_id;
             res.send(userAfterChange);
         }
@@ -83,10 +77,8 @@ router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundrais
 
 router.get("/:user_id", verifyJWT, async (req, res) => {
     try {
-        console.log("fffffffffff");
         const id = req.params.user_id;
         const user = await getUser(id);
-
         res.send(user);
     } catch (err) {
         console.error('Error fetching user:', err.message);
@@ -100,13 +92,13 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
 router.post("/newUser", async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;
-        if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone  || !req.body.email) {
+        if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone || !req.body.email) {
             const error = {
                 message: "Fill in the data"
             }
             res.status(400).send(error);
         }
-        else{
+        else {
             const result = await createNewUser(name, username, email, phone, city, street, zipcode);
 
             if (result.affectedRows > 0) {
@@ -116,8 +108,6 @@ router.post("/newUser", async (req, res) => {
                 res.status(400).send({ message: 'Failed to create user' });
             }
         }
-       
-
     } catch (err) {
         console.error('Error creating user:', err.message);
 
@@ -130,4 +120,5 @@ function ValidateEmail(mailAdress) {
     console.log(mailAdress);
     return mailAdress.match(mailformat);
 }
+
 module.exports = router

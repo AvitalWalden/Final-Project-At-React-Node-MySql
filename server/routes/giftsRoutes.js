@@ -25,6 +25,7 @@ router.get("/allGiftsOrderQuantity", async (req, res) => {
         res.status(500).send(error);
     }
 });
+
 router.get("/", async (req, res) => {
     try {
         res.send(await getGifts());
@@ -61,13 +62,11 @@ router.get("/:id", verifyRoles(ROLES_LIST.admin), async (req, res) => {
     }
 });
 
-router.get("/allGiftsOrderQuantity", verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
+router.get("/allGiftsOrderQuantity", async (req, res) => {
     try {
         const allGiftsOrderQuantity = await getAllGiftsOrderQuantity();
-
         const labels = allGiftsOrderQuantity.map(item => item.gift_name);
         const data = allGiftsOrderQuantity.map(item => item.total_quantity_ordered);
-
         const chartJSNodeCanvas = new ChartJSNodeCanvas({ width: 800, height: 600 });
         const configuration = {
             type: 'bar',
@@ -137,7 +136,6 @@ router.delete("/:gift_id", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req,
 
 router.put("/:id", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req, res) => {
     try {
-        console.log(!req.body.name);
         if (!req.body.name || !req.body.price) {
             const error = {
                 message: "Fill in the data"
