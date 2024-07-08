@@ -6,7 +6,7 @@ const EndOrder = () => {
   return (
     <div className="thank-you-modal-container">
       <div className="thank-you-modal-dialog">
-        <div className="thank-you-modal-content bg-lightblue">        
+        <div className="thank-you-modal-content bg-lightblue">
           <div className="thank-you-modal-body text-center">
             <div className="animation-container">
               <div className="animation-box">
