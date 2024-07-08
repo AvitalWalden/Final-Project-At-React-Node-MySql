@@ -14,7 +14,6 @@ async function getUserByEmail(email) {
     try {
         const sql = 'SELECT * FROM users natural join addresses where users.email=?';
         const result = await pool.query(sql, [email]);
-        console.log("plpl",email,result[0][0])
         return result[0][0];
     } catch (err) {
         console.log(err);
@@ -99,7 +98,7 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
         const userId = resultUser[0].insertId;
         return resultUser[0];
     } catch (err) {
-        console.error('Error creating user:', err);
+        // console.error('Error creating user:', err);
         throw err;
     }
 }

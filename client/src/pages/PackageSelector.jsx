@@ -21,11 +21,11 @@ const PackageSelector = () => {
       });
   
       if (!res.ok) {
-        if (res.status === 401) {
-          console.log('Refreshing token and retrying...');
-          await refreshAccessToken();
-          return handleGetPackages(); // Retry after refreshing token
-        } else if (res.status === 403) {
+        // if (res.status === 401) {
+        //   console.log('Refreshing token and retrying...');
+        //   await refreshAccessToken();
+        //   return handleGetPackages(); // Retry after refreshing token}
+         if (res.status === 403) {
           console.log('Invalid token, you cannot do it...');
           throw new Error('Access forbidden');
         } else {

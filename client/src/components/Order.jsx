@@ -43,8 +43,8 @@ const Order = ({ orderId, onClose }) => {
     if (orderDetails === null) {
         return (
             
-            <div className="modal-container">
-                <div className="modal-dialog">
+            // <div className="modal-container">
+                // <div className="modal-dialog">
                     <div className="modal-content bg-lightblue">
                         <div className="modal-header">
                             <h5 className="modal-title">Order Details</h5>
@@ -54,14 +54,14 @@ const Order = ({ orderId, onClose }) => {
                             <p>Loading...</p>
                         </div>
                     </div>
-                </div>
-            </div>
+                // </div>
+            // </div>
         );
     }
 
     return (
-        <div className="modal-container">
-            <div className="modal-dialog">
+        // <div className="modal-container">
+            // <div className="modal-dialog">
                 <div className="modal-content bg-lightblue">
                     <div className="modal-header">
                        
@@ -95,8 +95,8 @@ const Order = ({ orderId, onClose }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            // </div>
+        // </div>
     );
 };
 

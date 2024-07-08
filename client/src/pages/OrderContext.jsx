@@ -115,7 +115,7 @@ export const OrderProvider = ({ children }) => {
   const calculateTotalPrice = () => {
 
       let totalPrice = selectedPackage ? parseFloat(selectedPackage.price) : 0;
-  
+  console.log(totalPrice)
       order.forEach((gift) => {
         if (gift.isChecked) {
        

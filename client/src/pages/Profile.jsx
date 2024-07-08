@@ -6,6 +6,8 @@ import { TbEdit } from "react-icons/tb";
 import { TbEditOff } from "react-icons/tb";
 import profile from '../images/profile.png';
 import '../css/Profile.css'; // Import CSS for styling
+import user1 from '../images/user1.png'
+
 
 const Profile = () => {
   const { user } = useContext(UserContext);
@@ -317,7 +319,7 @@ const Profile = () => {
         )}
       </div>
       <div className="ProfileSideBar">
-        <img className="ProfileImage" src={profile} alt="Profile" />
+        <img className="ProfileImage" src={user1} alt="Profile" />
         <Typography variant="h6" className="Username">{user.username}</Typography>
         <Button
           variant="outlined"

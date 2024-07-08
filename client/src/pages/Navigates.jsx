@@ -82,7 +82,7 @@ const Navigates = ({ enableNav, setEnableNav }) => {
                 <Link to="/gifts" className={linkClassName} onClick={handleClick}> <FaGift /> Gifts</Link>
               </MDBNavbarItem>
               <MDBNavbarItem>
-                <Link to="/packages" className={linkClassName} onClick={handleClick}>  <TbPackages /> Our Packages</Link>
+                {user && <Link to="/packages" className={linkClassName} onClick={handleClick}>  <TbPackages /> Our Packages</Link>}
               </MDBNavbarItem>
               <MDBNavbarItem>
                 <Link to="/orderManagement" className={linkClassName} onClick={handleClick}><MDBBadge
@@ -106,6 +106,9 @@ const Navigates = ({ enableNav, setEnableNav }) => {
                 {user && user.role === 'admin' && (
                   <Link to="/allOrders" className={linkClassName} onClick={handleClick}><GiFiles /> All orders</Link>
                 )}
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                {user && <Link to="/giftsChart" className={linkClassName} onClick={handleClick}>GiftsChart <FaChartBar /></Link>}
               </MDBNavbarItem>
               <MDBNavbarItem>
                 {user && user.role === 'admin' && (
