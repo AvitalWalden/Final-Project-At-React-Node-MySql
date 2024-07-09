@@ -83,7 +83,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
             await refreshAccessToken();
-            return handleUpload(gift_id); // Retry fetch after token refresh
+            return handleUpload(gift_id); 
           }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
@@ -160,10 +160,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1 className='price'>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
             {user &&  user.role == "admin" && (
-              // <div className="btn-admin">
-              //   <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
-              //   <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>
-              // </div>
               <Stack direction="row" spacing={1}>
                 <IconButton aria-label="Edit" color="primary" onClick={handleEditGift}>
                   <AiFillEdit />
