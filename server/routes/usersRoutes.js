@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
         }
         else {
             if (!req.body.password) {
-
                 response = await createUserLogInWithGoogle(req.body.username, req.body.role, req.body.email)
             }
             else {
@@ -34,7 +33,6 @@ router.post("/", async (req, res) => {
                 await postFundraiser(response.user.insertId, 0, 0, 0)
             }
             const user = await getUser(response.user.insertId);
-
             res.cookie('jwt_refreshToken', response.refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 20 * 60 * 60 * 1000 });
             res.cookie('jwt_accessToken', response.accessToken, { httpOnly: true, maxAge: 5 * 60 * 1000 });
             res.send(user);

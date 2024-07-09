@@ -30,7 +30,6 @@ function App() {
         <UserProvider>
           <OrderProvider>
             <Navigates enableNav={enableNav} setEnableNav={setEnableNav} />
-
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/gifts" element={<Gifts />} />

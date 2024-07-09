@@ -12,12 +12,8 @@ async function updateToken(user_id, refreshToken) {
     }
 }
 
-async function creatToken(user_id, refreshToken) {
+async function creatTokenDB(user_id, refreshToken) {
     try {
-        console.log("creatToken");
-        console.log(user_id);
-        console.log(refreshToken);
-        
         const sqlToken = "INSERT INTO token (user_id, refreshToken) VALUES (?, ?)";
         const [resultToken] = await pool.query(sqlToken, [user_id, refreshToken]);
         const tokenId = resultToken.insertId;
@@ -64,4 +60,4 @@ async function deleteToken(id) {
 }
 
 
-module.exports = { updateToken, creatToken, getTokensAndUsers, deleteToken, getTokenAndUserByToken }
+module.exports = { updateToken, creatTokenDB, getTokensAndUsers, deleteToken, getTokenAndUserByToken }

@@ -14,6 +14,36 @@ const LogIn = () => {
   const [loginError, setLoginError] = useState('');
   const { setUser } = useContext(UserContext);
 
+  const fetchFundraiser = async (data) => {
+    try {
+      const fundraiserUrl = `http://localhost:3000/fundraisers/${data.user_id}`;
+      const fundraiserRequestOptions = {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      };
+
+      const fundraiserResponse = await fetch(fundraiserUrl, fundraiserRequestOptions);
+      const fundraiserData = await fundraiserResponse.json();
+
+      if (!fundraiserResponse.ok) {
+        if (fundraiserResponse.status === 500) {
+          throw fundraiserResponse.error;
+        }
+      } else {
+        if (fundraiserData.status === 'pending') {
+          setLoginError('Waiting for admin approval');
+          return;
+        } else if (fundraiserData.status === 'blocked') {
+          setLoginError('You have been blocked by the admin!');
+          return;
+        }
+      }
+    } catch {
+      throw new Error('Failed to fetch fundraiser data');
+    }
+  }
+
   const handleLogin = async () => {
     if (!username || !password) {
       setLoginError('Please fill in all fields.');
@@ -31,52 +61,29 @@ const LogIn = () => {
     try {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
-
-      if (response.ok) {
-        if (data.role === 'fundraiser') {
-          const fundraiserUrl = `http://localhost:3000/fundraisers/${data.user_id}`;
-          const fundraiserRequestOptions = {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          };
-
-          const fundraiserResponse = await fetch(fundraiserUrl, fundraiserRequestOptions);
-          const fundraiserData = await fundraiserResponse.json();
-
-          if (fundraiserResponse.ok) {
-            if (fundraiserData.status === 'pending') {
-              setLoginError('Waiting for admin approval');
-              return;
-            } else if (fundraiserData.status === 'blocked') {
-              setLoginError('You have been blocked by the admin!');
-              return;
-            }
-
-            setUser(data);
-            setUsername('');
-            setPassword('');
-            setLoginError('Login successful');
-            navigate('/gifts');
-          } else {
-            throw new Error(fundraiserData.message || 'Failed to fetch fundraiser data');
-          }
-        } else {
-          // Handle other roles if necessary
-          setUser(data);
-          setUsername('');
-          setPassword('');
-          setLoginError('Login successful');
-          navigate('/gifts');
+      if (!response.ok) {
+        if (response.status === 500) {
+          throw data.message;
         }
-      } else {
-        throw new Error(data.message || 'Login failed');
+        else if (response.status === 400) {
+          console.log("Fill in the data")
+          throw data.message;
+        }
+      }
+      else {
+        if (data.role === 'fundraiser') {
+          fetchFundraiser(data);
+        }
+        setUser(data);
+        setUsername('');
+        setPassword('');
+        setLoginError('Login successful');
+        navigate('/gifts');
       }
     } catch (error) {
-      setLoginError(error.message);
+      setLoginError(error);
     }
   };
-
 
   function handleRegistrationWithGoogle(user) {
     const url = 'http://localhost:3000/login';
@@ -91,9 +98,8 @@ const LogIn = () => {
       .then(response => response.json())
       .then(data => {
         if (data.message) {
-          throw new Error(data.message);
+          throw data.message;
         }
-        console.log(data);
         setUser(data);
         navigate('/gifts');
       })

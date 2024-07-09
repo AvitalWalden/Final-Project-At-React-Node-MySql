@@ -10,9 +10,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId="914868581421-941amdhclu0qopke8nuj7djf2duip9lm.apps.googleusercontent.com">
-
       <App />
     </GoogleOAuthProvider>
-
   </React.StrictMode>
 )

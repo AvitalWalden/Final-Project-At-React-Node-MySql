@@ -3,17 +3,17 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const config = require('../config/config.js');
 const jwt = require('jsonwebtoken');
-const { creatToken, updateToken } = require('../models/tokensModel.js');
+const { creatTokenDB, updateToken } = require('../models/tokensModel.js');
 
 async function createUser(username, password, role) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
         const user = await model.createUser(username, hashedPassword, role);
 
-        const g = await getUser(user.insertId);
-        const token = await creatTokens(g, role);
+        const getNewUser = await getUser(user.insertId);
+        const token = await creatTokens(getNewUser, role);
 
-        creatToken(user.insertId, token.refreshToken);
+        creatTokenDB(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken
         return { user, accessToken, refreshToken };
@@ -30,11 +30,9 @@ async function createUserLogInWithGoogle(username, role, email) {
     try {
         const user = await model.createUserLogInWithGoogle(username, role, email);
         const newUser = await getUser(user.insertId);
-        console.log(newUser);
-        console.log(user);
 
         const token = await creatTokens(newUser, role);
-        creatToken(user.insertId, token.refreshToken);
+        creatTokenDB(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken;
         return { user, accessToken, refreshToken };
@@ -56,9 +54,6 @@ async function getUserLogInWithGoogle(email) {
             throw new Error('Email does not exist in the system');
         }
         const token = await creatTokens(user, user.role);
-        console.log("user.user_id")
-
-        console.log(user.user_id)
         updateToken(user.user_id, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken;
@@ -67,11 +62,12 @@ async function getUserLogInWithGoogle(email) {
         throw err;
     }
 }
+
 async function logIn(userName, password) {
     try {
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-        console.log(userName)
         const user = await model.logIn(userName);
+
         if (user) {
             const role = user.role;
             if (hashedPassword === user.password) {
@@ -133,8 +129,6 @@ async function createNewUser(name, username, email, phone, city, street, zipcode
 
 async function creatTokens(user, role) {
     try {
-        console.log(role);
-
         const username = user.username;
         const accessToken = jwt.sign(
             {

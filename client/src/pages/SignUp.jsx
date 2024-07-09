@@ -46,17 +46,18 @@ const SignUp = () => {
         if (response.status === 500) {
           throw user.message;
         }
-        if (response.status === 400) {
+        else if (response.status === 400) {
           console.log("Fill in the data")
           throw user.message;
         }
-      
+        else{
         setUser(user);
         setverifyPassword("");
         setUserName("");
         setPassword("");
         setRole("");
         navigate("/userDetails");
+        }
       }))
       .catch(error => {
         setSignUpError(error);
@@ -81,7 +82,6 @@ const SignUp = () => {
             throw user.message;
           }
         } else {
-
           setUser(user);
           navigate("/userDetails");
         }
@@ -115,7 +115,6 @@ const SignUp = () => {
 
                 <MDBCol col='6'>
                   <div className='mb-4'>
-                    {/* <p className='mb-2'>Role</p> */}
                     <MDBRadio name='roleRadio' id='roleUser' value='user' label='User' onChange={(e) => setRole(e.target.value)} checked={role === 'user'} inline />
                     <MDBRadio name='roleRadio' id='roleFundraiser' value='fundraiser' label='Fundraiser' onChange={(e) => setRole(e.target.value)} checked={role === 'fundraiser'} inline />
                   </div>
