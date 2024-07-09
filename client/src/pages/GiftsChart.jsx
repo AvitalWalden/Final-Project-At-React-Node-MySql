@@ -138,7 +138,7 @@ const GiftsChart = () => {
 
 
         fetchGiftsData();
-        if (user.role === 'admin') {
+        if (user&&user.role === 'admin') {
             fetchFundraiserData();
         }
 
