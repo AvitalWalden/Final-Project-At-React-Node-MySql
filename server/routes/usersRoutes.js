@@ -97,13 +97,8 @@ router.post("/newUser",verifyJWT,verifyRoles(["admin",'fundraiser']) ,async (req
         }
         else {
             const result = await createNewUser(name, username, email, phone, city, street, zipcode);
-
-            // if (result.affectedRows > 0) {
                 const newUser = await getUser(result.insertId);
                 res.status(201).send(newUser);
-            // } else {
-            //     res.status(400).send({ message: 'Failed to create user' });
-            // }
         }
     }  catch (err) {
 
