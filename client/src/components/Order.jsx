@@ -35,7 +35,7 @@ const Order = ({ orderId, onClose }) => {
                 }
 
             } catch (error) {
-                console.error('Error fetching order details:', error);
+                 console.log('Error fetching order details:', error);
             }
         };
 

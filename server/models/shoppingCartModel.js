@@ -20,7 +20,7 @@ async function getShoppingCart(userId) {
     const [rows, fields] = await pool.query(sql, [userId]);
     return rows;
   } catch (err) {
-    console.error(err);
+     console.log(err);
     throw err;
   }
 }
@@ -38,7 +38,7 @@ async function postShoppingCart(userId, temporaryCart) {
         await pool.query('INSERT INTO shopping_cart (user_id, gift_id, quantity,isChecked) VALUES (?, ?, ?,?)', [userId, gift_id, quantity,isChecked]);
       }
     } catch (err) {
-      console.error('Error saving shopping cart:', err);
+       console.log('Error saving shopping cart:', err);
       throw err;
     }
   }
@@ -57,7 +57,7 @@ async function deleteShoppingCart(userId, giftIds) {
       return { message: 'Gifts not found in shopping cart' };
     }
   } catch (err) {
-    console.error('Error deleting gifts from shopping cart:', err);
+     console.log('Error deleting gifts from shopping cart:', err);
     throw err;
   }
 }
@@ -75,7 +75,7 @@ async function putShoppingCart(userId, giftId, quantity,isChecked) {
       return { message: 'Gift added to shopping cart successfully' };
     }
   } catch (err) {
-    console.error('Error updating shopping cart:', err);
+     console.log('Error updating shopping cart:', err);
     throw err;
   }
 }

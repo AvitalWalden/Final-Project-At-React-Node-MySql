@@ -41,7 +41,7 @@ function AllOrders() {
         setOrders(ordersData);
       }
     } catch (error) {
-      console.error('Error fetching orders:', error);
+       console.log('Error fetching orders:', error);
       setOrders([]);
     }
   };

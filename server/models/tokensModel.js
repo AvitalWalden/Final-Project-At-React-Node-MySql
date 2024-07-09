@@ -7,7 +7,7 @@ async function updateToken(user_id, refreshToken) {
 
         return result;
     } catch (err) {
-        console.error('Error updating user:', err);
+         console.log('Error updating user:', err);
         throw err;
     }
 }
@@ -19,7 +19,7 @@ async function creatTokenDB(user_id, refreshToken) {
         const tokenId = resultToken.insertId;
         return tokenId;
     } catch (err) {
-        console.error('Error creating user:', err);
+         console.log('Error creating user:', err);
         throw err;
     }
 }
@@ -44,7 +44,7 @@ async function getTokenAndUserByToken(token) {
         const [result] = await pool.query(sql, [token]);
         return result[0];
     } catch (err) {
-        console.error('Error in getTokenAndUserByToken:', err);
+         console.log('Error in getTokenAndUserByToken:', err);
         throw err;
     }
 }
@@ -54,7 +54,7 @@ async function deleteToken(id) {
         const sql = `UPDATE token SET refreshToken = NULL WHERE user_id = ?`;
         await pool.query(sql, [id]);
     } catch (err) {
-        console.error('Error updating token to null:', err);
+         console.log('Error updating token to null:', err);
         throw err;
     }
 }

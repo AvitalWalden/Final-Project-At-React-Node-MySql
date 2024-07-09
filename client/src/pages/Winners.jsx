@@ -34,7 +34,7 @@ const Winners = () => {
       const data = await response.json();
       setWinners(data);
     } catch (error) {
-      console.error('Error fetching winners:', error);
+       console.log('Error fetching winners:', error);
       setWinners([]);
     }
   };

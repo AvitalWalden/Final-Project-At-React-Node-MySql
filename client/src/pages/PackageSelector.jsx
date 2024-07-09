@@ -36,7 +36,7 @@ const PackageSelector = () => {
       const data = await res.json();
       setPackages(data);
     } catch (error) {
-      console.error('Error fetching packages:', error);
+       console.log('Error fetching packages:', error);
       setPackages([]);
     }
   };

@@ -34,7 +34,7 @@ async function createUser(username, password, role) {
 
         return resultUser[0];
     } catch (err) {
-        console.error('Error creating user:', err);
+         console.log('Error creating user:', err);
         throw err;
     }
 }
@@ -48,7 +48,7 @@ async function createUserLogInWithGoogle(username, role,email) {
         const resultUser = await pool.query(sqlUser, [username, addressId,role,email]);
         return resultUser[0];
     } catch (err) {
-        console.error('Error creating user:', err);
+         console.log('Error creating user:', err);
         throw err;
     }
 }
@@ -83,7 +83,7 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
 
         return resultUser;
     } catch (err) {
-        console.error('Error updating user:', err);
+         console.log('Error updating user:', err);
         throw err;
     }
 }
@@ -98,7 +98,7 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
         const userId = resultUser[0].insertId;
         return resultUser[0];
     } catch (err) {
-        // console.error('Error creating user:', err);
+        //  console.log('Error creating user:', err);
         throw err;
     }
 }

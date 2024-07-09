@@ -10,7 +10,7 @@ async function getOrders() {
         const [result] = await pool.query(sql);
         return result;
     } catch (err) {
-        console.error(err);
+         console.log(err);
         throw err;
     }
 }
@@ -36,7 +36,7 @@ async function getOrder(userId) {
         console.log(rows,"pppkkk")
         return rows;
     } catch (err) {
-        console.error(err);
+         console.log(err);
         throw err;
     }
 }
@@ -80,7 +80,7 @@ async function createOrder(user_id, order_date, order) {
         return { orderId, user_id, order_date, order };
 
     } catch (err) {
-        console.error(err);
+         console.log(err);
         throw err;
     }
 }

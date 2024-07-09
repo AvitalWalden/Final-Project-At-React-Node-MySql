@@ -30,7 +30,7 @@ const UserOrders = () => {
           setOrders(groupedOrders);
         }
       } catch (error) {
-        console.error('Error fetching orders:', error);
+         console.log('Error fetching orders:', error);
         setError(error.message);
       }
     };

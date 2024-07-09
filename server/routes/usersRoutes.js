@@ -78,7 +78,7 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
         const user = await getUser(id);
         res.send(user);
     } catch (err) {
-        console.error('Error fetching user:', err.message);
+         console.log('Error fetching user:', err.message);
         const error = {
             message: err.message
         }
@@ -106,7 +106,7 @@ router.post("/newUser", async (req, res) => {
             }
         }
     } catch (err) {
-        console.error('Error creating user:', err.message);
+         console.log('Error creating user:', err.message);
 
         res.status(500).send({ message: err.message });
     }

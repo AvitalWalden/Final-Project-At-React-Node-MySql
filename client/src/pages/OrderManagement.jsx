@@ -44,7 +44,7 @@ const OrderManagement = ({ setEnableNav }) => {
         setSavedCartItems(data);
     
       } catch (error) {
-        console.error('Error fetching saved cart items:', error.message);
+         console.log('Error fetching saved cart items:', error.message);
       }
     };
     fetchSavedCartItems();
@@ -109,7 +109,7 @@ const OrderManagement = ({ setEnableNav }) => {
           );
           setSavedCartItems(updatedShoppingCart);
         } catch (error) {
-          console.error('Error saving shopping cart:', error);
+           console.log('Error saving shopping cart:', error);
         }
       };
       putToDBShoppingCart(giftId);
@@ -164,7 +164,7 @@ const OrderManagement = ({ setEnableNav }) => {
           );
           setSavedCartItems(updatedSavingCart);
         } catch (error) {
-          console.error('Error saving shopping cart:', error);
+           console.log('Error saving shopping cart:', error);
         }
       };
       putToDBShoppingCart(giftId, change);

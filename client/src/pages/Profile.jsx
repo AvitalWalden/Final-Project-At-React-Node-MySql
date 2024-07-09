@@ -54,7 +54,7 @@ const Profile = () => {
       const data = await response.json();
       setUserDetails(data);
     } catch (error) {
-      console.error('Error fetching user details:', error);
+       console.log('Error fetching user details:', error);
       setUserDetails([]);
     }
   };
@@ -74,7 +74,7 @@ const Profile = () => {
       const data = await response.json();
       setFundraiserDetails(data);
     } catch (error) {
-      console.error('Error fetching fundraiser details:', error);
+       console.log('Error fetching fundraiser details:', error);
       setFundraiserDetails([]);
     }
   };
@@ -134,7 +134,7 @@ const Profile = () => {
       setUserDetails(data);
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating user details:', error);
+       console.log('Error updating user details:', error);
       setUseDetailsError('Error updating user:', error);
       setUserDetails([]);
     }

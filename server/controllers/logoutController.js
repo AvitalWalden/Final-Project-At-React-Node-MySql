@@ -13,7 +13,6 @@ const handleLogout = async (req, res) => {
         res.clearCookie('jwt_refreshToken', { httpOnly: true, sameSite: 'None', secure: true });
         return res.sendStatus(204);
     }
-
     await deleteToken(foundUser.user_id);
     res.clearCookie('jwt_refreshToken', { httpOnly: true, sameSite: 'None', secure: true });
     res.clearCookie('jwt_accessToken', { httpOnly: true, sameSite: 'None', secure: true });

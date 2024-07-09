@@ -32,8 +32,6 @@ function Lottery({ gift }) {
                 winner_id: id
             })
         };
-        console.log("updateWinner");
-
         try {
             const response = await fetch(url, requestOptions);
             if (!response.ok) {
@@ -52,26 +50,24 @@ function Lottery({ gift }) {
             setSpinning(true);
             setTimeout(() => {
                 setSpinning(false);
-            }, 4000);
+            }, 3000);
         } catch (error) {
-            console.error('Error updating winner:', error);
+            console.log('Error updating winner:', error);
             alert(`Error updating winner: ${error.message}. Please try again later.`);
         }
     };
 
     const getOrder = async (gift_id) => {
-        console.log("getOrder");
         try {
             const response = await fetch(`http://localhost:3000/orders/gift_id/${gift_id}`, {
                 method: "GET",
                 credentials: "include"
             });
-
             if (!response.ok) {
                 if (response.status === 401) {
                     console.log('Refreshing token and retrying...');
                     await refreshAccessToken();
-                    return getOrder(gift_id); // Retry fetch after token refresh
+                    return getOrder(gift_id);
                 }
 
                 if (response.status === 403) {
@@ -100,7 +96,7 @@ function Lottery({ gift }) {
                 alert('No orders found for this gift.');
             }
         } catch (error) {
-            console.error('Error fetching orders:', error);
+            console.log('Error fetching orders:', error);
             alert(`An error occurred while fetching orders: ${error.message}`);
         }
     };
