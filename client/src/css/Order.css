@@ -16,7 +16,9 @@
 
 }
 .modal-content {
-  position: fixed !important;}
+  position: fixed !important;
+  overflow-y: visible !important;
+}
 .modal-content ,.bg-lightblue {
   max-width: 600px;
   width: 90%;
@@ -25,7 +27,7 @@
   padding: 20px;
   border: 1px solid #888;
   max-height: 60vh; /* Smaller height */
-  overflow-y: auto; /* Scrollbar */
+  overflow-y: visible !important; /* Scrollbar */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
   border-radius: 20px; /* Rounded borders */
   background-color: rgba(255, 255, 255) !important; /* Light background with transparency */

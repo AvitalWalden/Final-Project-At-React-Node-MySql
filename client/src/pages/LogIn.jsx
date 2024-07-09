@@ -107,7 +107,7 @@ const LogIn = () => {
         navigate('/gifts');
       })
       .catch(error => {
-        setLoginError(error.message);
+        setLoginError(error);
       });
   }
 
