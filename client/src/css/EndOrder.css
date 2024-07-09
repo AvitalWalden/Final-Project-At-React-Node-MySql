@@ -16,6 +16,7 @@
   
   .bg-lightblue {
     background-color: white;
+    overflow: hidden !important;
     border-radius: 15px; /* Ensure content inside has the same rounded corners */
     padding: 30px;
     

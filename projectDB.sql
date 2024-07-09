@@ -132,12 +132,23 @@ INSERT INTO addresses (city, street, zipcode) VALUES
 ('Beersheba', 'Derech Eilat', '77889'),
 ('Holon', 'Sokolov', '99000'),
 ('Bnei Brak', 'Rabbi Akiva', '11111'),
-('Ramat Gan', 'Ayalon', '22222');
+('Ramat Gan', 'Ayalon', '22222'),
+('Eilat', 'Begin', '33333'),
+('Ashkelon', 'Hagoren', '44444'),
+('Herzliya', 'Hamesila', '55555'),
+('Modiin', 'Hadar', '66666'),
+('Ra\'anana', 'Ha\'Emek', '77777'),
+('Petah Tikva', 'Arlozorov', '88888'),
+('Kfar Saba', 'Haharoshet', '99999'),
+('Rehovot', 'Herzl', '12346'),
+('Hod Hasharon', 'Hanesiim', '54322'),
+('Bat Yam', 'Herzl', '67891');
+
 
 -- Insert users
 INSERT INTO users (name, username, email, address_id, phone, role) VALUES
-('John Doe', 'johndoe', 'A058587@gmail.com', 1, '050-1234567',  'user'),
-('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678',  'admin'),
+('michal Doe', 'michal', 'A058587@gmail.com', 1, '050-1234567',  'admin'),
+('Jane Smith', 'janesmith', 'n025711858@gmail.com', 2, '050-2345678',  'fundraiser'),
 ('David Cohen', 'davidcohen', 'M0583295188@gmail.com', 3, '050-3456789', 'user'),
 ('Rachel Levi', 'rachellevi', 'NW0548455073@gmail.com', 4, '050-4567890',  'user'),
 ('Michael Rosen', 'michaelrosen', 'chinesesalewe@gmail.com', 5, '050-5678901',  'user'),
@@ -145,11 +156,21 @@ INSERT INTO users (name, username, email, address_id, phone, role) VALUES
 ('Daniel Katz', 'danielkatz', 'efratk354@gmail.com', 7, '050-7890123',  'fundraiser'),
 ('Esther Green', 'esthergreen', 'efratmilet@gmail.com', 8, '050-8901234',  'user'),
 ('Yossi Azulay', 'yossiazulay', 'odeya2424@gmail.com', 9, '050-9012345',  'user'),
-('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456',  'admin');
+('Leah Bar', 'leahbar', 'ormi2424@gmail.com', 10, '050-0123456',  'fundraiser'),
+('Tom Hanks', 'tomhanks', 'tomhanks@example.com', 11, '050-2233445', 'user'),
+('Emma Watson', 'emmawatson', 'emmawatson@example.com', 12, '050-3344556', 'fundraiser'),
+('Robert Downey', 'robertdowney', 'robertdowney@example.com', 13, '050-4455667', 'user'),
+('Scarlett Johansson', 'scarlettj', 'scarlettj@example.com', 14, '050-5566778', 'user'),
+('Chris Evans', 'chrisevans', 'chrisevans@example.com', 15, '050-6677889', 'user'),
+('Gal Gadot', 'galgadot', 'galgadot@example.com', 16, '050-7788990', 'fundraiser'),
+('Mark Ruffalo', 'markruffalo', 'markruffalo@example.com', 17, '050-8899001', 'fundraiser'),
+('Zendaya Coleman', 'zendaya', 'zendaya@example.com', 18, '050-9900011', 'user'),
+('Chris Hemsworth', 'chrishems', 'chrishems@example.com', 19, '050-0011223', 'user'),
+('Brie Larson', 'brielarson', 'brielarson@example.com', 20, '050-1122334', 'fundraiser');
 
 -- Insert passwords
 INSERT INTO passwords (user_id, password) VALUES
-(1, 'hashed_password1'),
+(1, '12345678'),
 (2, 'hashed_password2'),
 (3, 'hashed_password3'),
 (4, 'hashed_password4'),
@@ -158,7 +179,17 @@ INSERT INTO passwords (user_id, password) VALUES
 (7, 'hashed_password7'),
 (8, 'hashed_password8'),
 (9, 'hashed_password9'),
-(10, 'hashed_password10');
+(10, 'hashed_password10'),
+(11, 'hashed_password11'),
+(12, 'hashed_password12'),
+(13, 'hashed_password13'),
+(14, 'hashed_password14'),
+(15, 'hashed_password15'),
+(16, 'hashed_password16'),
+(17, 'hashed_password17'),
+(18, 'hashed_password18'),
+(19, 'hashed_password19'),
+(20, 'hashed_password20');
 
 -- Insert gifts
 INSERT INTO gifts (winner_id, name, price, image_url) VALUES
@@ -203,7 +234,18 @@ INSERT INTO donations (donate_id, user_id, gift_id, description) VALUES
 (7, 7, 7, 'Support for hospital'),
 (8, 8, 8, 'Charity for needy families'),
 (9, 9, 9, 'Assistance for elderly'),
-(10, 10, 10, 'Help for disaster victims');
+(10, 10, 10, 'Help for disaster victims'),
+(11, 11, 11, 'Donation for new project'),
+(12, 12, 12, 'Community support'),
+(13, 13, 13, 'Health care assistance'),
+(14, 14, 14, 'Donation for education'),
+(15, 15, 15, 'Support for arts'),
+(16, 16, 16, 'Donation for sports'),
+(17, 17, 17, 'Environmental support'),
+(18, 18, 18, 'Animal welfare donation'),
+(19, 19, 19, 'Support for homeless'),
+(20, 20, 20, 'Donation for libraries');
+
 
 -- Insert orders
 INSERT INTO orders (user_id, order_date) VALUES
@@ -216,7 +258,18 @@ INSERT INTO orders (user_id, order_date) VALUES
 (7, '2024-05-29'),
 (8, '2024-05-30'),
 (9, '2024-05-31'),
-(10,'2024-06-01');
+(10,'2024-06-01'),
+(11, '2024-06-02'),
+(12, '2024-06-03'),
+(13, '2024-06-04'),
+(14, '2024-06-05'),
+(15, '2024-06-06'),
+(16, '2024-06-07'),
+(17, '2024-06-08'),
+(18, '2024-06-09'),
+(19, '2024-06-10'),
+(20, '2024-06-11');
+
 
 -- Insert lotteries
 INSERT INTO lottery (start_date, end_date) VALUES
@@ -229,7 +282,17 @@ INSERT INTO lottery (start_date, end_date) VALUES
 ('2024-12-01', '2024-12-31'),
 ('2025-01-01', '2025-01-31'),
 ('2025-02-01', '2025-02-28'),
-('2025-03-01', '2025-03-31');
+('2025-03-01', '2025-03-31'),
+('2025-04-01', '2025-04-30'),
+('2025-05-01', '2025-05-31'),
+('2025-06-01', '2025-06-30'),
+('2025-07-01', '2025-07-31'),
+('2025-08-01', '2025-08-31'),
+('2025-09-01', '2025-09-30'),
+('2025-10-01', '2025-10-31'),
+('2025-11-01', '2025-11-30'),
+('2025-12-01', '2025-12-31'),
+('2026-01-01', '2026-01-31');
 
 -- Insert lotteries_tickets
 INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
@@ -242,12 +305,33 @@ INSERT INTO lotteries_tickets (order_id, quantity, gift_id) VALUES
 (7, 70, 7),
 (8, 80, 8),
 (9, 90, 9),
-(10, 100, 10);
+(10, 100, 10),
+(2, 20, 2),
+(3, 30, 3),
+(4, 40, 4),
+(5, 50, 5),
+(6, 60, 6),
+(7, 70, 7),
+(8, 80, 8),
+(9, 90, 9),
+(10, 100, 10),
+(11, 110, 11);
 
 -- Insert shopping_cart
 INSERT INTO shopping_cart (user_id, gift_id, quantity) VALUES
 (1, 1, 2),
-(2, 3, 1);
+(2, 3, 1),
+(3, 4, 1),
+(4, 5, 2),
+(5, 6, 3),
+(6, 7, 4),
+(7, 8, 5),
+(8, 9, 6),
+(9, 10, 7),
+(10, 11, 8),
+(11, 12, 9),
+(12, 13, 10);
+
 
 INSERT INTO token (user_id, refreshToken) VALUES
 (1, NULL),
@@ -259,7 +343,17 @@ INSERT INTO token (user_id, refreshToken) VALUES
 (7, NULL),
 (8, NULL),
 (9, NULL),
-(10, NULL);
+(10, NULL),
+(11, NULL),
+(12, NULL),
+(13, NULL),
+(14, NULL),
+(15, NULL),
+(16, NULL),
+(17, NULL),
+(18, NULL),
+(19, NULL),
+(20, NULL);
 
 -- Insert packages
 INSERT INTO packages (name,short_description, description, price,amount, image_url) VALUES
@@ -269,7 +363,15 @@ INSERT INTO packages (name,short_description, description, price,amount, image_u
 
 INSERT INTO fundraisers (user_id, bonus, debt, people_fundraised) VALUES
 (6, 50, 100.00, 10),
-(7, 30, 200.00, 5);
+(7, 30, 200.00, 5),
+(16, 40, 150.00, 8),
+(17, 20, 250.00, 6),
+(1, 60, 300.00, 12),
+(2, 10, 50.00, 3),
+(3, 35, 180.00, 9),
+(4, 25, 210.00, 7),
+(5, 45, 90.00, 4),
+(8, 55, 400.00, 15);
 
 
 -- Hash the passwords
