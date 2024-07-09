@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   const refreshAccessToken = async () => {
     try {
@@ -44,6 +45,7 @@ export const UserProvider = ({ children }) => {
         if (!response.ok) {
           if (response.status === 401) {
             console.log('Log in first');
+            navigate('/login')
             return;
           }
           throw new Error('Failed to refresh user');

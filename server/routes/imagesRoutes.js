@@ -14,7 +14,6 @@ router.use(express.urlencoded({ extended: true }));
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 router.use(cookieParser());
 
-// Ensure the directory exists
 const uploadDir = path.join(__dirname, '../public/images');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
