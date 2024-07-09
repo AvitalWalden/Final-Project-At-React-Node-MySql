@@ -49,13 +49,13 @@ async function createUserLogInWithGoogle(username, role, email) {
     }
 }
 
-async function getUserLogInWithGoogle(email, role) {
+async function getUserLogInWithGoogle(email) {
     try {
         const user = await model.getUserByEmail(email);
         if (!user) {
             throw new Error('Email does not exist in the system');
         }
-        const token = await creatTokens(user, role);
+        const token = await creatTokens(user, user.role);
         console.log("user.user_id")
 
         console.log(user.user_id)

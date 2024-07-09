@@ -19,7 +19,7 @@ const LogIn = () => {
       setLoginError('Please fill in all fields.');
       return;
     }
-  
+
     const url = 'http://localhost:3000/login';
     const requestOptions = {
       method: 'POST',
@@ -27,11 +27,11 @@ const LogIn = () => {
       credentials: "include",
       body: JSON.stringify({ username, password })
     };
-  
+
     try {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
-  
+
       if (response.ok) {
         if (data.role === 'fundraiser') {
           const fundraiserUrl = `http://localhost:3000/fundraisers/${data.user_id}`;
@@ -40,10 +40,10 @@ const LogIn = () => {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
           };
-  
+
           const fundraiserResponse = await fetch(fundraiserUrl, fundraiserRequestOptions);
           const fundraiserData = await fundraiserResponse.json();
-  
+
           if (fundraiserResponse.ok) {
             if (fundraiserData.status === 'pending') {
               setLoginError('Waiting for admin approval');
@@ -52,7 +52,7 @@ const LogIn = () => {
               setLoginError('You have been blocked by the admin!');
               return;
             }
-  
+
             setUser(data);
             setUsername('');
             setPassword('');
@@ -76,7 +76,7 @@ const LogIn = () => {
       setLoginError(error.message);
     }
   };
-  
+
 
   function handleRegistrationWithGoogle(user) {
     const url = 'http://localhost:3000/login';
@@ -118,7 +118,7 @@ const LogIn = () => {
           <MDBCol md='6' >
             <MDBCard className='my-5'>
               <MDBCardBody className='p-5'>
-            {loginError && <p className='error mt-4' style={{ color: loginError === "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
+                {loginError && <p className='error mt-4' style={{ color: loginError === "Registration successful" ? 'green' : "red" }}>{loginError}</p>}
                 <MDBRow>
                   <MDBCol col='12'>
                     <MDBInput wrapperClass='mb-4' label='Username' id='form1 Username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -137,8 +137,7 @@ const LogIn = () => {
                         const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
                         const user = {
                           username: credentialResponseDecoded.name,
-                          email: credentialResponseDecoded.email,
-                          role: 'user'
+                          email: credentialResponseDecoded.email
                         };
                         handleRegistrationWithGoogle(user);
                       }}

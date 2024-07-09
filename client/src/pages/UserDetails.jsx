@@ -23,6 +23,16 @@ const UserDetails = () => {
     });
 
     const handleChange = (field, value) => {
+        const onlyLetters = /^[a-zA-Z\s]*$/;
+        const onlyNumbers = /^[0-9]*$/;
+
+        if (field === 'name' || field === 'username' || field === 'street' || field === 'city') {
+            if (!onlyLetters.test(value)) return;
+        }
+
+        if (field === 'phone') {
+            if (!onlyNumbers.test(value) || value.length > 10) return;
+        }
         setUserDetails(prevDetails => ({
             ...prevDetails,
             [field]: value
@@ -123,7 +133,7 @@ const UserDetails = () => {
                                             <MDBInput label='City' type='text' value={userDetails.city} onChange={(e) => handleChange('city', e.target.value)} />
                                         </MDBCol>
                                         <MDBCol>
-                                            <MDBInput label='Zip' type='text' value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} />
+                                            <MDBInput label='ZipCode' type='number' value={userDetails.zipcode} onChange={(e) => handleChange('zipcode', e.target.value)} />
                                         </MDBCol>
                                     </MDBRow>
                                     <MDBRow className="mb-4">
