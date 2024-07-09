@@ -85,8 +85,8 @@ const UserOrders = () => {
                       <ul>
                         {groupedOrder.map((order, key) => (
                           <li key={key} className="gift-item">
-                            <span className="gift-name">Gift: {order.name}</span>
-                            <span className="gift-price">Price: {order.price}</span>
+                            <span className="gift-name">Gift: {order.name} </span>
+                            <span className="gift-price">&nbsp;Price: {order.price}</span>
                             {key < groupedOrder.length - 1 && <hr className="gift-separator" />}
                           </li>
                         ))}

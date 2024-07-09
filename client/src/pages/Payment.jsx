@@ -111,38 +111,37 @@ const Payment = ({ setEnableNav }) => {
 
 
   const addNewUser = async () => {
-    fetch('http://localhost:3000/users/newUser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(newUserDetails),
-    }).then(response => response.json().then(user => {
+    try {
+      const response = await fetch('http://localhost:3000/users/newUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(newUserDetails),
+      });
+      const user = await response.json();
       if (response.status === 500) {
         throw user.message;
-      }
-      else if (response.status === 401) {
+      } else if (response.status === 401) {
         console.log('Refreshing token and retrying...');
-        refreshAccessToken();
+        await refreshAccessToken();
         return addNewUser();
-      }
-      else if (response.status === 400) {
-        console.log("Fill in the data")
+      } else if (response.status === 400) {
+        console.log("Fill in the data");
         throw user.message;
-      }
-      else if (response.status === 403) {
-        console.log('invalid token you cannot do it...');
+      } else if (response.status === 403) {
+        console.log('Invalid token, you cannot do it...');
         throw user.message;
-      }
-      else {
+      } else {
+        console.log(user, "kk");
         return user;
       }
-    })).catch(error => {
+    } catch (error) {
       alert(error);
-      return;
-    });
-  }
+      return null;
+    }
+  };
 
   const getFundraiser = async () => {
     const fundraiserGetResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
@@ -233,6 +232,7 @@ const Payment = ({ setEnableNav }) => {
 
       throw new Error('Failed to create new user order');
     }
+    setOrderCreated(true);
   }
 
   const putFundraiserBonus = async () => {
@@ -318,6 +318,7 @@ const Payment = ({ setEnableNav }) => {
     try {
       if (user && user.role === 'fundraiser' && !checkboxChecked) {
         const newUser = await addNewUser();
+        console.log(newUser);
         if(!newUser)
         {
           return;

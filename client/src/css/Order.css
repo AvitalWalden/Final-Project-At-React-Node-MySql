@@ -1,46 +1,42 @@
-.modal-content ,.bg-lightblue  {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.modal-container {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
-  overflow-y: visible !important; /* Scrollbar */
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1050;
+}
 
+.modal-dialog {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  z-index: 1150;
+  background-color: white;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 0.3rem;
+  outline: 0;
   width: 55vw;
   height: 70vh;
-  z-index: 1050;
-  background-color: white;
-  border-radius: 40px;
-  border-color: #3B71CA;
-
-}
-.modal-content {
-  position: fixed !important;
-  overflow-y: visible !important;
-}
-.modal-content ,.bg-lightblue {
-  max-width: 600px;
-  overflow-y: visible !important; /* Scrollbar */
-
-  width: 90%;
-  padding: 20px;
-  border: 1px solid #888;
-  max-height: 60vh; /* Smaller height */
-  overflow-y: visible !important; /* Scrollbar */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  max-height: 70vh;
+  overflow-y: auto; /* Add vertical scrollbar */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border-radius: 20px; /* Rounded borders */
-  background-color: rgba(255, 255, 255) !important; /* Light background with transparency */
-  /* width: 50vw !important; */
-  /* height: 70vh; */
-  margin-top: auto;
-  margin-bottom: auto;
-  color: white; /* White text */
 }
 
 .btn-close {
-  color:black !important;/* White color for close button */
+  color: black !important; /* Black color for close button */
   margin-left: 50px;
 }
 
@@ -65,7 +61,7 @@
 }
 
 .modal-body {
-  padding-bottom: 20px;
+  padding: 20px;
 }
 
 .order-info,
