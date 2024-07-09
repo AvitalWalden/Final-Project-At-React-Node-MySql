@@ -30,6 +30,7 @@ const LogIn = () => {
         if (fundraiserResponse.status === 500) {
           throw fundraiserResponse.error;
         }
+        throw data.message;
       } else {
         if (fundraiserData.status === 'pending') {
           setLoginError('Waiting for admin approval');
@@ -67,6 +68,8 @@ const LogIn = () => {
         }
         else if (response.status === 400) {
           console.log("Fill in the data")
+          throw data.message;
+        }else{
           throw data.message;
         }
       }
