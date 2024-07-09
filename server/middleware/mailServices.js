@@ -21,7 +21,7 @@ async function sendWinnerEmail(winnerEmail, giftName) {
         await transporter.sendMail(mailOptions);
         console.log('Email sent successfully');
     } catch (error) {
-        console.error('Error sending email:', error);
+         console.log('Error sending email:', error);
     }
 }
 async function sendOrderEmail(recipientEmail, orderSummary, totalPrice) {
@@ -43,7 +43,7 @@ async function sendOrderEmail(recipientEmail, orderSummary, totalPrice) {
         await transporter.sendMail(mailOptions);
         console.log('Order summary email sent successfully');
     } catch (error) {
-        console.error('Error sending email:', error);
+         console.log('Error sending email:', error);
     }
 }
 async function sendFundraiserEmail(email, status) {
@@ -58,7 +58,7 @@ async function sendFundraiserEmail(email, status) {
         await transporter.sendMail(mailOptions);
         console.log('Email sent successfully');
     } catch (error) {
-        console.error('Error sending email:', error);
+         console.log('Error sending email:', error);
     }
 }
 

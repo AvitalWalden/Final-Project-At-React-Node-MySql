@@ -106,7 +106,7 @@ export const OrderProvider = ({ children }) => {
 
       setSavedCartItems(savedCartItems.filter(item => !idsArray.includes(item.gift_id)));
     } catch (error) {
-      console.error('Error deleting item:', error);
+       console.log('Error deleting item:', error);
     }
     setTotalPrice(calculateTotalPrice());
 

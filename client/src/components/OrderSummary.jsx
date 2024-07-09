@@ -44,7 +44,7 @@ const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, hand
           const data = await fundraiserGetResponse.json();
           setUser({ ...user, ...data });
         } catch (error) {
-          console.error('Error during fetching fundraiser:', error);
+           console.log('Error during fetching fundraiser:', error);
 
         }
       };

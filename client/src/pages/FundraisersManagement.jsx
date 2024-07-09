@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FundraiserCard from '../components/FundraiserCard';
 import { UserContext } from './UserContext';
@@ -8,13 +8,16 @@ function FundraisersManagement() {
   const { refreshAccessToken } = useContext(UserContext);
 
   const handleGetFundraiser = () => {
-    fetch('http://localhost:3000/fundraisers')
+    fetch('http://localhost:3000/fundraisers', {
+      method: "GET",
+      credentials: "include"
+    })
       .then(async response => {
-        response.json();
         if (!response.ok) {
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
             await refreshAccessToken();
+            return handleGetFundraiser();
           }
           if (response.status === 402) {
             console.log('NO Acsses...');
@@ -29,9 +32,12 @@ function FundraisersManagement() {
             return;
           }
         }
-      })
-      .then(data => setFundraisers(data))
-      .catch(error => console.error('Error fetching fundraisers:', error));
+        else {
+          const data =await response.json();
+
+          setFundraisers(data)
+        }
+      }).catch(error =>  console.log('Error fetching fundraisers:', error));
   }
 
   useEffect(() => {

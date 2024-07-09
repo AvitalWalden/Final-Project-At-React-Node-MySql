@@ -55,7 +55,7 @@ router.put('/:gift_id', upload.single('image'), async (req, res) => {
         }
 
     } catch (err) {
-        console.error("Error updating image:", err);
+         console.log("Error updating image:", err);
         res.status(500).send({ error: err.message });
     }
 });

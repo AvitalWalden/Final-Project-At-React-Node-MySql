@@ -19,7 +19,7 @@ async function updateFundraiserForStatus(updatedFundraiser) {
         const result = await pool.query(sql, values); 
         return result;
     } catch (error) {
-        console.error('Error updating fundraiser:', error.message);
+         console.log('Error updating fundraiser:', error.message);
         throw error;
     }
 }
@@ -41,7 +41,7 @@ async function updatedFundraiser(updatedFundraiser) {
         const result = await pool.query(sql, values); 
         return result;
     } catch (error) {
-        console.error('Error updating fundraiser:', error.message);
+         console.log('Error updating fundraiser:', error.message);
         throw error;
     }
 }

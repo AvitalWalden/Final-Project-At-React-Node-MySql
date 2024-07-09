@@ -25,7 +25,7 @@ const verifyRoles = (allowedRoles) => {
             console.log(`User with role ID ${req.role} has access`);
             next();
         } catch (error) {
-            console.error('Error in verifyRoles middleware:', error);
+             console.log('Error in verifyRoles middleware:', error);
             res.sendStatus(500); 
         }
     };

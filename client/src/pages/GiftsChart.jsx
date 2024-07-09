@@ -90,7 +90,7 @@ const GiftsChart = () => {
                 if (response.status === 401) {
                     console.log('Refreshing token and retrying...');
                     await refreshAccessToken();
-                    return fetchFundraiserData(); // Retry fetch after token refresh
+                    return fetchFundraiserData();
                 }
 
                 if (response.status === 403) {
@@ -103,46 +103,45 @@ const GiftsChart = () => {
             console.log(data);
             if (data.length === 0) {
                 throw new Error('Empty data received');
+            } else {
+                const labels = data.map(item => item.fundraiser_name);
+                const peopleFundraised = data.map(item => item.people_fundraised);
+                const amountRaised = data.map(item => item.debt); // הוספת סכום ההתרמה
+
+                setFundraiserChartData({
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Total Funds Raised',
+                            data: peopleFundraised,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'amount raised',
+                            data: amountRaised,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                });
             }
-
-            const labels = data.map(item => item.fundraiser_name);
-            const peopleFundraised = data.map(item => item.people_fundraised);
-            const amountRaised = data.map(item => item.debt); // הוספת סכום ההתרמה
-
-            setFundraiserChartData({
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Total Funds Raised',
-                        data: peopleFundraised,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                        yAxisID: 'y'
-                    },
-                    {
-                        label: 'amount raised',
-                        data: amountRaised,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1,
-                        yAxisID: 'y1'
-                    }
-                ]
-            });
         } catch (err) {
             setError(err.message);
         }
     };
+
     useEffect(() => {
-
-
         fetchGiftsData();
-        if (user&&user.role === 'admin') {
+        if (user && user.role === 'admin') {
             fetchFundraiserData();
         }
 
-    }, []);
+    }, [user]);
 
     const toggleChart = () => {
         setShowFundraiserChart(!showFundraiserChart);

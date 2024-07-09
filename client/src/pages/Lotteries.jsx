@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/Gift.css';
-import { UserContext } from './UserContext';
 import Lottery from '../components/Lottery';
 import '../css/Lottery.css'
 
 function Lotteries() {
     const [gifts, setGifts] = useState([]);
-
-
+    
     useEffect(() => {
         fetch(`http://localhost:3000/gifts`, {
             method: "GET",
@@ -18,6 +16,7 @@ function Lotteries() {
                 setGifts(data);
             })
     }, []);
+
     return (
         <>
             <div className="gift-lottery-container">

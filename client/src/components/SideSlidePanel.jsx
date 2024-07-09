@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
 import '../css/SideSlidePanel.css';
-import { MdClose } from "react-icons/md";
-import { RiShoppingBag2Fill } from "react-icons/ri";
-import { MDBBtn } from 'mdb-react-ui-kit';
 import image from '../images/image.png';
 
 const SideSlidePanel = ({ orders, isOpen, onClose }) => {

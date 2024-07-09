@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 import { OrderContext } from './OrderContext';
 
 const LogOut = () => {
-  const { setOrder, order, setSelectedPackage,setSavedCartItems } = useContext(OrderContext);
+  const { setOrder, order, setSavedCartItems } = useContext(OrderContext);
   const { setUser, user } = useContext(UserContext);
   const { refreshAccessToken } = useContext(UserContext);
 
@@ -44,18 +44,17 @@ const LogOut = () => {
             await refreshAccessToken();
             return saveToDBShoppingCart();
           }
-
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
-            // throw response.error;
             return;
           }
         }
-        localStorage.removeItem('currentOrder');
-        
-        const data = await response.json();
+        else {
+          localStorage.removeItem('currentOrder');
+          await response.json();
+        }
       } catch (error) {
-        console.error('Error saving to shopping cart:', error);
+         console.log('Error saving to shopping cart:', error);
       }
     } else {
       return;
@@ -69,14 +68,14 @@ const LogOut = () => {
         method: 'GET',
         credentials: 'include'
       });
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      console.log('User successfully logged out');
+      else {
+        console.log('User successfully logged out');
+      }
     } catch (error) {
-      console.error('Error logging out user:', error);
+      console.log('Error logging out user:', error);
     }
   };
 

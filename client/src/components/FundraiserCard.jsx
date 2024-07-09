@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import user from '../images/user.png';
 import user1 from '../images/user1.png';
+import { UserContext } from '../pages/UserContext';
 
 
 function FundraiserCard({ fundraiser, setFundraisers, fundraisers }) {
     const [loading, setLoading] = useState(false);
+    const { refreshAccessToken } = useContext(UserContext);
 
     const handleFundraiserStatus = async (status) => {
         setLoading(true);
@@ -23,13 +25,22 @@ function FundraiserCard({ fundraiser, setFundraisers, fundraisers }) {
                 body: JSON.stringify(updatedFundraiser),
             });
             if (!fundraiserResponse.ok) {
+                if (fundraiserResponse.status === 401) {
+                    console.log('Refreshing token and retrying...');
+                    await refreshAccessToken();
+                    return handleFundraiserStatus(status); // Retry update after token refresh
+                }
+                if (fundraiserResponse.status === 403) {
+                    console.log('Invalid token, you cannot do it...');
+                    throw new Error('Forbidden');
+                }
                 throw new Error('Failed to update fundraiser');
             }
             const updatedData = await fundraiserResponse.json();
             const updatedFundraisers = fundraisers.map(f => f.user_id === fundraiser.user_id ? updatedData : f);
             setFundraisers(updatedFundraisers);
         } catch (error) {
-            console.error('Error updating fundraiser status:', error);
+             console.log('Error updating fundraiser status:', error);
         } finally {
             setLoading(false);
         }

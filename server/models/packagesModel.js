@@ -6,7 +6,7 @@ async function getPackages() {
         const [result] = await pool.query(sql);
         return result;
     } catch (err) {
-        console.error(err);
+         console.log(err);
         throw err;
     }
 }

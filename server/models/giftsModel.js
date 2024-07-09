@@ -77,7 +77,7 @@ async function deleteGift(id) {
     const sql = `DELETE FROM gifts WHERE gift_id = ?`;
     await pool.query(sql, [id]);
   } catch (err) {
-    console.error('Error on deleting gift:', err);
+     console.log('Error on deleting gift:', err);
     throw err;
   }
 }
@@ -89,7 +89,7 @@ async function updateWinnerOfGift(id, winner_id, name, price, image_url) {
     const result = await pool.query(sql, [winner_id, name, price, image_url, id]);
     return result;
   } catch (err) {
-    console.error('Error deleting gift:', err);
+     console.log('Error deleting gift:', err);
     throw err;
   }
 }

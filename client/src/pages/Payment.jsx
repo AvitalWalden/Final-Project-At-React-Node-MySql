@@ -120,7 +120,7 @@ const Payment = ({ setEnableNav }) => {
       setOrderCreated(true);
 
     } catch (error) {
-      console.error('Error:', error.message);
+       console.log('Error:', error.message);
 
     }
   }
@@ -219,7 +219,7 @@ const Payment = ({ setEnableNav }) => {
           }
 
         } catch (error) {
-          console.error('Error during updating fundraiser:', error);
+           console.log('Error during updating fundraiser:', error);
 
         };
         handleUserOrder();
@@ -229,7 +229,7 @@ const Payment = ({ setEnableNav }) => {
       }
     }
     catch {
-      console.error('Error:', error.message);
+       console.log('Error:', error.message);
     }
   }
   useEffect(() => {
