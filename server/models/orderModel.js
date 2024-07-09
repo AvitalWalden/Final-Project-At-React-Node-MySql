@@ -86,6 +86,7 @@ async function createOrder(user_id, order_date, order) {
 }
 async function getOrderAndUserByOrderId(order_id) {
     try {
+        console.log(order_id)
         const sql = `
             SELECT 
                 users.user_id,
@@ -124,6 +125,7 @@ async function getOrderAndUserByOrderId(order_id) {
         `;
 
         const result = await pool.query(sql, [order_id]);
+        console.log(result)
         return result[0][0];
     } catch (err) {
         console.log(err);

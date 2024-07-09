@@ -1,5 +1,5 @@
 const model = require('../models/orderModel');
-const { sendOrderEmail} = require('../middleware/mailServices');
+const { sendOrderEmail } = require('../middleware/mailServices');
 
 async function getOrder(id) {
     try {
@@ -30,24 +30,24 @@ async function getOrderByOrderId(order_id) {
         throw err;
     }
 }
-async function createOrder(user_id, order_date,order,totalPrice,email) {
+async function createOrder(user_id, order_date, order, totalPrice, email) {
     try {
         const orderModel = await model.createOrder(user_id, order_date, order);
-        if(orderModel)
-            {
-               await sendOrderEmail(email,order,totalPrice);
-            }
+        if (orderModel) {
+            await sendOrderEmail(email, order, totalPrice);
+        }
         return orderModel;
     } catch (err) {
-            throw err;
+        throw err;
     }
 }
 async function getOrderAndUserByOrderId(order_id) {
     try {
         const orderModel = await model.getOrderAndUserByOrderId(order_id);
+        console.log(orderModel);
         return orderModel;
     } catch (err) {
-            throw err;
+        throw err;
     }
 }
-module.exports = {getOrder,getOrderByGiftID,createOrder,getOrderByOrderId,getOrders,getOrderAndUserByOrderId}
+module.exports = { getOrder, getOrderByGiftID, createOrder, getOrderByOrderId, getOrders, getOrderAndUserByOrderId }
