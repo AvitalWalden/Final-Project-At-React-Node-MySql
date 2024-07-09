@@ -362,9 +362,11 @@ input {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  text-align: center;
-  overflow-y: visible !important;
-
+  text-align: left;
+  overflow-x: hidden !important;
+  width: 600px !important;
+  height: 600px;
+  max-height: 598px;
 }
 
 .modal-content h2 {

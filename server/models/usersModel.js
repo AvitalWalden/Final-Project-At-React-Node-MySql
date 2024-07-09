@@ -98,7 +98,6 @@ async function createNewUser( name, username, email, phone,city,street,zipcode) 
         const userId = resultUser[0].insertId;
         return resultUser[0];
     } catch (err) {
-        //  console.log('Error creating user:', err);
         throw err;
     }
 }
