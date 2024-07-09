@@ -41,17 +41,15 @@ export const UserProvider = ({ children }) => {
           },
           credentials: "include",
         });
-
-
-        if (response.status === 401) {
-          return;
-        }
         if (!response.ok) {
+          if (response.status === 401) {
+            return;
+          }
           throw new Error('Failed to refresh user');
         }
 
         const data = await response.json();
-        
+        console.log(data)
         if (!data) {
           throw new Error('Log in first');
         }

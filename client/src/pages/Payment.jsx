@@ -116,7 +116,7 @@ const Payment = ({ setEnableNav }) => {
         const giftIdsToDelete = checkedItems.map(item => item.gift_id);
         removeFromSavedShoppingCart(giftIdsToDelete);
       }
-      
+
       setOrderCreated(true);
 
     } catch (error) {
@@ -187,12 +187,18 @@ const Payment = ({ setEnableNav }) => {
 
       } if (user && user.role === 'fundraiser' && checkboxChecked && bonusChecked) {
         try {
+          // let updateBonus=0;
+          // if(totalPrice<user.bonus){
+          //   updateBonus=user.bonus-totalPrice;
+          //   console.log(updateBonus,user.bonus,totalPrice)
+          // }
           const updatedFundraiser = {
             user_id: user.user_id,
             debt: user.debt,
             people_fundraised: user.people_fundraised,
-            bonus: 0
+            bonus: user.bonus
           }
+
           const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
             method: 'PUT',
             headers: {

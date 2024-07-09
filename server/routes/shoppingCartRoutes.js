@@ -14,7 +14,7 @@ router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
 
-router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {
+router.get("/:user_id",verifyJWT,verifyRoles(["admin","fundraiser","user"]), async (req, res) => {
     try {
         let shoppingCart;
         const user_id = req.params.user_id;
@@ -28,7 +28,7 @@ router.get("/:user_id",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES
     }
 });
 
-router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
+router.post("/",verifyJWT,verifyRoles(["admin","fundraiser","user"]), async (req, res) => {  
     try {
         let shoppingCart;
         const { userId, order } = req.body;
@@ -41,7 +41,7 @@ router.post("/",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,RO
         res.status(500).send(error);
     }
 });
-router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.user]), async (req, res) => {  
+router.put("/",verifyJWT,verifyRoles(["admin","fundraiser","user"]), async (req, res) => {  
 
     try {
         let shoppingCart;
@@ -57,7 +57,7 @@ router.put("/",verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser,ROLES_LIST.us
     }
 });
 
-router.delete('/:userId', verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
+router.delete('/:userId',verifyJWT, verifyRoles(["admin","fundraiser","user"]), async (req, res) => {
     try {
       const userId = req.params.userId;
       const giftIds = req.body.giftIds; 

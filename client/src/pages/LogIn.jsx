@@ -93,6 +93,7 @@ const LogIn = () => {
         if (data.message) {
           throw new Error(data.message);
         }
+        console.log(data);
         setUser(data);
         navigate('/gifts');
       })

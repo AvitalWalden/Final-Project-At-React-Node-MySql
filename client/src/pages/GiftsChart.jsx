@@ -7,7 +7,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const GiftsChart = () => {
-    const { user } = useContext(UserContext);
+    const { user, refreshAccessToken } = useContext(UserContext);
     const [chartData, setChartData] = useState({});
     const [fundraiserChartData, setFundraiserChartData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -87,7 +87,17 @@ const GiftsChart = () => {
                 credentials: 'include'
             });
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                if (response.status === 401) {
+                    console.log('Refreshing token and retrying...');
+                    await refreshAccessToken();
+                    return fetchFundraiserData(); // Retry fetch after token refresh
+                }
+
+                if (response.status === 403) {
+                    console.log('invalid token you cannot do it...');
+                    setError('invalid token you cannot do it...');
+                    return;
+                }
             }
             const data = await response.json();
             console.log(data);
@@ -125,11 +135,13 @@ const GiftsChart = () => {
         }
     };
     useEffect(() => {
-     
 
-            fetchGiftsData();
+
+        fetchGiftsData();
+        if (user.role === 'admin') {
             fetchFundraiserData();
-        
+        }
+
     }, []);
 
     const toggleChart = () => {
@@ -141,9 +153,9 @@ const GiftsChart = () => {
 
     return (
         <div className='canvas'>
-            {user&&user.role != 'admin' && (
+            {user && user.role != 'admin' && (
                 <br />)}
-            {user&&user.role === 'admin' && (
+            {user && user.role === 'admin' && (
                 <div className='button-container'>
                     <button className='btn btn-primary' onClick={toggleChart}>
                         {showFundraiserChart ? 'Show Gifts Chart' : 'Show Fundraiser Chart'}

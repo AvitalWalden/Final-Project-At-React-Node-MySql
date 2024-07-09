@@ -18,7 +18,8 @@ const verifyJWT = (req, res, next) => {
                 }
                 else {
                     req.user = decoded.UserInfo.username; // Assuming your payload structure is "UserInfo"
-                    req.roles = decoded.UserInfo.roles;
+                    req.role = decoded.UserInfo.role;
+                    console.log(req.role);
                     next();
                 }
 

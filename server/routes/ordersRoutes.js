@@ -7,13 +7,12 @@ const cors = require('cors');
 router.use(cors());
 const { getOrder, getOrderByGiftID, createOrder,getOrderByOrderId,getOrders,getOrderAndUserByOrderId } = require('../controllers/orderController');
 const verifyRoles = require('../middleware/verifyRoles');
-const ROLES_LIST = require('../config/role_list');
 const cookieParser = require('cookie-parser');
 const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 
-router.get("/",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.get("/",verifyJWT,verifyRoles(["admin"]), async (req, res) => {
     try {
         const orders = await getOrders();
         res.send(orders);
@@ -25,7 +24,7 @@ router.get("/",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
     }
 });
 
-router.get("/user_id/:user_id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
+router.get("/user_id/:user_id",verifyJWT,verifyRoles(["admin","fundraiser","user"]), async (req, res) => {
     try {
         let order;
         const user_id = req.params.user_id;
@@ -40,7 +39,7 @@ router.get("/user_id/:user_id",verifyJWT,verifyRoles([ROLES_LIST.admin,ROLES_LIS
     }
 });
 
-router.get("/gift_id/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.get("/gift_id/:gift_id",verifyJWT,verifyRoles(["admin"]), async (req, res) => {
     try {
         let order;
         const gift_id = req.params.gift_id;
@@ -53,7 +52,7 @@ router.get("/gift_id/:gift_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (r
         res.status(500).send(error);
     }
 });
-router.get("/order_id/:order_id",verifyJWT,verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.get("/order_id/:order_id",verifyJWT,verifyRoles(["admin"]), async (req, res) => {
     try {
         let order;
         const order_id = req.params.order_id;

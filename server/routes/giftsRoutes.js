@@ -5,7 +5,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const ROLES_LIST = require('../config/role_list');
 const verifyRoles = require('../middleware/verifyRoles');
 const { getGifts, getAllGiftsOrderQuantity, getGift, createGift, deleteGift, getGiftsWithUserDetails, updateWinnerOfGift } = require('../controllers/giftsController');
 const cookieParser = require('cookie-parser');
@@ -49,7 +48,7 @@ router.get("/winners", async (req, res) => {
 })
 
 
-router.get("/:id", verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.get("/:id", verifyRoles(["admin"]), async (req, res) => {
     try {
         const id = req.params.id;
         const gift = await getGift(id);
@@ -63,7 +62,7 @@ router.get("/:id", verifyRoles(ROLES_LIST.admin), async (req, res) => {
 });
 
 
-router.post("/", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.post("/", verifyJWT, verifyRoles(["admin"]), async (req, res) => {
     try {
         if (!req.body.name || !req.body.price ) {
             const error = {
@@ -83,7 +82,7 @@ router.post("/", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req, res) => {
     }
 });
 
-router.delete("/:gift_id", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.delete("/:gift_id", verifyJWT, verifyRoles(["admin"]), async (req, res) => {
     try {
         const id = req.params.gift_id;
         await deleteGift(id);
@@ -96,7 +95,7 @@ router.delete("/:gift_id", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req,
     }
 });
 
-router.put("/:id", verifyJWT, verifyRoles(ROLES_LIST.admin), async (req, res) => {
+router.put("/:id", verifyJWT, verifyRoles(["admin"]), async (req, res) => {
     try {
         if (!req.body.name || !req.body.price) {
             const error = {

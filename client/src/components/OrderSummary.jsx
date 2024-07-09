@@ -60,7 +60,14 @@ const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, hand
         setBonusChecked(false);
        return;
     }
-    setTotalPrice(totalPrice-user.bonus)
+    if(totalPrice-user.bonus < 0){
+      user.bonus -= totalPrice;
+      setTotalPrice(0);
+    }
+    else{
+      setTotalPrice(totalPrice-user.bonus)
+      user.bonus =0;
+    }
     setBonusChecked(true);
   }
 
@@ -124,7 +131,7 @@ const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, hand
                 id='form1'
                 type='readOnly'
                 style={{ textAlign: 'center' }}
-                value={!bonusChecked&&user.bonus || 0}  
+                value={user.bonus||0}  
               />
 
             )}

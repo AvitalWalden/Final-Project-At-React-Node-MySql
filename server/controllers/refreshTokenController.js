@@ -46,7 +46,7 @@ async function handleRefreshToken(cookies) {
                 {
                     "UserInfo": {
                         "username": decoded.username,
-                        "roles": role
+                        "role": role
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,

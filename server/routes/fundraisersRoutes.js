@@ -6,7 +6,6 @@ router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
 const verifyRoles = require('../middleware/verifyRoles');
-const ROLES_LIST = require('../config/role_list');
 const cookieParser = require('cookie-parser');
 const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
@@ -21,7 +20,7 @@ router.get("/", async (req, res) => {
         res.status(500).json({ error: 'Failed to fetching fundraisers ' });
     }
 });
-router.get("/fundraiserChartData", async (req, res) => {
+router.get("/fundraiserChartData",verifyJWT,verifyRoles(["admin"]), async (req, res) => {
     try {
         const result = await getFundraiserChartData();
         res.send(result);

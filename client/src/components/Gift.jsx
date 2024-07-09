@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { OrderContext } from '../pages/OrderContext';
-import '../css/Modal.css'; 
+import '../css/Modal.css';
 import '../css/Gift.css';
 import '../css/Gifts.css';
 import { ImCancelCircle } from "react-icons/im";
-import {MDBBtn} from "mdb-react-ui-kit";
+import { MDBBtn } from "mdb-react-ui-kit";
 import { FaCartPlus } from "react-icons/fa6";
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -46,14 +46,14 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
             setError("invalid token you cannot do it...");
+            return;
           }
         }
-      })
-      .then(() => {
-        const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
-        setGifts(updatedgifts);
-      })
-      .catch(err => {
+        else {
+          const updatedgifts = gifts.filter((gift) => gift.gift_id !== gift_id);
+          setGifts(updatedgifts);
+        }
+      }).catch(err => {
         console.log(err);
       })
 
@@ -88,6 +88,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
             setError("invalid token you cannot do it...")
+            return;
           }
         }
         return await response.json();
@@ -132,14 +133,18 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
             if (response.status === 403) {
               console.log('invalid token you cannot do it...');
               setError('invalid token you cannot do it...');
+              return;
             }
           }
-          handleUpload(currentGift.gift_id);
-          const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
-          setGifts(updateGift);
-          setError('');
-          setFile(null);
-          setIsEditGiftModalOpen(false);
+          else {
+            handleUpload(currentGift.gift_id);
+            const updateGift = gifts.map(g => g.gift_id === currentGift.gift_id ? currentGift : g);
+            setGifts(updateGift);
+            setError('');
+            setFile(null);
+            setIsEditGiftModalOpen(false);
+          }
+
         });
     } catch {
       console.log('Error adding gift:');
@@ -154,7 +159,7 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
           <h1 className='name'>{highlightSearchTerm(gift.name)}</h1>
           <h1 className='price'>{highlightSearchTerm(gift.price)}$</h1>
           <div className='giftButtons'>
-            {user && user.role == "admin" && (
+            {user &&  user.role == "admin" && (
               // <div className="btn-admin">
               //   <button className="btnDeleteGift" onClick={() => handleDeleteGift(gift.gift_id)}><MdDeleteForever /></button>
               //   <button className="btnEditGift" onClick={handleEditGift}><MdEdit /></button>

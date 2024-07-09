@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require('cors');
 const verifyJWT = require('../middleware/verifyJWT')
 const verifyRoles = require('../middleware/verifyRoles');
-const ROLES_LIST = require('../config/role_list');
 const config = require('../config/config')
 const router = express.Router();
 router.use(express.json());
@@ -48,7 +47,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.put("/:id", verifyJWT, verifyRoles([ROLES_LIST.admin, ROLES_LIST.fundraiser, ROLES_LIST.user]), async (req, res) => {
+router.put("/:id", verifyJWT, verifyRoles(["admin", "fundraiser", "user"]), async (req, res) => {
     try {
         if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone) {
             const error = {

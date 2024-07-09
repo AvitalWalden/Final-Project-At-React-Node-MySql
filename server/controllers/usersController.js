@@ -30,6 +30,9 @@ async function createUserLogInWithGoogle(username, role, email) {
     try {
         const user = await model.createUserLogInWithGoogle(username, role, email);
         const newUser = await getUser(user.insertId);
+        console.log(newUser);
+        console.log(user);
+
         const token = await creatTokens(newUser, role);
         creatToken(user.insertId, token.refreshToken);
         const accessToken = token.accessToken
@@ -53,7 +56,10 @@ async function getUserLogInWithGoogle(email, role) {
             throw new Error('Email does not exist in the system');
         }
         const token = await creatTokens(user, role);
-        creatToken(user.insertId, token.refreshToken);
+        console.log("user.user_id")
+
+        console.log(user.user_id)
+        updateToken(user.user_id, token.refreshToken);
         const accessToken = token.accessToken
         const refreshToken = token.refreshToken;
         return { user, accessToken, refreshToken };
@@ -67,7 +73,7 @@ async function logIn(userName, password) {
         console.log(userName)
         const user = await model.logIn(userName);
         if (user) {
-            const role = Object.values(user.role);
+            const role = user.role;
             if (hashedPassword === user.password) {
                 token = await creatTokens(user, role);
                 updateToken(user.user_id, token.refreshToken);
@@ -127,12 +133,14 @@ async function createNewUser(name, username, email, phone, city, street, zipcode
 
 async function creatTokens(user, role) {
     try {
+        console.log(role);
+
         const username = user.username;
         const accessToken = jwt.sign(
             {
                 "UserInfo": {
-                    "username": user.username,
-                    "roles": role
+                    "username": username,
+                    "role": role
                 }
             },
             config.ACCESS_TOKEN_SECRET,
@@ -142,7 +150,7 @@ async function creatTokens(user, role) {
         const refreshToken = jwt.sign(
             {
                 "username": username,
-                "roles": role
+                "role": role
             },
             config.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }

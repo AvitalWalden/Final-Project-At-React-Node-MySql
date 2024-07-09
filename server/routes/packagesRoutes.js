@@ -5,8 +5,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
-const verifyRoles = require('../middleware/verifyRoles');
-const ROLES_LIST = require('../config/role_list');
 const cookieParser = require('cookie-parser');
 const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());

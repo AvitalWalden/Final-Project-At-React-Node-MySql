@@ -13,6 +13,8 @@ router.post("/", async (req, res) => {
     try {
         let user, accessToken, refreshToken;
         if (!req.body.password) {
+            console.log(req.body.role);
+
             ({ user, accessToken, refreshToken } = await getUserLogInWithGoogle(req.body.email, req.body.role));
         } else {
             const { username, password } = req.body;
