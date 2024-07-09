@@ -8,7 +8,7 @@ export const OrderProvider = ({ children }) => {
   const [message, setMessage] = useState('');
   const [isOrderListOpen, setIsOrderListOpen] = useState(false);
   const [savedCartItems, setSavedCartItems] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user, refreshAccessToken } = useContext(UserContext);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedPackage, setSelectedPackage] = useState(() => {
     const storedPackage = localStorage.getItem('selectedPackage');
@@ -60,9 +60,62 @@ export const OrderProvider = ({ children }) => {
       setOrder(updatedOrder);
     } else {
       setOrder([...order, { ...gift, quantity: 1, isChecked: checkbox }]);
-
     }
     setIsOrderListOpen(true);
+    setTotalPrice(calculateTotalPrice());
+  };
+
+  const removeFromSavedShoppingCart = async (giftIds) => {
+    try {
+      const userId = user.user_id;
+      let idsArray;
+      if (!Array.isArray(giftIds)) {
+        idsArray = [giftIds];
+      }
+      else {
+        idsArray = giftIds.map(item => item.gift_id);
+      }
+
+      await fetch(`http://localhost:3000/shoppingCart/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        body: JSON.stringify({ giftIds: giftIds })
+      }).then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return removeFromSavedShoppingCart(giftIds);
+          }
+          if (response.status === 402) {
+            console.log('NO Acsses...');
+            setError("NO Acsses...");
+            return;
+          }
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            setError('invalid token you cannot do it...');
+            return;
+          }
+          if (response.status === 400) {
+            console.log("Fill in the data")
+            setError("Fill in the data");
+            return;
+          }
+          throw new Error('Failed to update fundraiser');
+        }
+        else {
+          setSavedCartItems(savedCartItems.filter(item => !idsArray.includes(item.gift_id)));
+        }
+      }).catch(error => {
+        console.log('Error deleteing gift:', error);
+      });
+    } catch (error) {
+      console.log('Error deleting item:', error);
+    }
     setTotalPrice(calculateTotalPrice());
   };
 
@@ -75,41 +128,7 @@ export const OrderProvider = ({ children }) => {
     else {
       removeFromSavedShoppingCart(giftId);
     }
-    setMessage('Gift removed from the order!');
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
     setTotalPrice(calculateTotalPrice());
-  };
-
-  const removeFromSavedShoppingCart = async (giftIds) => {
-    try {
-      const userId = user.user_id;
-      let idsArray;
-      if (!Array.isArray(giftIds)) {
-        idsArray = [giftIds];
-
-      }
-      else {
-        idsArray = giftIds.map(item => item.gift_id);
-
-      }
-
-      await fetch(`http://localhost:3000/shoppingCart/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: "include",
-        body: JSON.stringify({ giftIds: giftIds })
-      });
-
-      setSavedCartItems(savedCartItems.filter(item => !idsArray.includes(item.gift_id)));
-    } catch (error) {
-       console.log('Error deleting item:', error);
-    }
-    setTotalPrice(calculateTotalPrice());
-
   };
 
   const calculateTotalPrice = () => {

@@ -32,7 +32,7 @@ router.get("/fundraiserChartData", verifyJWT, verifyRoles(["admin"]), async (req
     }
 });
 
-router.get("/:fundraiser_id", async (req, res) => {
+router.get("/:fundraiser_id", verifyJWT, verifyRoles(["admin","fundraiser"]), async (req, res) => {
     try {
         const fundraiserId = req.params.fundraiser_id;
         const fundraiser = await getFundraiser(fundraiserId);
@@ -45,7 +45,7 @@ router.get("/:fundraiser_id", async (req, res) => {
     }
 });
 
-router.put("/:user_id", async (req, res) => {
+router.put("/:user_id", verifyJWT, verifyRoles(["admin","fundraiser"]), async (req, res) => {
     const userId = req.params.user_id;
     const updatedFundraiser = req.body;
     updatedFundraiser.user_id = userId;

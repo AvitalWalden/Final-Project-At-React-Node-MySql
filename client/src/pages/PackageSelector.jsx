@@ -10,7 +10,6 @@ const PackageSelector = () => {
   const [isModal, setIsModal] = useState(false);
   const [currentPackage, setCurrentPackage] = useState(null)
   const { selectedPackage, setSelectedPackage, order } = useContext(OrderContext);
-  const { refreshAccessToken } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleGetPackages = async () => {
@@ -19,32 +18,29 @@ const PackageSelector = () => {
         method: "GET",
         credentials: "include"
       });
-  
+
       if (!res.ok) {
-        // if (res.status === 401) {
-        //   console.log('Refreshing token and retrying...');
-        //   await refreshAccessToken();
-        //   return handleGetPackages(); // Retry after refreshing token}
-         if (res.status === 403) {
-          console.log('Invalid token, you cannot do it...');
-          throw new Error('Access forbidden');
+        if (res.status === 500) {
+          console.log('failed to fetch packages');
+          return;
         } else {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
       }
-  
-      const data = await res.json();
-      setPackages(data);
+      else {
+        const data = await res.json();
+        setPackages(data);
+      }
     } catch (error) {
-       console.log('Error fetching packages:', error);
+      console.log('Error fetching packages:', error);
       setPackages([]);
     }
   };
-  
+
   useEffect(() => {
     handleGetPackages();
   }, []);
-  
+
   const handleModalClose = () => {
     setIsModal(false);
   };
@@ -53,6 +49,7 @@ const PackageSelector = () => {
     setCurrentPackage(pkg)
     setIsModal(true);
   };
+
   const handleStartShopping = (currentPackage) => {
     if (selectedPackage) {
       let totalSelectedQuantity = 0;
@@ -70,10 +67,11 @@ const PackageSelector = () => {
     setSelectedPackage(currentPackage);
     navigate("/gifts")
   };
+
   return (
     <div className="package-selector">
       <h2>Select a Package</h2>
-      { packages.map((pkg) => (
+      {packages.map((pkg) => (
         <div className="package-card" key={pkg.package_id} onClick={() => handleModalOpen(pkg)}>
           <img src={`http://localhost:3000/images/${pkg.image_url}`} alt={pkg.name} />
           <h1>{pkg.name}</h1>

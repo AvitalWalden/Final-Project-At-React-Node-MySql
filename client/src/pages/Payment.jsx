@@ -2,18 +2,24 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from './UserContext';
 import { OrderContext } from './OrderContext';
 import OrderSummary from '../components/OrderSummary';
-import '../css/Payment.css'; // Import your CSS for Payment component if needed
+import '../css/Payment.css';
 import { useNavigate } from 'react-router-dom';
-import { Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
-import { MDBBtn, MDBCheckbox } from "mdb-react-ui-kit";
+import { Form, Row, Col, Button } from 'react-bootstrap';
+import { MDBCheckbox } from "mdb-react-ui-kit";
 
 const Payment = ({ setEnableNav }) => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, refreshAccessToken } = useContext(UserContext);
   const { order, savedCartItems, totalPrice, removeFromSavedShoppingCart, setOrder, setSelectedPackage, setTotalPrice } = useContext(OrderContext);
   const [currentStep, setCurrentStep] = useState(1);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [bonusChecked, setBonusChecked] = useState(false);
+  const [orderCreated, setOrderCreated] = useState(false);
+
+  const finalOrder = [
+    ...order.filter(item => item.isChecked),
+    ...savedCartItems.filter(item => item.isChecked)
+  ];
 
   const [newUserDetails, setNewUserDetails] = useState({
     name: '',
@@ -24,9 +30,11 @@ const Payment = ({ setEnableNav }) => {
     zipcode: '',
     phone: ''
   });
+
   useEffect(() => {
     setEnableNav(false)
   }, [0]);
+
   useEffect(() => {
     if (checkboxChecked && user) {
       setNewUserDetails({
@@ -51,12 +59,16 @@ const Payment = ({ setEnableNav }) => {
     }
   }, [checkboxChecked, user]);
 
-  const [orderCreated, setOrderCreated] = useState(false);
-
-  const finalOrder = [
-    ...order.filter(item => item.isChecked),
-    ...savedCartItems.filter(item => item.isChecked)
-  ];
+  useEffect(() => {
+    if (user && orderCreated) {
+      localStorage.removeItem('selectedPackage');
+      localStorage.removeItem('currentOrder');
+      setOrder([]);
+      setEnableNav(true);
+      setSelectedPackage(false);
+      navigate('/endOrder');
+    }
+  }, [orderCreated, setOrder, setEnableNav, setSelectedPackage, navigate, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,13 +80,13 @@ const Payment = ({ setEnableNav }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Check if all fields are filled
     if (validateForm()) {
       setCurrentStep(2);
     } else {
       alert('Please fill in all fields.');
     }
   };
+
   const handleCheckboxChange = (e) => {
     setCheckboxChecked(e.target.checked);
   };
@@ -95,8 +107,174 @@ const Payment = ({ setEnableNav }) => {
     e.preventDefault();
     setCurrentStep(1);
     setBonusChecked(false);
-
   };
+
+
+  const addNewUser = async () => {
+    fetch('http://localhost:3000/users/newUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(newUserDetails),
+    }).then(response => response.json().then(user => {
+      if (response.status === 500) {
+        throw user.message;
+      }
+      else if (response.status === 401) {
+        console.log('Refreshing token and retrying...');
+        refreshAccessToken();
+        return addNewUser();
+      }
+      else if (response.status === 400) {
+        console.log("Fill in the data")
+        throw user.message;
+      }
+      else if (response.status === 403) {
+        console.log('invalid token you cannot do it...');
+        throw user.message;
+      }
+      else {
+        return user;
+      }
+    })).catch(error => {
+      alert(error);
+      return;
+    });
+  }
+
+  const getFundraiser = async () => {
+    const fundraiserGetResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
+      method: "GET",
+      credentials: "include"
+    });
+    if (!fundraiserGetResponse.ok) {
+      if (fundraiserGetResponse.status === 401) {
+        console.log('Refreshing token and retrying...');
+        await refreshAccessToken();
+        return getFundraiser();
+      }
+      if (fundraiserGetResponse.status === 400) {
+        console.log("Fill in the data")
+        return;
+      }
+      if (fundraiserGetResponse.status === 403) {
+        console.log('invalid token you cannot do it...');
+        return;
+      }
+
+      throw new Error('Failed to get fundraiser');
+    }
+    const currentFundraiser = await fundraiserGetResponse.json();
+    const newDebt = Number(currentFundraiser.debt) + Number(totalPrice);
+    const updatedFundraiser = {
+      ...currentFundraiser,
+      debt: newDebt,
+      people_fundraised: currentFundraiser.people_fundraised + 1,
+      bonus: currentFundraiser.bonus + totalPrice * 0.05,
+    };
+    putFundraiserDebt(updatedFundraiser);
+  }
+
+  const putFundraiserDebt = async (updatedFundraiser) => {
+    const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(updatedFundraiser),
+    });
+    if (!fundraiserResponse.ok) {
+      if (fundraiserResponse.status === 401) {
+        console.log('Refreshing token and retrying...');
+        await refreshAccessToken();
+        return putFundraiserDebt(updatedFundraiser);
+      }
+      if (fundraiserResponse.status === 400) {
+        console.log("Fill in the data")
+        return;
+      }
+      if (fundraiserResponse.status === 403) {
+        console.log('invalid token you cannot do it...');
+        return;
+      }
+
+      throw new Error('Failed to put fundraiser');
+
+    }
+  }
+
+  const handleNewUserOrder = async (newUser) => {
+    const formattedDate = new Date().toISOString().split('T')[0];
+    const orderResponse = await fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ user_id: newUser.user_id, order_date: formattedDate, order: finalOrder, totalPrice: totalPrice, email: user.email }),
+    });
+    if (!orderResponse.ok) {
+      if (orderResponse.status === 401) {
+        console.log('Refreshing token and retrying...');
+        await refreshAccessToken();
+        return handleNewUserOrder();
+      }
+      if (orderResponse.status === 400) {
+        console.log("Fill in the data")
+        return;
+      }
+      if (orderResponse.status === 403) {
+        console.log('invalid token you cannot do it...');
+        return;
+      }
+
+      throw new Error('Failed to create new user order');
+    }
+  }
+
+  const putFundraiserBonus = async () => {
+    try {
+      const updatedFundraiser = {
+        user_id: user.user_id,
+        debt: user.debt,
+        people_fundraised: user.people_fundraised,
+        bonus: user.bonus
+      }
+      const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(updatedFundraiser),
+      });
+      if (!fundraiserResponse.ok) {
+        if (fundraiserResponse.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return putFundraiserBonus();
+        }
+        if (fundraiserResponse.status === 400) {
+          console.log("Fill in the data")
+          return;
+        }
+        if (fundraiserResponse.status === 403) {
+          console.log('invalid token you cannot do it...');
+          return;
+        }
+
+        throw new Error('Failed to put fundraiser bonus');
+
+      }
+    } catch (error) {
+      console.log('Error during updating fundraiser:', error);
+
+    };
+  }
+
   const handleUserOrder = async () => {
     const formattedDate = new Date().toISOString().split('T')[0];
     try {
@@ -109,6 +287,19 @@ const Payment = ({ setEnableNav }) => {
         body: JSON.stringify({ user_id: user.user_id, order_date: formattedDate, order: finalOrder, totalPrice: totalPrice, email: user.email }),
       });
       if (!orderResponse.ok) {
+        if (orderResponse.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return handleUserOrder();
+        }
+        if (orderResponse.status === 400) {
+          console.log("Fill in the data")
+          return;
+        }
+        if (orderResponse.status === 403) {
+          console.log('invalid token you cannot do it...');
+          return;
+        }
         throw new Error('Failed to create order');
       }
       if (savedCartItems.some(item => item.isChecked)) {
@@ -116,132 +307,35 @@ const Payment = ({ setEnableNav }) => {
         const giftIdsToDelete = checkedItems.map(item => item.gift_id);
         removeFromSavedShoppingCart(giftIdsToDelete);
       }
-
       setOrderCreated(true);
-
     } catch (error) {
-       console.log('Error:', error.message);
-
+      console.log('Error:', error.message);
     }
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formattedDate = new Date().toISOString().split('T')[0];
-
       if (user && user.role === 'fundraiser' && !checkboxChecked) {
-        const newUserResponse = await fetch('http://localhost:3000/users/newUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(newUserDetails),
-        });
-        if (!newUserResponse.ok) {
-          if (newUserResponse.status === 400) {
-            console.log("Fill in the data")
-            return;
-          }
-          throw new Error('Failed to create new user');
+        const newUser = await addNewUser();
+        if(!newUser)
+        {
+          return;
         }
-        const newUser = await newUserResponse.json();
-        const fundraiserGetResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
-          method: "GET",
-          credentials: "include"
-        });
-        if (!fundraiserGetResponse.ok) {
-          throw new Error('Failed to get fundraiser');
-        }
-        const currentFundraiser = await fundraiserGetResponse.json();
-        const newDebt = Number(currentFundraiser.debt) + Number(totalPrice);
-        const updatedFundraiser = {
-          ...currentFundraiser,
-          debt: newDebt,
-          people_fundraised: currentFundraiser.people_fundraised + 1,
-          bonus: currentFundraiser.bonus + totalPrice * 0.05,
-        };
-        const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(updatedFundraiser),
-        });
-        if (!fundraiserResponse.ok) {
-          throw new Error('Failed to update fundraiser');
-        }
-
-        const orderResponse = await fetch('http://localhost:3000/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ user_id: newUser.user_id, order_date: formattedDate, order: finalOrder, totalPrice: totalPrice, email: user.email }),
-        });
-        if (!orderResponse.ok) {
-          throw new Error('Failed to create order');
-        }
-
-      } if (user && user.role === 'fundraiser' && checkboxChecked && bonusChecked) {
-        try {
-          // let updateBonus=0;
-          // if(totalPrice<user.bonus){
-          //   updateBonus=user.bonus-totalPrice;
-          //   console.log(updateBonus,user.bonus,totalPrice)
-          // }
-          const updatedFundraiser = {
-            user_id: user.user_id,
-            debt: user.debt,
-            people_fundraised: user.people_fundraised,
-            bonus: user.bonus
-          }
-
-          const fundraiserResponse = await fetch(`http://localhost:3000/fundraisers/${user.user_id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(updatedFundraiser),
-          });
-          if (!fundraiserResponse.ok) {
-            if (!response.ok) {
-              if (response.status === 401) {
-                console.log('Refreshing token and retrying...');
-                await refreshAccessToken();
-                return handleBonusClick();
-              }
-              throw new Error('Failed to update fundraiser.');
-            }
-          }
-
-        } catch (error) {
-           console.log('Error during updating fundraiser:', error);
-
-        };
-        handleUserOrder();
+        await getFundraiser();
+        await handleNewUserOrder(newUser);
+      } else if (user && user.role === 'fundraiser' && checkboxChecked && bonusChecked) {
+        await putFundraiserBonus();
+        await handleUserOrder();
       }
       else {
-        handleUserOrder();
+        await handleUserOrder();
       }
     }
-    catch {
-       console.log('Error:', error.message);
+    catch (error) {
+      console.log('Error:', error);
     }
   }
-  useEffect(() => {
-    if (user && orderCreated) {
-      localStorage.removeItem('selectedPackage');
-      localStorage.removeItem('currentOrder');
-      setOrder([]);
-      setEnableNav(true);
-      setSelectedPackage(false);
-      navigate('/endOrder');
-    }
-  }, [orderCreated, setOrder, setEnableNav, setSelectedPackage, navigate, user]);
 
 
   return (

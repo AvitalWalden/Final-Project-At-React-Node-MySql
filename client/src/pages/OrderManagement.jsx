@@ -9,23 +9,19 @@ import { Link, useNavigate } from 'react-router-dom';
 const OrderManagement = ({ setEnableNav }) => {
   const navigate = useNavigate();
   const { removeFromOrder, setOrder, order, savedCartItems, setSavedCartItems, selectedPackage, setSelectedPackage, totalPrice, setTotalPrice, calculateTotalPrice } = useContext(OrderContext);
-  const { user,refreshAccessToken } = useContext(UserContext);
+  const { user, refreshAccessToken } = useContext(UserContext);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
 
   useEffect(() => {
     const fetchSavedCartItems = async () => {
-      console.log(order,"l;l")
-
       if (!user) {
         return;
-      }
-      try {
+      } try {
         const response = await fetch(`http://localhost:3000/shoppingCart/${user.user_id}`, {
           method: "GET",
           credentials: "include",
         });
-    
         if (!response.ok) {
           if (response.status === 401) {
             console.log('Refreshing token and retrying...');
@@ -39,12 +35,10 @@ const OrderManagement = ({ setEnableNav }) => {
             throw new Error('Failed to fetch saved cart items');
           }
         }
-    
         const data = await response.json();
         setSavedCartItems(data);
-    
       } catch (error) {
-         console.log('Error fetching saved cart items:', error.message);
+        console.log('Error fetching saved cart items:', error.message);
       }
     };
     fetchSavedCartItems();
@@ -73,14 +67,78 @@ const OrderManagement = ({ setEnableNav }) => {
     setShowLoginPrompt(false);
   };
 
-  const handleDeleteGift = (giftId, IdentifyString) => {
-    removeFromOrder(giftId, IdentifyString);
-  };
-
   const handleDeletePackage = () => {
     setSelectedPackage(null)
     setTotalPrice(calculateTotalPrice());
   }
+
+  const handleDeleteGift = (giftId, IdentifyString) => {
+    removeFromOrder(giftId, IdentifyString);
+  };
+
+  const putToDBShoppingCart = async (giftId, change) => {
+    try {
+      const userId = user.user_id;
+      const currentItem = savedCartItems.find(item => item.gift_id === giftId);
+      let isChecked=0;
+      if(change===0){
+       isChecked = currentItem.isChecked ? 0 : 1;
+      }
+      else{
+        isChecked=currentItem.isChecked
+      }
+      const quantity = currentItem.quantity + change;
+      if (quantity < 1) {
+        alert('Invalid quantity');
+        return;
+      }
+      await fetch(`http://localhost:3000/shoppingCart`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "include",
+        body: JSON.stringify({ userId, giftId, quantity, isChecked }),
+      }).then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return putToDBShoppingCart(giftId,change);
+          }
+          if (response.status === 402) {
+            console.log('NO Acsses...');
+            setError("NO Acsses...");
+            return;
+          }
+          if (response.status === 403) {
+            console.log('invalid token you cannot do it...');
+            setError('invalid token you cannot do it...');
+            return;
+          }
+          if (response.status === 400) {
+            console.log("Fill in the data")
+            setError("Fill in the data");
+            return;
+          }
+          throw new Error('Failed to put shopping cart');
+        }
+      })
+      if (change === 0) {
+        const updatedShoppingCart = savedCartItems.map((item) =>
+          item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
+        );
+        setSavedCartItems(updatedShoppingCart);
+      } else {
+        const updatedSavingCart = savedCartItems.map((item) =>
+          item.gift_id === giftId ? { ...item, quantity: quantity } : item);
+        setSavedCartItems(updatedSavingCart);
+
+      }
+    } catch (error) {
+      console.log('Error saving shopping cart:', error);
+    }
+  };
 
   const handleCheckboxChange = (giftId, IdentifyString) => {
     if (IdentifyString == "current") {
@@ -89,36 +147,10 @@ const OrderManagement = ({ setEnableNav }) => {
       );
       setOrder(updatedOrder);
     } else {
-      const putToDBShoppingCart = async (giftId) => {
-        try {
-          const userId = user.user_id;
-          const currentItem = savedCartItems.find(item => item.gift_id === giftId);
-          const isChecked = currentItem.isChecked?0:1;
-         const quantity=currentItem.quantity;
-         console.log("erer",giftId,userId,currentItem,isChecked,quantity)
-          await fetch(`http://localhost:3000/shoppingCart`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: "include",
-            body: JSON.stringify({ userId, giftId,quantity, isChecked }),
-          });
-          const updatedShoppingCart = savedCartItems.map((item) =>
-            item.gift_id === giftId ? { ...item, isChecked: !item.isChecked } : item
-          );
-          setSavedCartItems(updatedShoppingCart);
-        } catch (error) {
-           console.log('Error saving shopping cart:', error);
-        }
-      };
-      putToDBShoppingCart(giftId);
+      putToDBShoppingCart(giftId,0);
     }
     setTotalPrice(calculateTotalPrice());
   };
-
-
-
 
   const handleQuantityChange = (giftId, change, IdentifyString) => {
     if (IdentifyString === "current") {
@@ -139,34 +171,6 @@ const OrderManagement = ({ setEnableNav }) => {
       );
       setOrder(updatedOrder);
     } else {
-      const putToDBShoppingCart = async (giftId, change) => {
-        try {
-          const userId = user.user_id;
-          const currentItem = savedCartItems.find(item => item.gift_id === giftId);
-          const quantity = currentItem.quantity + change;
-          const isChecked = currentItem.isChecked;
-          if (quantity < 1) {
-            alert('Invalid quantity');
-            return;
-          }
-
-          await fetch(`http://localhost:3000/shoppingCart`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: "include",
-            body: JSON.stringify({ userId, giftId, quantity,isChecked }),
-          });
-
-          const updatedSavingCart = savedCartItems.map((item) =>
-            item.gift_id === giftId ? { ...item, quantity: quantity } : item
-          );
-          setSavedCartItems(updatedSavingCart);
-        } catch (error) {
-           console.log('Error saving shopping cart:', error);
-        }
-      };
       putToDBShoppingCart(giftId, change);
     }
     setTotalPrice(calculateTotalPrice());
@@ -190,6 +194,7 @@ const OrderManagement = ({ setEnableNav }) => {
       </div>
     );
   }
+
   return (
     <div className="order-management">
       <div className="container">

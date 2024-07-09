@@ -41,7 +41,7 @@ async function createUserLogInWithGoogle(username, role, email) {
             throw new Error('You need logIn')
         } else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
             throw new Error('email is in use')
-        }else {
+        } else {
             throw err;
         }
     }
@@ -107,13 +107,13 @@ async function updateUser(id, name, username, email, city, street, zipcode, phon
     try {
         return await model.updateUser(id, name, username, email, city, street, zipcode, phone, addressId);
     } catch (err) {
-        if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
-            throw new Error('email is in use')
+        if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
+            throw new Error('You need logIn')
         }
         else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
             throw new Error('email is in use')
         }
-        else{
+        else {
             throw err;
         }
     }
@@ -123,7 +123,15 @@ async function createNewUser(name, username, email, phone, city, street, zipcode
     try {
         return await model.createNewUser(name, username, email, phone, city, street, zipcode);
     } catch (err) {
-        throw err;
+        if (err.sqlMessage == `Duplicate entry '${username}' for key 'users.username'`) {
+            throw new Error('user name is in use')
+        }
+        else if (err.sqlMessage == `Duplicate entry '${email}' for key 'users.email'`) {
+            throw new Error('email is in use')
+        }
+        else {
+            throw err;
+        }
     }
 }
 

@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
       return data.accessToken;
 
     } catch (error) {
-       console.log('Error refreshing token:', error);
+      console.log('Error refreshing token:', error);
       throw error;
     }
   };
@@ -43,22 +43,17 @@ export const UserProvider = ({ children }) => {
         });
         if (!response.ok) {
           if (response.status === 401) {
+            console.log('Log in first');
             return;
           }
           throw new Error('Failed to refresh user');
         }
-
-        const data = await response.json();
-        console.log(data)
-        if (!data) {
-          throw new Error('Log in first');
+        else {
+          const data = await response.json();
+          setUser(data);
         }
-
-        setUser(data);
-
       } catch (error) {
-         console.log('Error during refresh page:', error);
-
+        console.log('Error during refresh page:', error);
       }
     };
 

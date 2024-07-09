@@ -6,7 +6,6 @@ router.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 router.use(cors());
 const cookieParser = require('cookie-parser');
-const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 const {getPackages } = require('../controllers/packagesController');
