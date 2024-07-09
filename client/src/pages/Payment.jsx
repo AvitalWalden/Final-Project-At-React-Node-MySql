@@ -134,7 +134,6 @@ const Payment = ({ setEnableNav }) => {
         console.log('Invalid token, you cannot do it...');
         throw user.message;
       } else {
-        console.log(user, "kk");
         return user;
       }
     } catch (error) {
