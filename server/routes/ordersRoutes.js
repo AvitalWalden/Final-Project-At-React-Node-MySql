@@ -65,7 +65,7 @@ router.get("/order_id/:order_id",verifyJWT,verifyRoles(["admin"]), async (req, r
         res.status(500).send(error);
     }
 });
-router.post("/", async (req, res) => {
+router.post("/",verifyJWT,verifyRoles(["admin","user","fundraiser"]), async (req, res) => {
     try {
         const response = await createOrder(req.body.user_id, req.body.order_date,req.body.order,req.body.totalPrice,req.body.email);
         const newOrder = await getOrderByOrderId(response.orderId);

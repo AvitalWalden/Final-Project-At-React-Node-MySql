@@ -86,7 +86,7 @@ router.get("/:user_id", verifyJWT, async (req, res) => {
     }
 });
 
-router.post("/newUser", async (req, res) => {
+router.post("/newUser",verifyJWT,verifyRoles(["admin",'fundraiser']) ,async (req, res) => {
     try {
         const { name, username, email, phone, city, street, zipcode } = req.body;
         if (!ValidateEmail(req.body.email) || !req.body.name || !req.body.username || !req.body.city || !req.body.street || !req.body.zipcode || !req.body.phone || !req.body.email) {
@@ -98,17 +98,19 @@ router.post("/newUser", async (req, res) => {
         else {
             const result = await createNewUser(name, username, email, phone, city, street, zipcode);
 
-            if (result.affectedRows > 0) {
+            // if (result.affectedRows > 0) {
                 const newUser = await getUser(result.insertId);
                 res.status(201).send(newUser);
-            } else {
-                res.status(400).send({ message: 'Failed to create user' });
-            }
+            // } else {
+            //     res.status(400).send({ message: 'Failed to create user' });
+            // }
         }
-    } catch (err) {
-         console.log('Error creating user:', err.message);
+    }  catch (err) {
 
-        res.status(500).send({ message: err.message });
+        const error = {
+            message: err.message
+        }
+        res.status(500).send(error);
     }
 });
 

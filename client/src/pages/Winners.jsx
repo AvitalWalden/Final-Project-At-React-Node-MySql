@@ -6,7 +6,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const Winners = () => {
   const [winners, setWinners] = useState([]);
   const { refreshAccessToken } = useContext(UserContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWinners();
@@ -22,14 +21,14 @@ const Winners = () => {
         if (response.status === 401) {
           console.log('Refreshing token and retrying...');
           await refreshAccessToken();
-          return fetchWinners(); // Retry fetch after token refresh
+          return fetchWinners();
         }
 
         if (response.status === 403) {
           console.log('invalid token you cannot do it...');
-          // throw response.error;
           return;
         }
+        throw new Error('Failed to fetch winners');
       }
       const data = await response.json();
       setWinners(data);

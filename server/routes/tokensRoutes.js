@@ -12,13 +12,10 @@ router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 router.get("/", async (req, res) => {
   try {
     const cookies = req.cookies;
-    console.log(cookies);
     if (!cookies.jwt_refreshToken) {
       return res.status(401).send({ message: 'No refresh token found' });
         }
     const user = await getTokenAndUserByToken(cookies.jwt_refreshToken);
-    console.log(user);
-
     if (!user) {
       return res.status(401).send({ message: 'Log in first' });
     }

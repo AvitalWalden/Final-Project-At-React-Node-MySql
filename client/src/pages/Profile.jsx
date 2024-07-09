@@ -26,6 +26,7 @@ const Profile = () => {
     debt: '',
     people_fundraised: ''
   });
+  
   const [useDetailsError, setUseDetailsError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const { refreshAccessToken } = useContext(UserContext);
