@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import Order from '../components/Order';
 import '../css/AllOrders.css';
-import { MdOutlineReadMore, MdOutlineDateRange ,MdBookmarkBorder } from "react-icons/md";
+import { MdOutlineReadMore, MdOutlineDateRange, MdBookmarkBorder } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 
 import { Link } from 'react-router-dom';
@@ -35,10 +35,11 @@ function AllOrders() {
           return;
         }
       }
-
-      const ordersData = await response.json();
-      console.log("Orders Data:", ordersData)
-      setOrders(ordersData);
+      else {
+        const ordersData = await response.json();
+        console.log("Orders Data:", ordersData)
+        setOrders(ordersData);
+      }
     } catch (error) {
       console.error('Error fetching orders:', error);
       setOrders([]);

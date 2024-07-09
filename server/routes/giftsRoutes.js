@@ -15,7 +15,6 @@ const verifyJWT = require('../middleware/verifyJWT')
 router.get("/allGiftsOrderQuantity", async (req, res) => {
     try {
         const allGiftsOrderQuantity = await getAllGiftsOrderQuantity();
-
         res.send(allGiftsOrderQuantity);
     } catch (err) {
         const error = {
@@ -48,7 +47,7 @@ router.get("/winners", async (req, res) => {
 })
 
 
-router.get("/:id", verifyRoles(["admin"]), async (req, res) => {
+router.get("/:id",verifyJWT, verifyRoles(["admin"]), async (req, res) => {
     try {
         const id = req.params.id;
         const gift = await getGift(id);

@@ -31,6 +31,14 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
     return title;
   };
 
+  const handleAddGift = (checkbox) => {
+    addToOrder(gift, checkbox)
+  };
+
+  const handleEditGift = () => {
+    setIsEditGiftModalOpen(true);
+  };
+  
   const handleDeleteGift = (gift_id) => {
     fetch(`http://localhost:3000/gifts/${gift_id}`, {
       method: 'DELETE',
@@ -57,14 +65,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
         console.log(err);
       })
 
-  };
-
-  const handleAddGift = (checkbox) => {
-    addToOrder(gift, checkbox)
-  };
-
-  const handleEditGift = () => {
-    setIsEditGiftModalOpen(true);
   };
 
   const handleUpload = () => {
@@ -127,9 +127,8 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
             if (response.status === 401) {
               console.log('Refreshing token and retrying...');
               await refreshAccessToken();
-              return saveGift(); // Retry fetch after token refresh
+              return saveGift();
             }
-
             if (response.status === 403) {
               console.log('invalid token you cannot do it...');
               setError('invalid token you cannot do it...');
@@ -144,7 +143,6 @@ function Gift({ gift, user, searchCriteria, setGifts, gifts, file, setFile, refr
             setFile(null);
             setIsEditGiftModalOpen(false);
           }
-
         });
     } catch {
       console.log('Error adding gift:');

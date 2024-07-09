@@ -41,7 +41,7 @@ const LogIn = () => {
         }
       }
     } catch {
-      throw new Error('Failed to fetch fundraiser data');
+      setLoginError('Failed to fetch fundraiser data');
     }
   }
 
@@ -69,7 +69,7 @@ const LogIn = () => {
         else if (response.status === 400) {
           console.log("Fill in the data")
           throw data.message;
-        }else{
+        } else {
           throw data.message;
         }
       }
@@ -107,7 +107,7 @@ const LogIn = () => {
         navigate('/gifts');
       })
       .catch(error => {
-        setLoginError(error.message);
+        setLoginError(error);
       });
   }
 
