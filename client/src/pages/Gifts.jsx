@@ -17,8 +17,11 @@ function Gifts() {
   const [file, setFile] = useState(null);
   const { user, refreshAccessToken } = useContext(UserContext);
   const [error, setError] = useState('');
-
   const { order, isOrderListOpen, setIsOrderListOpen, selectedPackage } = useContext(OrderContext);
+
+  const handleAddGift = () => {
+    setIsAddGiftModalOpen(true);
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/gifts`, {
@@ -35,14 +38,10 @@ function Gifts() {
         }
       })
       .catch(error => {
-        console.error('Error fetching gifts:', error);
+        console.log('Error fetching gifts:', error);
         setGifts([]);
       });
   }, []);
-
-  const handleAddGift = () => {
-    setIsAddGiftModalOpen(true);
-  };
 
   const handleUpload = (gift_id) => {
     const formData = new FormData();
@@ -67,23 +66,18 @@ function Gifts() {
             console.log('NO Acsses...');
             setError("NO Acsses...");
             return;
-
           }
           if (response.status === 403) {
             console.log('invalid token you cannot do it...');
             setError('invalid token you cannot do it...');
-
             return;
-
           }
           if (response.status === 400) {
             console.log("Fill in the data")
             setError("Fill in the data");
-
             return;
           }
         }
-
         return await response.json();
       })
       .then(data => {
@@ -104,58 +98,50 @@ function Gifts() {
       setError('Please fill in all fields.');
       return;
     }
+
     const url = 'http://localhost:3000/gifts';
     const method = 'POST';
     const giftData = { ...newGift, image_url: '' };
+
     try {
       fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         credentials: "include",
         body: JSON.stringify(giftData)
-      })
-        .then(async response => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              console.log('Refreshing token and retrying...');
-              await refreshAccessToken();
-              return saveGift(); // Retry fetch after token refresh
-            }
-            if (response.status === 402) {
-              console.log('NO Acsses...');
-              setError("NO Acsses...");
-              return;
-
-            }
-            if (response.status === 403) {
-              console.log('invalid token you cannot do it...');
-              setError('invalid token you cannot do it...');
-
-              return;
-
-            }
-            if (response.status === 400) {
-              console.log("Fill in the data")
-              setError("Fill in the data");
-
-              return;
-            }
+      }).then(async response => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log('Refreshing token and retrying...');
+            await refreshAccessToken();
+            return saveGift();
           }
-
+          if (response.status === 402) {
+            setError("NO Acsses...");
+            return;
+          }
+          if (response.status === 403) {
+            setError('invalid token you cannot do it...');
+            return;
+          }
+          if (response.status === 400) {
+            setError("Fill in the data");
+            return;
+          }
+        } else {
           const data = await response.json();
-
           if (data && data.gift_id) {
-            await handleUpload(data.gift_id);
             setGifts(prevGifts => [...prevGifts, data]);
+            await handleUpload(data.gift_id);
             setError('');
             setFile(null);
             setIsAddGiftModalOpen(false);
             setNewGift({ name: '', price: '', image_url: '' });
           } else {
-            setError("Invalid response data'");
+            setError("Invalid response data");
           }
-
-        })
+        }
+      })
     } catch (error) {
       console.log('There was an error saving the gift. Please try again.');
     }
@@ -212,7 +198,6 @@ function Gifts() {
               <MDBBtn className='w-100 mb-4' size='md' onClick={saveGift}>Save</MDBBtn>
             </div>
             {error && <p className='error mt-4' style={{ color: "red" }}>{error}</p>}
-
           </div>
         </div>
       )}

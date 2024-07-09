@@ -28,10 +28,12 @@ const Order = ({ orderId, onClose }) => {
                         throw new Error('Forbidden');
                     }
                 }
+                else {
+                    const data = await response.json();
+                    console.log("Fetched order details:", data);
+                    setOrderDetails(data);
+                }
 
-                const data = await response.json();
-                console.log("Fetched order details:", data);
-                setOrderDetails(data);
             } catch (error) {
                 console.error('Error fetching order details:', error);
             }
@@ -42,60 +44,60 @@ const Order = ({ orderId, onClose }) => {
 
     if (orderDetails === null) {
         return (
-            
+
             // <div className="modal-container">
-                // <div className="modal-dialog">
-                    <div className="modal-content bg-lightblue">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Order Details</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
-                        </div>
-                        <div className="modal-body">
-                            <p>Loading...</p>
-                        </div>
-                    </div>
-                // </div>
+            // <div className="modal-dialog">
+            <div className="modal-content bg-lightblue">
+                <div className="modal-header">
+                    <h5 className="modal-title">Order Details</h5>
+                    <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
+                </div>
+                <div className="modal-body">
+                    <p>Loading...</p>
+                </div>
+            </div>
+            // </div>
             // </div>
         );
     }
 
     return (
         // <div className="modal-container">
-            // <div className="modal-dialog">
-                <div className="modal-content bg-lightblue">
-                    <div className="modal-header">
-                       
-                        <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
-                    </div>
-                    <div className="modal-body">
-                        <div className="order-info mb-3">
-                            <h6>Order Information</h6>
-                            <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
-                            <p><strong>Order Date:</strong> {new Date(orderDetails.order_date).toLocaleDateString()}</p>
-                        </div>
-                        <div className="user-info mb-3">
-                            <h6>User Information</h6>
-                            <p><strong>Name:</strong> {orderDetails.name}</p>
-                            <p><strong>Username:</strong> {orderDetails.username}</p>
-                            <p><strong>Email:</strong> {orderDetails.email}</p>
-                            <p><strong>Phone:</strong> {orderDetails.phone}</p>
-                            <p><strong>City:</strong> {orderDetails.city}</p>
-                            <p><strong>Street:</strong> {orderDetails.street}</p>
-                            <p><strong>Zipcode:</strong> {orderDetails.zipcode}</p>
-                        </div>
-                        <div className="gifts-info">
-                            <h6>Gifts</h6>
-                            {orderDetails.gifts.map((gift, index) => (
-                                <div key={index} className="gift-item mb-3">
-                                    <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} className="img-thumbnail" />
-                                    <p><strong>Gift Name:</strong> {gift.name}</p>
-                                    <p><strong>Price:</strong> {gift.price}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+        // <div className="modal-dialog">
+        <div className="modal-content bg-lightblue">
+            <div className="modal-header">
+
+                <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
+            </div>
+            <div className="modal-body">
+                <div className="order-info mb-3">
+                    <h6>Order Information</h6>
+                    <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
+                    <p><strong>Order Date:</strong> {new Date(orderDetails.order_date).toLocaleDateString()}</p>
                 </div>
-            // </div>
+                <div className="user-info mb-3">
+                    <h6>User Information</h6>
+                    <p><strong>Name:</strong> {orderDetails.name}</p>
+                    <p><strong>Username:</strong> {orderDetails.username}</p>
+                    <p><strong>Email:</strong> {orderDetails.email}</p>
+                    <p><strong>Phone:</strong> {orderDetails.phone}</p>
+                    <p><strong>City:</strong> {orderDetails.city}</p>
+                    <p><strong>Street:</strong> {orderDetails.street}</p>
+                    <p><strong>Zipcode:</strong> {orderDetails.zipcode}</p>
+                </div>
+                <div className="gifts-info">
+                    <h6>Gifts</h6>
+                    {orderDetails.gifts.map((gift, index) => (
+                        <div key={index} className="gift-item mb-3">
+                            <img src={`http://localhost:3000/images/${gift.image_url}`} alt={gift.name} className="img-thumbnail" />
+                            <p><strong>Gift Name:</strong> {gift.name}</p>
+                            <p><strong>Price:</strong> {gift.price}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+        // </div>
         // </div>
     );
 };

@@ -363,6 +363,8 @@ input {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
+  overflow-y: visible !important;
+
 }
 
 .modal-content h2 {

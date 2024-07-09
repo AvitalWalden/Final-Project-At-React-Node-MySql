@@ -6,7 +6,8 @@
   display: flex;
   /* justify-content: center; */
   align-items: center;
- 
+  overflow-y: visible !important; /* Scrollbar */
+
   width: 55vw;
   height: 70vh;
   z-index: 1050;
@@ -21,9 +22,9 @@
 }
 .modal-content ,.bg-lightblue {
   max-width: 600px;
+  overflow-y: visible !important; /* Scrollbar */
+
   width: 90%;
-}
-.modal-content ,.bg-lightblue  {
   padding: 20px;
   border: 1px solid #888;
   max-height: 60vh; /* Smaller height */

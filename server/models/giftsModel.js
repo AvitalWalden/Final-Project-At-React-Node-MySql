@@ -9,7 +9,6 @@ async function getGifts() {
     console.log(err);
     throw err;
   }
-
 }
 
 async function getGiftsWithUserDetails() {
@@ -23,8 +22,6 @@ async function getGiftsWithUserDetails() {
   }
 
 }
-
-
 
 async function getGift(id) {
   try {
@@ -52,7 +49,6 @@ async function getAllGiftsOrderQuantity() {
     GROUP BY 
         g.gift_id, g.name;`;
     const [rows] = await pool.query(query);
-
     return rows;
   } catch (err) {
     console.log(err);

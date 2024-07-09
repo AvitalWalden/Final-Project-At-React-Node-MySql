@@ -11,7 +11,7 @@ const verifyJWT = require("../middleware/verifyJWT");
 router.use(cookieParser());
 router.use(cors({ origin: config.CORS_ORIGIN, credentials: true }));
 const {updateFundraiser ,getFundraiser,getFundraiserChartData,getFundraisers,updateFundraiserForStatus} = require('../controllers/fundraisersController');
-router.get("/", async (req, res) => {
+router.get("/", verifyJWT, verifyRoles(["admin"]), async (req, res) => {
     try {
         const result = await getFundraisers();
         res.send(result);
