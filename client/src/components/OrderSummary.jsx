@@ -31,14 +31,13 @@ const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, hand
           });
 
           if (!fundraiserGetResponse.ok) {
-            if (!response.ok) {
-              if (response.status === 401) {
+              if (fundraiserGetResponse.status === 401) {
                 console.log('Refreshing token and retrying...');
                 await refreshAccessToken();
-                return getFundraiser();
+                return 9();
               }
               throw new Error('Failed to fetch fundraiser.');
-            }
+            
           }
 
           const data = await fundraiserGetResponse.json();
