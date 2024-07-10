@@ -120,25 +120,29 @@ const Payment = ({ setEnableNav }) => {
         credentials: 'include',
         body: JSON.stringify(newUserDetails),
       });
-      const user = await response.json();
-      if (response.status === 500) {
-        throw user.message;
-      } else if (response.status === 401) {
-        console.log('Refreshing token and retrying...');
-        await refreshAccessToken();
-        return addNewUser();
-      } else if (response.status === 400) {
-        console.log("Fill in the data");
-        throw user.message;
-      } else if (response.status === 403) {
-        console.log('Invalid token, you cannot do it...');
-        throw user.message;
-      } else {
-        return user;
-      }
+      if (!response.ok) {
+        if (response.status === 500) {
+          console.log('username ro email in use...');
+          throw new Error('username ro email in use...')
+        } else if (response.status === 401) {
+          console.log('Refreshing token and retrying...');
+          await refreshAccessToken();
+          return addNewUser();
+        } else if (response.status === 400) {
+          console.log("Fill in the data");
+          throw new Error('Fill in the data')
+        } else if (response.status === 403) {
+          console.log('Invalid token, you cannot do it...');
+          throw new Error('Invalid token, you cannot do it...')
+        } else {
+          throw new Error('Error fetch')
+        }
+      } return await response.json();
+
+
     } catch (error) {
       alert(error);
-      return null;
+      // return null;
     }
   };
 
@@ -318,8 +322,7 @@ const Payment = ({ setEnableNav }) => {
       if (user && user.role === 'fundraiser' && !checkboxChecked) {
         const newUser = await addNewUser();
         console.log(newUser);
-        if(!newUser)
-        {
+        if (!newUser) {
           return;
         }
         await getFundraiser();
