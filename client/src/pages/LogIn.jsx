@@ -30,7 +30,7 @@ const LogIn = () => {
         if (fundraiserResponse.status === 500) {
           throw fundraiserResponse.error;
         }
-        throw data.message;
+        throw new Error("error in fetchFundraiser");
       } else {
         if (fundraiserData.status === 'pending') {
           setLoginError('Waiting for admin approval');

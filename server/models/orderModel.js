@@ -33,7 +33,6 @@ async function getOrder(userId) {
                 orders.user_id = ?
         `;
         const [rows] = await pool.query(sql, [userId]);
-        console.log(rows,"pppkkk")
         return rows;
     } catch (err) {
          console.log(err);

@@ -28,7 +28,6 @@ router.get("/user_id/:user_id",verifyJWT,verifyRoles(["admin","fundraiser","user
     try {
         let order;
         const user_id = req.params.user_id;
-        console.log(user_id,"cccdsd")
         order = await getOrder(user_id);
         res.send(order);
     } catch (err) {
