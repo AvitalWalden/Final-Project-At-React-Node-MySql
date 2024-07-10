@@ -34,7 +34,7 @@ const OrderSummary = ({ finalOrder, setTotalPrice,totalPrice, handleSubmit, hand
               if (fundraiserGetResponse.status === 401) {
                 console.log('Refreshing token and retrying...');
                 await refreshAccessToken();
-                return 9();
+                return getFundraiser();
               }
               throw new Error('Failed to fetch fundraiser.');
             
