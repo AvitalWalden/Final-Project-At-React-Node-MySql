@@ -22,7 +22,8 @@ async function getOrder(userId) {
                 orders.order_id, 
                 orders.order_date, 
                 gifts.name, 
-                gifts.price 
+                gifts.price ,
+                lotteries_tickets.quantity
             FROM 
                 orders 
             JOIN 

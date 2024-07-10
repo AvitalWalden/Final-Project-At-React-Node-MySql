@@ -52,7 +52,11 @@ const UserOrders = () => {
   };
 
   const calculateTotalPrice = (groupedOrder) => {
-    return groupedOrder.reduce((total, order) => total + parseFloat(order.price), 0);
+    const total = groupedOrder.reduce((sum, order) => {
+      return sum + (parseFloat(order.price) * order.quantity);
+    }, 0);
+    const totalWithTax = total * 1.15;
+    return totalWithTax.toFixed(2);
   };
 
   if (!user) {
@@ -86,7 +90,7 @@ const UserOrders = () => {
                         {groupedOrder.map((order, key) => (
                           <li key={key} className="gift-item">
                             <span className="gift-name">Gift: {order.name} </span>
-                            <span className="gift-price">&nbsp;Price: {order.price}</span>
+                            <span className="gift-price">&nbsp;Price: {order.price} quantity: {order.quantity}</span>
                             {key < groupedOrder.length - 1 && <hr className="gift-separator" />}
                           </li>
                         ))}
